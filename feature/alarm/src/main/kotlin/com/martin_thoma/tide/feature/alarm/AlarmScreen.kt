@@ -2,6 +2,7 @@ package com.martin_thoma.tide.feature.alarm
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.text.format.DateFormat
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -23,6 +24,8 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
@@ -58,6 +61,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.CustomAccessibilityAction
@@ -130,6 +134,7 @@ internal fun AlarmListContent(
     val scope = rememberCoroutineScope()
     var showNewAlarm by rememberSaveable { mutableStateOf(false) }
     val deletedMessage = stringResource(R.string.feature_alarm_deleted)
+    val resources = LocalResources.current
     val context = LocalContext.current
     // Without notifications, a ringing alarm cannot show its screen (requirements 6.4). The health check follows in step 4.
     val notificationPermission = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) {}
@@ -166,24 +171,21 @@ internal fun AlarmListContent(
                     NextAlarm(state, timeFormatter, Modifier.padding(horizontal = 8.dp))
                     Spacer(Modifier.height(32.dp))
                 }
-                if (!state.loading && state.alarms.isEmpty()) {
-                    // The empty sheet shows where alarms will be.
-                    item(key = "empty") {
-                        GlassPane(Modifier.fillMaxWidth()) {
-                            Text(
-                                text = stringResource(R.string.feature_alarm_empty),
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = LocalTideColors.current.onGlassVariant,
-                                modifier = Modifier.padding(horizontal = 20.dp, vertical = 24.dp),
-                            )
-                        }
-                    }
-                }
-                if (state.alarms.isNotEmpty()) {
-                    // One sheet of glass for all alarms, readable wherever the tide is.
-                    item(key = "alarms") {
+                // One sheet of glass for all alarms, readable wherever the tide is; empty, it shows where
+                // alarms will be. It stays one list item either way: a separate item for the empty sheet
+                // made the list keep the last deleted row's swipe state, and "Undo" deleted the alarm again.
+                if (!state.loading) {
+                    item(key = "sheet") {
                         GlassPane(Modifier.fillMaxWidth()) {
                             Column(Modifier.animateContentSize()) {
+                                if (state.alarms.isEmpty()) {
+                                    Text(
+                                        text = stringResource(R.string.feature_alarm_empty),
+                                        style = MaterialTheme.typography.bodyLarge,
+                                        color = LocalTideColors.current.onGlassVariant,
+                                        modifier = Modifier.padding(horizontal = 20.dp, vertical = 24.dp),
+                                    )
+                                }
                                 state.alarms.forEachIndexed { index, alarm ->
                                     key(alarm.id) {
                                         if (index > 0) {
@@ -205,7 +207,8 @@ internal fun AlarmListContent(
                                                         snackbarHostState.showSnackbar(
                                                             deletedMessage,
                                                             undoLabel,
-                                                            duration = SnackbarDuration.Short,
+                                                            // Long enough to find Undo when half asleep.
+                                                            duration = SnackbarDuration.Long,
                                                         )
                                                     if (result == SnackbarResult.ActionPerformed) onRestore(alarm)
                                                 }
@@ -228,6 +231,17 @@ internal fun AlarmListContent(
             onConfirm = { time ->
                 showNewAlarm = false
                 onAdd(time)
+                // Confirms the alarm and says when it rings (requirements section 8).
+                val now = state.now ?: ZonedDateTime.now()
+                val trigger = NextTrigger.of(Alarm(time = time), now)
+                if (trigger != null) {
+                    val message =
+                        resources.getString(
+                            R.string.feature_alarm_set_confirmation,
+                            timeUntilText(resources, timeUntil(now, trigger)),
+                        )
+                    scope.launch { snackbarHostState.showSnackbar(message) }
+                }
             },
         )
     }
@@ -368,7 +382,15 @@ internal fun AlarmTimeDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
-            TextButton(onClick = { onConfirm(LocalTime.of(pickerState.hour, pickerState.minute)) }) {
+            // The one clear way to confirm: a filled button, not a text link (Martin, on the S25).
+            Button(
+                onClick = { onConfirm(LocalTime.of(pickerState.hour, pickerState.minute)) },
+                colors =
+                    ButtonDefaults.buttonColors(
+                        containerColor = LocalTideColors.current.accent,
+                        contentColor = LocalTideColors.current.onAccent,
+                    ),
+            ) {
                 Text(stringResource(R.string.feature_alarm_set))
             }
         },
@@ -390,6 +412,16 @@ private fun glassSwitchColors(): SwitchColors {
         uncheckedBorderColor = colors.onGlassVariant,
     )
 }
+
+private fun timeUntilText(
+    resources: Resources,
+    timeUntil: TimeUntil,
+): String =
+    when (timeUntil) {
+        is TimeUntil.Minutes -> resources.getString(R.string.feature_alarm_in_minutes, timeUntil.minutes)
+        is TimeUntil.HoursMinutes -> resources.getString(R.string.feature_alarm_in_hours_minutes, timeUntil.hours, timeUntil.minutes)
+        is TimeUntil.DaysHours -> resources.getString(R.string.feature_alarm_in_days_hours, timeUntil.days, timeUntil.hours)
+    }
 
 @Composable
 private fun timeUntilText(timeUntil: TimeUntil): String =

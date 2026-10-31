@@ -15,4 +15,7 @@
     <string name="feature_timer_times_up">Время вышло</string>
     <string name="feature_timer_backspace">Удалить цифру</string>
     <string name="feature_timer_back">Назад</string>
+    <string name="feature_timer_rings_at">Зазвонит в %1$s</string>
+    <string name="feature_timer_paused_short">На паузе</string>
+    <string name="feature_timer_minutes">%1$d мин</string>
 </resources>

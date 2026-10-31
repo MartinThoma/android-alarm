@@ -1,5 +1,7 @@
 package com.martin_thoma.tide.feature.timer
 
+import com.martin_thoma.tide.core.data.RecentTimer
+import com.martin_thoma.tide.core.data.RecentTimers
 import com.martin_thoma.tide.core.data.TimerRepository
 import com.martin_thoma.tide.core.domain.TimeSource
 import com.martin_thoma.tide.core.model.Timer
@@ -16,6 +18,7 @@ class TimerActions
     @Inject
     constructor(
         private val repository: TimerRepository,
+        private val recents: RecentTimers,
         private val timeSource: TimeSource,
         private val ringing: RingingState,
         private val controls: RingingControls,
@@ -25,7 +28,10 @@ class TimerActions
         suspend fun create(
             setMillis: Long,
             label: String,
-        ): Long = repository.save(Timer(label = label.trim(), setMillis = setMillis, createdAt = now()).start(now()))
+        ): Long {
+            recents.remember(RecentTimer(setMillis, label.trim()))
+            return repository.save(Timer(label = label.trim(), setMillis = setMillis, createdAt = now()).start(now()))
+        }
 
         suspend fun startOrPause(id: Long) = repository.update(id) { if (it.isRunning) it.pause(now()) else it.start(now()) }
 

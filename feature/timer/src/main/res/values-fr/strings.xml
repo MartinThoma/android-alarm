@@ -15,4 +15,7 @@
     <string name="feature_timer_times_up">Temps écoulé</string>
     <string name="feature_timer_backspace">Effacer le chiffre</string>
     <string name="feature_timer_back">Retour</string>
+    <string name="feature_timer_rings_at">Sonne à %1$s</string>
+    <string name="feature_timer_paused_short">En pause</string>
+    <string name="feature_timer_minutes">%1$d min</string>
 </resources>

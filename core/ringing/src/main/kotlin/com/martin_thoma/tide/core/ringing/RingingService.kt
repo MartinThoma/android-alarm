@@ -10,7 +10,6 @@ import android.util.Log
 import com.martin_thoma.tide.core.data.AlarmRepository
 import com.martin_thoma.tide.core.data.TimerRepository
 import com.martin_thoma.tide.core.domain.TimeSource
-import com.martin_thoma.tide.core.model.Alarm
 import com.martin_thoma.tide.core.model.Timer
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -138,7 +137,7 @@ class RingingService : Service() {
                     stop(startId)
                     return@launch
                 }
-                volume.apply(Alarm.DEFAULT_VOLUME_PERCENT)
+                // Timers ring at the user's own alarm volume; only alarms set their own.
                 player.play(null)
                 vibrator.start()
                 state.update(RingingStatus.TimerRinging(timer, since))

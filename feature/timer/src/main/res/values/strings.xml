@@ -15,4 +15,7 @@
     <string name="feature_timer_times_up">Time’s up</string>
     <string name="feature_timer_backspace">Delete digit</string>
     <string name="feature_timer_back">Back</string>
+    <string name="feature_timer_rings_at">Rings at %1$s</string>
+    <string name="feature_timer_paused_short">Paused</string>
+    <string name="feature_timer_minutes">%1$d min</string>
 </resources>

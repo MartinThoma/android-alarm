@@ -39,4 +39,5 @@
     <string name="feature_alarm_snooze_shorter">Kürzer schlummern</string>
     <string name="feature_alarm_snooze_longer">Länger schlummern</string>
     <string name="feature_alarm_change_time">Uhrzeit ändern</string>
+    <string name="feature_alarm_set_confirmation">Wecker gestellt · klingelt %1$s</string>
 </resources>

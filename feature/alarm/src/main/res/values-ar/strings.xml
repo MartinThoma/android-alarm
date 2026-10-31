@@ -39,4 +39,5 @@
     <string name="feature_alarm_snooze_shorter">غفوة أقصر</string>
     <string name="feature_alarm_snooze_longer">غفوة أطول</string>
     <string name="feature_alarm_change_time">تغيير الوقت</string>
+    <string name="feature_alarm_set_confirmation">تم ضبط المنبه · يرن %1$s</string>
 </resources>

@@ -109,6 +109,23 @@ fun TideAware(
     }
 }
 
+/**
+ * Reports the tide level that puts this element on open water, measured where it really is
+ * (status bar, font size and screen height included). Pass the result to [TideSurface].
+ */
+@Composable
+fun Modifier.keepOnOpenWater(onLevel: (Float) -> Unit): Modifier {
+    val tide = LocalTideState.current ?: return this
+    val density = LocalDensity.current.density
+    return onGloballyPositioned { element ->
+        val surface = tide.coordinates ?: return@onGloballyPositioned
+        if (surface.isAttached && element.isAttached) {
+            val bottom = surface.localPositionOf(element, Offset.Zero).y + element.size.height
+            onLevel(TideLevel.covering(bottom, tide.heightPx, density))
+        }
+    }
+}
+
 /** The quieter text colour for secondary information, under water or on the sand. */
 @Composable
 fun tideVariantColor(underwater: Boolean): Color {

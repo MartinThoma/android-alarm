@@ -67,7 +67,9 @@ import com.martin_thoma.tide.core.designsystem.GlassPane
 import com.martin_thoma.tide.core.designsystem.LocalTideColors
 import com.martin_thoma.tide.core.designsystem.TideAware
 import com.martin_thoma.tide.core.designsystem.TideIcons
+import com.martin_thoma.tide.core.designsystem.TideLevel
 import com.martin_thoma.tide.core.designsystem.TideSurface
+import com.martin_thoma.tide.core.designsystem.keepOnOpenWater
 import com.martin_thoma.tide.core.designsystem.rememberTimeFormatter
 import com.martin_thoma.tide.core.model.Alarm
 import com.martin_thoma.tide.core.ringing.AlarmSounds
@@ -76,9 +78,6 @@ import java.text.NumberFormat
 import java.time.DayOfWeek
 import java.time.LocalTime
 import java.time.format.TextStyle
-
-/** High enough that the time sits on open water, clear of the foam. */
-private const val EDITOR_TIDE = 0.30f
 
 @Serializable
 data class AlarmEditorRoute(
@@ -136,7 +135,9 @@ internal fun AlarmEditorContent(
     val is24Hour = DateFormat.is24HourFormat(LocalContext.current)
     var editingTime by rememberSaveable { mutableStateOf(false) }
 
-    TideSurface(level = EDITOR_TIDE, modifier = modifier) {
+    // The tide only sets the scene here: just high enough that the time sits on open water.
+    var level by remember { mutableFloatStateOf(TideLevel.LOW) }
+    TideSurface(level = level, modifier = modifier) {
         Scaffold(
             containerColor = Color.Transparent,
             contentColor = colors.onSand,
@@ -174,6 +175,7 @@ internal fun AlarmEditorContent(
                 item(key = "time") {
                     TideAware(
                         Modifier
+                            .keepOnOpenWater { level = it }
                             .clickable(onClickLabel = stringResource(R.string.feature_alarm_change_time)) { editingTime = true }
                             .padding(horizontal = 24.dp, vertical = 8.dp),
                     ) {

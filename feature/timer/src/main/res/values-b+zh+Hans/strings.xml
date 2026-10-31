@@ -15,4 +15,7 @@
     <string name="feature_timer_times_up">时间到</string>
     <string name="feature_timer_backspace">删除数字</string>
     <string name="feature_timer_back">返回</string>
+    <string name="feature_timer_rings_at">%1$s 响铃</string>
+    <string name="feature_timer_paused_short">已暂停</string>
+    <string name="feature_timer_minutes">%1$d 分钟</string>
 </resources>

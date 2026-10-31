@@ -1,6 +1,7 @@
 package com.martin_thoma.tide.feature.stopwatch
 
 import androidx.compose.animation.core.withInfiniteAnimationFrameMillis
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -20,6 +21,7 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -30,11 +32,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -49,19 +56,23 @@ import com.martin_thoma.tide.core.designsystem.GlassPane
 import com.martin_thoma.tide.core.designsystem.LocalTideColors
 import com.martin_thoma.tide.core.designsystem.TideAware
 import com.martin_thoma.tide.core.designsystem.TideIcons
+import com.martin_thoma.tide.core.designsystem.TideLevel
 import com.martin_thoma.tide.core.designsystem.TideSurface
 import com.martin_thoma.tide.core.designsystem.TideTheme
 import com.martin_thoma.tide.core.designsystem.formatDuration
+import com.martin_thoma.tide.core.designsystem.keepOnOpenWater
 import com.martin_thoma.tide.core.model.Stopwatch
 import com.martin_thoma.tide.core.model.fastestAndSlowest
 import kotlinx.serialization.Serializable
 import java.util.Locale
+import kotlin.math.PI
+import kotlin.math.cos
+import kotlin.math.sin
 
 @Serializable
 data object StopwatchRoute : NavKey
 
-/** The water stands at mid tide, so the time sits on the sea and the laps on the sand. */
-private const val STOPWATCH_TIDE = 0.36f
+private val DIAL_SIZE = 300.dp
 
 @Composable
 fun StopwatchScreen(modifier: Modifier = Modifier) {
@@ -94,7 +105,9 @@ internal fun StopwatchContent(
 ) {
     val locale = LocalConfiguration.current.locales[0]
     val elapsed = watch.elapsed(now)
-    TideSurface(level = STOPWATCH_TIDE, modifier = modifier) {
+    // The tide only sets the scene here: just high enough that the dial floats on open water.
+    var level by remember { mutableFloatStateOf(TideLevel.LOW) }
+    TideSurface(level = level, modifier = modifier) {
         Column(
             modifier =
                 Modifier
@@ -103,12 +116,82 @@ internal fun StopwatchContent(
                     .padding(horizontal = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Spacer(Modifier.height(64.dp))
-            ElapsedTime(elapsed, locale)
-            Spacer(Modifier.height(40.dp))
+            Spacer(Modifier.height(24.dp))
+            Dial(watch, elapsed, locale, Modifier.keepOnOpenWater { level = it })
+            Spacer(Modifier.height(28.dp))
             Controls(watch, onStartOrPause, onLap, onReset)
-            Spacer(Modifier.height(32.dp))
-            Laps(watch, elapsed, locale)
+            Spacer(Modifier.height(24.dp))
+            Laps(watch, elapsed, locale, Modifier.weight(1f))
+        }
+    }
+}
+
+/**
+ * A stopwatch dial on a pane of glass: sixty ticks, a glowing point that sweeps round once a
+ * minute and leaves a faint arc behind it, and a small mark for every lap. The time sits inside.
+ */
+@Composable
+private fun Dial(
+    watch: Stopwatch,
+    elapsed: Long,
+    locale: Locale,
+    modifier: Modifier = Modifier,
+) {
+    val colors = LocalTideColors.current
+    val laps = watch.laps()
+    GlassPane(modifier = modifier.size(DIAL_SIZE), shape = CircleShape) {
+        Canvas(Modifier.matchParentSize().padding(12.dp)) {
+            val radius = size.minDimension / 2
+            val track = radius - 18.dp.toPx()
+
+            fun point(
+                fraction: Float,
+                distance: Float,
+            ): Offset {
+                val angle = 2 * PI * fraction - PI / 2
+                return center + Offset(cos(angle).toFloat(), sin(angle).toFloat()) * distance
+            }
+            for (tick in 0 until 60) {
+                val major = tick % 5 == 0
+                val length = (if (major) 9.dp else 5.dp).toPx()
+                drawLine(
+                    color = colors.onGlass.copy(alpha = if (major) 0.45f else 0.22f),
+                    start = point(tick / 60f, radius - length),
+                    end = point(tick / 60f, radius),
+                    strokeWidth = (if (major) 1.6.dp else 1.dp).toPx(),
+                    cap = StrokeCap.Round,
+                )
+            }
+            val minute = (elapsed % 60_000) / 60_000f
+            val arcTopLeft = center - Offset(track, track)
+            val arcSize = Size(track * 2, track * 2)
+            drawArc(colors.onGlass.copy(alpha = 0.06f), 0f, 360f, false, arcTopLeft, arcSize, style = Stroke(2.dp.toPx()))
+            drawArc(
+                colors.accent.copy(alpha = 0.35f),
+                -90f,
+                360f * minute,
+                false,
+                arcTopLeft,
+                arcSize,
+                style = Stroke(2.dp.toPx(), cap = StrokeCap.Round),
+            )
+            // Laps: where in its minute each one ended.
+            laps.forEach { lap -> drawCircle(colors.onGlassVariant, 2.5.dp.toPx(), point((lap.total % 60_000) / 60_000f, track)) }
+            if (!watch.isReset) {
+                val head = point(minute, track)
+                drawCircle(colors.accent.copy(alpha = 0.22f), 10.dp.toPx(), head)
+                drawCircle(colors.accent, 5.dp.toPx(), head)
+            }
+        }
+        Column(Modifier.align(Alignment.Center), horizontalAlignment = Alignment.CenterHorizontally) {
+            ElapsedTime(elapsed, locale)
+            if (laps.isNotEmpty()) {
+                Text(
+                    stringResource(R.string.feature_stopwatch_lap_number, laps.size + 1),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = colors.onGlassVariant,
+                )
+            }
         }
     }
 }
@@ -121,15 +204,21 @@ private fun ElapsedTime(
 ) {
     val whole = formatDuration(elapsed, locale)
     val fraction = formatDuration(elapsed, locale, hundredths = true).removePrefix(whole)
-    TideAware {
-        Row(verticalAlignment = Alignment.Bottom) {
-            Text(whole, style = MaterialTheme.typography.displayLarge.copy(fontSize = 88.sp, lineHeight = 96.sp))
-            Text(
-                text = fraction,
-                style = MaterialTheme.typography.displayMedium,
-                modifier = Modifier.padding(bottom = 12.dp),
-            )
-        }
+    // With hours the time is longer; it stays on one line inside the dial.
+    val size = if (whole.length > 5) 44.sp else 60.sp
+    Row(verticalAlignment = Alignment.Bottom) {
+        Text(
+            whole,
+            style = MaterialTheme.typography.displayLarge.copy(fontSize = size, lineHeight = size * 1.1f),
+            maxLines = 1,
+            softWrap = false,
+        )
+        Text(
+            text = fraction,
+            style = MaterialTheme.typography.headlineMedium,
+            color = LocalTideColors.current.onGlassVariant,
+            modifier = Modifier.padding(bottom = 8.dp),
+        )
     }
 }
 
@@ -151,7 +240,7 @@ private fun Controls(
         )
         FilledIconButton(
             onClick = onStartOrPause,
-            modifier = Modifier.size(88.dp),
+            modifier = Modifier.size(96.dp),
             shape = CircleShape,
             colors = IconButtonDefaults.filledIconButtonColors(containerColor = colors.accent, contentColor = colors.onAccent),
         ) {
@@ -179,31 +268,29 @@ private fun SideButton(
     onClick: () -> Unit,
 ) {
     if (!visible) {
-        Spacer(Modifier.size(64.dp))
+        Spacer(Modifier.size(72.dp))
         return
     }
-    GlassPane(modifier = Modifier.size(64.dp), shape = CircleShape, onClick = onClick) {
+    GlassPane(modifier = Modifier.size(72.dp), shape = CircleShape, onClick = onClick) {
         Icon(painterResource(icon), contentDescription = stringResource(label), modifier = Modifier.align(Alignment.Center))
     }
 }
 
+/** Laps as small cards of glass, the one in progress first, then the finished ones, newest first. */
 @Composable
 private fun Laps(
     watch: Stopwatch,
     elapsed: Long,
     locale: Locale,
+    modifier: Modifier = Modifier,
 ) {
     val laps = watch.laps()
     if (laps.isEmpty()) return
     val extremes = fastestAndSlowest(laps)
-    // The lap in progress first, then the finished ones, newest first.
     val current = Stopwatch.Lap(number = laps.size + 1, millis = elapsed - laps.last().total, total = elapsed)
-    GlassPane(Modifier.fillMaxWidth()) {
-        LazyColumn(contentPadding = PaddingValues(vertical = 4.dp)) {
-            items(listOf(current) + laps.reversed(), key = { it.number }) { lap ->
-                if (lap.number != current.number) {
-                    HorizontalDivider(Modifier.padding(horizontal = 20.dp), color = LocalContentColor.current.copy(alpha = 0.12f))
-                }
+    LazyColumn(modifier.fillMaxWidth(), contentPadding = PaddingValues(bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        items(listOf(current) + laps.reversed(), key = { it.number }) { lap ->
+            GlassPane(Modifier.fillMaxWidth().animateItem(), shape = RoundedCornerShape(20.dp)) {
                 LapRow(
                     lap = lap,
                     locale = locale,

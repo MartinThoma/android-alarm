@@ -1,7 +1,10 @@
 package com.martin_thoma.tide.feature.timer
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -15,6 +18,8 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
@@ -26,14 +31,18 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.SpanStyle
@@ -42,13 +51,16 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavKey
+import com.martin_thoma.tide.core.data.RecentTimer
 import com.martin_thoma.tide.core.designsystem.GlassPane
 import com.martin_thoma.tide.core.designsystem.LocalTideColors
 import com.martin_thoma.tide.core.designsystem.TideIcons
 import com.martin_thoma.tide.core.designsystem.TideLevel
 import com.martin_thoma.tide.core.designsystem.TideSurface
 import com.martin_thoma.tide.core.designsystem.formatDuration
+import com.martin_thoma.tide.core.designsystem.keepOnOpenWater
 import com.martin_thoma.tide.core.model.Timer
 import kotlinx.serialization.Serializable
 import java.util.Locale
@@ -65,7 +77,9 @@ fun NewTimerScreen(
     modifier: Modifier = Modifier,
 ) {
     val viewModel: TimerViewModel = hiltViewModel()
+    val recents by viewModel.recents.collectAsStateWithLifecycle()
     NewTimerContent(
+        recents = recents,
         onStart = { millis, label ->
             viewModel.create(millis, label)
             onDone()
@@ -75,9 +89,13 @@ fun NewTimerScreen(
     )
 }
 
-/** The number pad (requirements TM-01): digits fill from the right, so 1-0-0-0 is 10:00. */
+/**
+ * Setting a timer (requirements TM-01, TM-04): recent timers start with one tap; otherwise digits
+ * fill from the right, so 1-0-0-0 is 10:00.
+ */
 @Composable
 internal fun NewTimerContent(
+    recents: List<RecentTimer>,
     onStart: (millis: Long, label: String) -> Unit,
     onBack: (() -> Unit)?,
     modifier: Modifier = Modifier,
@@ -87,17 +105,17 @@ internal fun NewTimerContent(
     val colors = LocalTideColors.current
     val locale = LocalConfiguration.current.locales[0]
     val millis = Timer.durationFromDigits(digits)
+    var level by remember { mutableFloatStateOf(TideLevel.LOW) }
 
-    TideSurface(level = TideLevel.LOW, modifier = modifier) {
+    TideSurface(level = level, modifier = modifier) {
         Column(
             modifier =
-                Modifier
-                    .fillMaxSize()
-                    .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal))
-                    .padding(horizontal = 24.dp),
+                Modifier.fillMaxSize().windowInsetsPadding(
+                    WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal),
+                ),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Row(Modifier.fillMaxWidth().height(56.dp), verticalAlignment = Alignment.CenterVertically) {
+            Row(Modifier.fillMaxWidth().height(48.dp).padding(horizontal = 4.dp), verticalAlignment = Alignment.CenterVertically) {
                 if (onBack != null) {
                     IconButton(onClick = onBack) {
                         Icon(
@@ -108,14 +126,20 @@ internal fun NewTimerContent(
                     }
                 }
             }
-            Display(digits, locale, Modifier.semantics { contentDescription = formatDuration(millis, locale) })
+            Display(
+                digits,
+                locale,
+                Modifier.keepOnOpenWater { level = it }.semantics { contentDescription = formatDuration(millis, locale) },
+            )
+            Spacer(Modifier.height(20.dp))
+            RecentChips(recents, locale, onStart = { onStart(it.setMillis, it.label) })
             Spacer(Modifier.height(16.dp))
             OutlinedTextField(
                 value = label,
                 onValueChange = { label = it.take(40) },
                 label = { Text(stringResource(R.string.feature_timer_label)) },
                 singleLine = true,
-                modifier = Modifier.widthIn(max = 320.dp).fillMaxWidth(),
+                modifier = Modifier.widthIn(max = 320.dp).fillMaxWidth().padding(horizontal = 24.dp),
                 colors =
                     OutlinedTextFieldDefaults.colors(
                         focusedContainerColor = colors.glass,
@@ -130,21 +154,21 @@ internal fun NewTimerContent(
                 onDigits = { typed -> if (digits.length < MAX_DIGITS) digits = (digits + typed).take(MAX_DIGITS).trimStart('0') },
                 onBackspace = { digits = digits.dropLast(1) },
             )
-            Spacer(Modifier.height(24.dp))
+            Spacer(Modifier.height(16.dp))
             FilledIconButton(
                 onClick = { onStart(millis, label) },
                 enabled = millis > 0,
-                modifier = Modifier.size(72.dp),
+                modifier = Modifier.size(80.dp),
                 shape = CircleShape,
                 colors = IconButtonDefaults.filledIconButtonColors(containerColor = colors.accent, contentColor = colors.onAccent),
             ) {
                 Icon(
                     painterResource(TideIcons.Play),
                     contentDescription = stringResource(R.string.feature_timer_start),
-                    modifier = Modifier.size(32.dp),
+                    modifier = Modifier.size(36.dp),
                 )
             }
-            Spacer(Modifier.height(24.dp))
+            Spacer(Modifier.height(20.dp))
         }
     }
 }
@@ -158,7 +182,7 @@ private fun Display(
 ) {
     val colors = LocalTideColors.current
     val padded = digits.padStart(MAX_DIGITS, '0')
-    val text = String.format(locale, "%s:%s:%s", padded.substring(0, 2), padded.substring(2, 4), padded.substring(4, 6))
+    val text = "${padded.substring(0, 2)}:${padded.substring(2, 4)}:${padded.substring(4, 6)}"
     var digitIndex = 0
     val firstTyped = MAX_DIGITS - digits.length
     Text(
@@ -166,14 +190,44 @@ private fun Display(
             buildAnnotatedString {
                 for (char in text) {
                     val typed = if (char == ':') digitIndex > firstTyped else digitIndex++ >= firstTyped
-                    withStyle(SpanStyle(color = if (typed) colors.onSea else colors.onSea.copy(alpha = 0.4f))) {
+                    withStyle(SpanStyle(color = if (typed) colors.onSea else colors.onSea.copy(alpha = 0.35f))) {
                         append(localizeDigit(char, locale))
                     }
                 }
             },
-        style = MaterialTheme.typography.displayLarge.copy(fontSize = 72.sp),
+        style = MaterialTheme.typography.displayLarge.copy(fontSize = 76.sp),
         modifier = modifier,
     )
+}
+
+/** Recent timers: one tap starts one again, with its label. */
+@Composable
+private fun RecentChips(
+    recents: List<RecentTimer>,
+    locale: Locale,
+    onStart: (RecentTimer) -> Unit,
+) {
+    LazyRow(contentPadding = PaddingValues(horizontal = 24.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        items(recents) { recent ->
+            val wholeMinutes = recent.setMillis % 60_000 == 0L && recent.setMillis < 3_600_000
+            val duration =
+                if (wholeMinutes) {
+                    stringResource(
+                        R.string.feature_timer_minutes,
+                        recent.setMillis / 60_000,
+                    )
+                } else {
+                    formatDuration(recent.setMillis, locale)
+                }
+            GlassPane(shape = CircleShape, onClick = { onStart(recent) }) {
+                Text(
+                    text = if (recent.label.isEmpty()) duration else "${recent.label} · $duration",
+                    style = MaterialTheme.typography.labelLarge,
+                    modifier = Modifier.padding(horizontal = 18.dp, vertical = 12.dp),
+                )
+            }
+        }
+    }
 }
 
 private fun localizeDigit(
@@ -181,33 +235,38 @@ private fun localizeDigit(
     locale: Locale,
 ): String = if (char.isDigit()) String.format(locale, "%d", char.digitToInt()) else char.toString()
 
+/** Light keys: large digits that answer a touch, without a box around every one. */
 @Composable
 private fun Keypad(
     locale: Locale,
     onDigits: (String) -> Unit,
     onBackspace: () -> Unit,
 ) {
+    val colors = LocalTideColors.current
     val rows = listOf(listOf("1", "2", "3"), listOf("4", "5", "6"), listOf("7", "8", "9"), listOf("00", "0", null))
-    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
         rows.forEach { row ->
-            Row(horizontalArrangement = Arrangement.spacedBy(20.dp)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(24.dp)) {
                 row.forEach { key ->
-                    GlassPane(
-                        modifier = Modifier.size(width = 80.dp, height = 64.dp),
-                        shape = CircleShape,
-                        onClick = { if (key == null) onBackspace() else onDigits(key) },
+                    Box(
+                        modifier =
+                            Modifier
+                                .size(width = 80.dp, height = 64.dp)
+                                .clip(CircleShape)
+                                .clickable(role = Role.Button) { if (key == null) onBackspace() else onDigits(key) },
+                        contentAlignment = Alignment.Center,
                     ) {
                         if (key == null) {
                             Icon(
                                 painterResource(TideIcons.Backspace),
                                 contentDescription = stringResource(R.string.feature_timer_backspace),
-                                modifier = Modifier.align(Alignment.Center),
+                                tint = colors.onSand,
                             )
                         } else {
                             Text(
                                 key.map { localizeDigit(it, locale) }.joinToString(""),
-                                style = MaterialTheme.typography.headlineSmall,
-                                modifier = Modifier.align(Alignment.Center),
+                                style = MaterialTheme.typography.headlineLarge.copy(fontSize = 30.sp),
+                                color = colors.onSand,
                             )
                         }
                     }

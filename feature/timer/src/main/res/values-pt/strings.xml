@@ -15,4 +15,7 @@
     <string name="feature_timer_times_up">Tempo esgotado</string>
     <string name="feature_timer_backspace">Apagar dígito</string>
     <string name="feature_timer_back">Voltar</string>
+    <string name="feature_timer_rings_at">Toca às %1$s</string>
+    <string name="feature_timer_paused_short">Pausado</string>
+    <string name="feature_timer_minutes">%1$d min</string>
 </resources>

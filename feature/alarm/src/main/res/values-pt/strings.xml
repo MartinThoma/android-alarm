@@ -39,4 +39,5 @@
     <string name="feature_alarm_snooze_shorter">Adiar menos</string>
     <string name="feature_alarm_snooze_longer">Adiar mais</string>
     <string name="feature_alarm_change_time">Alterar horário</string>
+    <string name="feature_alarm_set_confirmation">Alarme definido · toca %1$s</string>
 </resources>

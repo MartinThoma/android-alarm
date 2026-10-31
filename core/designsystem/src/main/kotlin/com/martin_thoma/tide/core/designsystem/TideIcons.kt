@@ -11,6 +11,7 @@ object TideIcons {
     val Pause = R.drawable.ic_pause
     val Play = R.drawable.ic_play
     val Replay = R.drawable.ic_replay
+    val Stop = R.drawable.ic_stop
     val Alarm = R.drawable.ic_alarm
     val AlarmFilled = R.drawable.ic_alarm_filled
     val Stopwatch = R.drawable.ic_stopwatch

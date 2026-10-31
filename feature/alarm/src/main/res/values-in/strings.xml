@@ -39,4 +39,5 @@
     <string name="feature_alarm_snooze_shorter">Tunda lebih singkat</string>
     <string name="feature_alarm_snooze_longer">Tunda lebih lama</string>
     <string name="feature_alarm_change_time">Ubah waktu</string>
+    <string name="feature_alarm_set_confirmation">Alarm dipasang · berbunyi %1$s</string>
 </resources>

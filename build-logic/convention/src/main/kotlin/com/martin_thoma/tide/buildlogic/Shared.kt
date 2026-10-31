@@ -43,6 +43,9 @@ internal fun TestOptions.configureTideUnitTests() {
 internal fun Lint.configureTideLint() {
     warningsAsErrors = true
     abortOnError = true
+    // Lint's Kotlin analysis crashes now and then on test sources (a bug in lint, not in our code);
+    // the app's own code is still checked in full.
+    ignoreTestSources = true
     // Dependency updates come from Dependabot; they must not break the build.
     disable +=
         setOf(

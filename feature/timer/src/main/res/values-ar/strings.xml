@@ -15,4 +15,7 @@
     <string name="feature_timer_times_up">انتهى الوقت</string>
     <string name="feature_timer_backspace">حذف الرقم</string>
     <string name="feature_timer_back">رجوع</string>
+    <string name="feature_timer_rings_at">يرن في %1$s</string>
+    <string name="feature_timer_paused_short">متوقف مؤقتًا</string>
+    <string name="feature_timer_minutes">%1$d د</string>
 </resources>

@@ -15,4 +15,7 @@
     <string name="feature_timer_times_up">Zeit ist um</string>
     <string name="feature_timer_backspace">Ziffer löschen</string>
     <string name="feature_timer_back">Zurück</string>
+    <string name="feature_timer_rings_at">Klingelt um %1$s</string>
+    <string name="feature_timer_paused_short">Pausiert</string>
+    <string name="feature_timer_minutes">%1$d Min.</string>
 </resources>

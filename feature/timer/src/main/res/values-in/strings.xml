@@ -15,4 +15,7 @@
     <string name="feature_timer_times_up">Waktu habis</string>
     <string name="feature_timer_backspace">Hapus digit</string>
     <string name="feature_timer_back">Kembali</string>
+    <string name="feature_timer_rings_at">Berbunyi pukul %1$s</string>
+    <string name="feature_timer_paused_short">Dijeda</string>
+    <string name="feature_timer_minutes">%1$d mnt</string>
 </resources>
