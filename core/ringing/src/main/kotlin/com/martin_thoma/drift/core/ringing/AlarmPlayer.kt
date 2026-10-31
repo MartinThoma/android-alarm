@@ -20,6 +20,7 @@ class AlarmPlayer
     constructor(
         @param:ApplicationContext private val context: Context,
         private val customSounds: CustomSounds,
+        private val phoneSounds: PhoneSounds,
     ) {
         private val audioManager = context.getSystemService(AudioManager::class.java)
         private val focusRequest = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT).setAudioAttributes(ATTRIBUTES).build()
@@ -49,7 +50,9 @@ class AlarmPlayer
                 val file = customSounds.file(sound) ?: return null
                 return prepare { setDataSource(file.path) }
             }
-            return prepare { setDataSource(context, checkNotNull(soundUri).toUri()) }
+            // The phone's own tone: the app's copy, which plays before the first unlock too.
+            phoneSounds.file(checkNotNull(soundUri))?.let { file -> prepare { setDataSource(file.path) }?.let { return it } }
+            return prepare { setDataSource(context, soundUri.toUri()) }
         }
 
         private fun prepareRaw(raw: Int) = prepare { context.resources.openRawResourceFd(raw).use { setDataSource(it) } }

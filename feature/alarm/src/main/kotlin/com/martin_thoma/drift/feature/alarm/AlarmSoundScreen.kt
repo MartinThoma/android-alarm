@@ -3,6 +3,7 @@ package com.martin_thoma.drift.feature.alarm
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -37,13 +38,18 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -59,6 +65,7 @@ import com.martin_thoma.drift.core.designsystem.rememberTimeFormatter
 import com.martin_thoma.drift.core.ringing.AlarmSounds
 import com.martin_thoma.drift.core.ringing.CustomSound
 import com.martin_thoma.drift.core.ringing.ImportResult
+import com.martin_thoma.drift.core.ringing.PhoneSound
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -160,6 +167,7 @@ internal fun AlarmSoundContent(
                     SoundGroup.NOISY,
                     SoundGroup.CLASSICS,
                 ).forEach { soundGroup(it, state, onSelect) }
+                phoneGroup(state, onSelect)
                 item(key = "custom") {
                     GroupHeading(SoundGroup.MINE)
                     GlassPane(Modifier.fillMaxWidth()) {
@@ -222,6 +230,80 @@ private fun LazyListScope.soundGroup(
                 }
             }
         }
+    }
+}
+
+/** The phone's own tones: its alarm tones, and its many ringtones folded away unless one is chosen. */
+private fun LazyListScope.phoneGroup(
+    state: AlarmSoundUiState,
+    onSelect: (String) -> Unit,
+) {
+    if (state.phoneSounds.isEmpty()) return
+    val (alarms, ringtones) = state.phoneSounds.partition { it.kind == PhoneSound.Kind.ALARM }
+    item(key = SoundGroup.PHONE.name) {
+        var showRingtones by rememberSaveable { mutableStateOf(false) }
+        // Folded even without alarm tones: Samsung phones list none, only some 80 ringtones.
+        val unfolded = showRingtones || ringtones.any { it.uri == state.selected }
+        GroupHeading(SoundGroup.PHONE)
+        GlassPane(Modifier.fillMaxWidth()) {
+            Column {
+                PhoneSoundList(R.string.feature_alarm_sound_phone_alarms, alarms, state, onSelect)
+                if (ringtones.isNotEmpty()) {
+                    if (alarms.isNotEmpty()) PaneDivider()
+                    if (unfolded) {
+                        PhoneSoundList(R.string.feature_alarm_sound_phone_ringtones, ringtones, state, onSelect)
+                    } else {
+                        ShowMoreRow(stringResource(R.string.feature_alarm_sound_show_ringtones, ringtones.size)) { showRingtones = true }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun PhoneSoundList(
+    @StringRes heading: Int,
+    sounds: List<PhoneSound>,
+    state: AlarmSoundUiState,
+    onSelect: (String) -> Unit,
+) {
+    if (sounds.isEmpty()) return
+    Text(
+        text = stringResource(heading),
+        style = MaterialTheme.typography.labelLarge,
+        color = LocalTideColors.current.onGlassVariant,
+        modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 16.dp, bottom = 4.dp).semantics { heading() },
+    )
+    sounds.forEachIndexed { index, sound ->
+        if (index > 0) PaneDivider()
+        SoundRow(
+            title = sound.title,
+            selected = state.selected == sound.uri,
+            playing = state.previewing == sound.uri,
+            onClick = { onSelect(sound.uri) },
+        )
+    }
+}
+
+@Composable
+private fun ShowMoreRow(
+    text: String,
+    onClick: () -> Unit,
+) {
+    val colors = LocalTideColors.current
+    Row(
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .heightIn(min = 56.dp)
+                .clickable(role = Role.Button, onClick = onClick)
+                .padding(horizontal = 20.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(text, style = MaterialTheme.typography.bodyLarge, color = colors.accent, modifier = Modifier.weight(1f))
+        Icon(painterResource(TideIcons.ExpandMore), contentDescription = null, tint = colors.accent)
     }
 }
 

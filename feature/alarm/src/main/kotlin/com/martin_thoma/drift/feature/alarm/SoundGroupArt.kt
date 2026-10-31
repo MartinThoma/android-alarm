@@ -24,13 +24,14 @@ import com.martin_thoma.drift.core.ringing.SoundCategory
 /** The kinds of sound in the picker, each with its own small picture. */
 internal enum class SoundGroup(
     @param:StringRes val heading: Int,
-    /** The built-in sounds of this group; [MINE] holds the user's own files instead. */
+    /** The built-in sounds of this group; [PHONE] and [MINE] hold the phone's tones and the user's files instead. */
     val category: SoundCategory?,
 ) {
     DEFAULT(R.string.feature_alarm_sound_default, null),
     NATURE(R.string.feature_alarm_sound_nature, SoundCategory.NATURE),
     NOISY(R.string.feature_alarm_sound_noisy, SoundCategory.NOISY),
     CLASSICS(R.string.feature_alarm_sound_classics, SoundCategory.CLASSICS),
+    PHONE(R.string.feature_alarm_sound_phone, null),
     MINE(R.string.feature_alarm_sound_custom, null),
 }
 
@@ -56,6 +57,7 @@ private fun artColors(
             SoundGroup.NATURE -> ArtColors(Color(0xFF0D2E45), Color(0xFF071A28), soft, glow, glow)
             SoundGroup.NOISY -> ArtColors(Color(0xFF2B1E2A), Color(0xFF1A1219), soft, Color(0xFFFF9E86), glow)
             SoundGroup.CLASSICS -> ArtColors(Color(0xFF13294D), Color(0xFF0A1730), soft, glow, glow)
+            SoundGroup.PHONE -> ArtColors(Color(0xFF123236), Color(0xFF0A1E21), soft, Color(0xFF1B3F45), glow)
             SoundGroup.MINE -> ArtColors(Color(0xFF1F242B), Color(0xFF14171B), Color(0xFF2E5A73), soft, glow)
         }
     } else {
@@ -64,6 +66,7 @@ private fun artColors(
             SoundGroup.NATURE -> ArtColors(Color(0xFF4FC9D6), Color(0xFF1FA2B8), Color.White, Color(0xFFBFF3F7), Color(0xFF0B6E80))
             SoundGroup.NOISY -> ArtColors(Color(0xFFF8BE98), Color(0xFFEC8A66), Color.White, Color(0xFF8A3B2A), Color(0xFF0B2F37))
             SoundGroup.CLASSICS -> ArtColors(Color(0xFF3A8FC4), Color(0xFF1C5C93), Color.White, Color(0xFFBFE6FF), Color(0xFFFFD58A))
+            SoundGroup.PHONE -> ArtColors(Color(0xFF9FDCCB), Color(0xFF5FB8A3), Color.White, Color(0xFFD6F2EA), Color(0xFF0B4F4A))
             SoundGroup.MINE -> ArtColors(Color(0xFFEDD7A8), Color(0xFFDDBB7E), Color(0xFF006A73), Color(0xFFFFF4DC), Color(0xFF0B2F37))
         }
     }
@@ -86,6 +89,7 @@ internal fun SoundGroupArt(
             SoundGroup.NATURE -> rainOverWave(u, colors)
             SoundGroup.NOISY -> alarmClock(u, colors)
             SoundGroup.CLASSICS -> notes(u, colors)
+            SoundGroup.PHONE -> phone(u, colors)
             SoundGroup.MINE -> cassette(u, colors)
         }
     }
@@ -221,6 +225,26 @@ private fun DrawScope.noteHead(
             close()
         }
     drawPath(head, color)
+}
+
+/** A phone, sounding. */
+private fun DrawScope.phone(
+    u: Float,
+    c: ArtColors,
+) {
+    drawRoundRect(c.shape, at(u, 13f, 9f), Size(17f * u, 30f * u), CornerRadius(3.5f * u))
+    drawRoundRect(c.detail, at(u, 15.5f, 13f), Size(12f * u, 21f * u), CornerRadius(1.5f * u))
+    drawLine(c.detail, at(u, 19.5f, 11f), at(u, 23.5f, 11f), strokeWidth = 1f * u, cap = StrokeCap.Round)
+    drawCircle(c.detail, 1.1f * u, at(u, 21.5f, 36.5f))
+    // A small bell on the screen.
+    drawArc(c.accent, 180f, 180f, true, at(u, 18f, 19f), Size(7f * u, 8f * u))
+    drawRect(c.accent, at(u, 18f, 22.9f), Size(7f * u, 3.6f * u))
+    drawLine(c.accent, at(u, 17f, 26.5f), at(u, 26f, 26.5f), strokeWidth = 1.3f * u, cap = StrokeCap.Round)
+    drawCircle(c.accent, 1f * u, at(u, 21.5f, 28.2f))
+    // Sound going out to the right.
+    val waves = c.shape.copy(alpha = 0.9f)
+    drawArc(waves, -40f, 80f, false, at(u, 28f, 18f), Size(8f * u, 12f * u), style = Stroke(width = 1.5f * u, cap = StrokeCap.Round))
+    drawArc(waves, -40f, 80f, false, at(u, 28f, 14f), Size(13f * u, 20f * u), style = Stroke(width = 1.5f * u, cap = StrokeCap.Round))
 }
 
 /** A cassette for the user's own recordings. */

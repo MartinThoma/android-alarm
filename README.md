@@ -25,7 +25,7 @@ In English, German, French, Spanish, Portuguese, Russian, Indonesian, Chinese (s
 
 | Alarm editor | Sounds | Stopwatch | Timer |
 |:---:|:---:|:---:|:---:|
-| <img src="docs/screenshots/alarm-editor.png" alt="Alarm editor with weekdays, label, sound, volume, vibration and snooze length" width="200"> | <img src="docs/screenshots/sounds.png" alt="Alarm sounds grouped as nature, noisy and classics, each group with a small picture" width="200"> | <img src="docs/screenshots/stopwatch.png" alt="Stopwatch with laps, the fastest and slowest marked" width="200"> | <img src="docs/screenshots/timer.png" alt="A running tea timer; the tide comes in as it runs out" width="200"> |
+| <img src="docs/screenshots/alarm-editor.png" alt="Alarm editor with weekdays, label, sound, volume, vibration and snooze length" width="200"> | <img src="docs/screenshots/sounds.png" alt="Alarm sounds grouped as nature, noisy, classics, the phone's own tones and the user's files, each group with a small picture" width="200"> | <img src="docs/screenshots/stopwatch.png" alt="Stopwatch with laps, the fastest and slowest marked" width="200"> | <img src="docs/screenshots/timer.png" alt="A running tea timer; the tide comes in as it runs out" width="200"> |
 
 The screenshots come from the app itself, rendered by its Robolectric tests. Update them with `./gradlew :app:recordRoborazziDebug`.
 

@@ -51,4 +51,9 @@
     <string name="feature_alarm_blink_medium">Medium</string>
     <string name="feature_alarm_blink_fast">Fast</string>
     <string name="feature_alarm_silent_warning">Silent and without vibration: this alarm wakes you only with the screen.</string>
+    <string name="feature_alarm_sound_phone">On this phone</string>
+    <string name="feature_alarm_sound_phone_alarms">Alarm tones</string>
+    <string name="feature_alarm_sound_phone_ringtones">Ringtones</string>
+    <string name="feature_alarm_sound_show_ringtones">Show ringtones (%1$d)</string>
+    <string name="feature_alarm_sound_phone_unknown">Phone sound</string>
 </resources>

@@ -9,6 +9,8 @@ import com.martin_thoma.drift.core.ringing.AlarmSounds
 import com.martin_thoma.drift.core.ringing.CustomSound
 import com.martin_thoma.drift.core.ringing.CustomSounds
 import com.martin_thoma.drift.core.ringing.ImportResult
+import com.martin_thoma.drift.core.ringing.PhoneSound
+import com.martin_thoma.drift.core.ringing.PhoneSounds
 import com.martin_thoma.drift.core.ringing.SoundPreview
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -22,6 +24,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -29,6 +32,7 @@ import kotlinx.coroutines.launch
 internal data class AlarmSoundUiState(
     val alarm: Alarm? = null,
     val customSounds: List<CustomSound> = emptyList(),
+    val phoneSounds: List<PhoneSound> = emptyList(),
     /** The sound playing as a preview, or `null`. */
     val previewing: String? = null,
 ) {
@@ -43,6 +47,7 @@ internal class AlarmSoundViewModel
         @Assisted private val alarmId: Long,
         private val repository: AlarmRepository,
         private val customSounds: CustomSounds,
+        private val phoneSounds: PhoneSounds,
         private val preview: SoundPreview,
     ) : ViewModel() {
         @AssistedFactory
@@ -58,8 +63,13 @@ internal class AlarmSoundViewModel
         val importProblems: Flow<ImportResult> = importResults.receiveAsFlow()
 
         val uiState: StateFlow<AlarmSoundUiState> =
-            combine(repository.alarms, customSounds.sounds, previewing) { alarms, custom, playing ->
-                AlarmSoundUiState(alarm = alarms.find { it.id == alarmId }, customSounds = custom, previewing = playing)
+            combine(repository.alarms, customSounds.sounds, phoneSounds.sounds, previewing) { alarms, custom, phone, playing ->
+                AlarmSoundUiState(
+                    alarm = alarms.find { it.id == alarmId },
+                    customSounds = custom,
+                    phoneSounds = phone,
+                    previewing = playing,
+                )
             }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS), AlarmSoundUiState())
 
         /** Chooses [soundUri] for the alarm and plays it; choosing the playing sound again stops it. */
@@ -68,7 +78,11 @@ internal class AlarmSoundViewModel
                 stopPreview()
                 return
             }
-            viewModelScope.launch { repository.setSound(alarmId, soundUri.takeUnless { it == AlarmSounds.Default.uri }) }
+            viewModelScope.launch {
+                repository.setSound(alarmId, soundUri.takeUnless { it == AlarmSounds.Default.uri })
+                phoneSounds.keep(soundUri)
+                phoneSounds.forgetAllBut(repository.alarms.first().map { it.soundUri } + soundUri)
+            }
             if (AlarmSounds.isSilent(soundUri)) stopPreview() else play(soundUri)
         }
 

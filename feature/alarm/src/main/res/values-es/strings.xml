@@ -49,4 +49,9 @@
     <string name="feature_alarm_blink_medium">Medio</string>
     <string name="feature_alarm_blink_fast">Rápido</string>
     <string name="feature_alarm_silent_warning">Sin sonido ni vibración: esta alarma solo te despierta con la pantalla.</string>
+    <string name="feature_alarm_sound_phone">En este teléfono</string>
+    <string name="feature_alarm_sound_phone_alarms">Tonos de alarma</string>
+    <string name="feature_alarm_sound_phone_ringtones">Tonos de llamada</string>
+    <string name="feature_alarm_sound_show_ringtones">Mostrar tonos de llamada (%1$d)</string>
+    <string name="feature_alarm_sound_phone_unknown">Sonido del teléfono</string>
 </resources>

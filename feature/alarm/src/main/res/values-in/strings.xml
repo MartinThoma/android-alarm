@@ -49,4 +49,9 @@
     <string name="feature_alarm_blink_medium">Sedang</string>
     <string name="feature_alarm_blink_fast">Cepat</string>
     <string name="feature_alarm_silent_warning">Tanpa suara dan getar: alarm ini hanya membangunkan Anda lewat layar.</string>
+    <string name="feature_alarm_sound_phone">Di ponsel ini</string>
+    <string name="feature_alarm_sound_phone_alarms">Nada alarm</string>
+    <string name="feature_alarm_sound_phone_ringtones">Nada dering</string>
+    <string name="feature_alarm_sound_show_ringtones">Tampilkan nada dering (%1$d)</string>
+    <string name="feature_alarm_sound_phone_unknown">Suara ponsel</string>
 </resources>

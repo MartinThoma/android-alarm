@@ -49,4 +49,9 @@
     <string name="feature_alarm_blink_medium">Mittel</string>
     <string name="feature_alarm_blink_fast">Schnell</string>
     <string name="feature_alarm_silent_warning">Lautlos und ohne Vibration: Dieser Wecker weckt dich nur über den Bildschirm.</string>
+    <string name="feature_alarm_sound_phone">Vom Telefon</string>
+    <string name="feature_alarm_sound_phone_alarms">Weckertöne</string>
+    <string name="feature_alarm_sound_phone_ringtones">Klingeltöne</string>
+    <string name="feature_alarm_sound_show_ringtones">Klingeltöne zeigen (%1$d)</string>
+    <string name="feature_alarm_sound_phone_unknown">Telefonton</string>
 </resources>

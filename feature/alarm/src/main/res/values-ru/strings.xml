@@ -49,4 +49,9 @@
     <string name="feature_alarm_blink_medium">Средне</string>
     <string name="feature_alarm_blink_fast">Быстро</string>
     <string name="feature_alarm_silent_warning">Без звука и вибрации: этот будильник будит только экраном.</string>
+    <string name="feature_alarm_sound_phone">На этом телефоне</string>
+    <string name="feature_alarm_sound_phone_alarms">Звуки будильника</string>
+    <string name="feature_alarm_sound_phone_ringtones">Рингтоны</string>
+    <string name="feature_alarm_sound_show_ringtones">Показать рингтоны (%1$d)</string>
+    <string name="feature_alarm_sound_phone_unknown">Звук телефона</string>
 </resources>

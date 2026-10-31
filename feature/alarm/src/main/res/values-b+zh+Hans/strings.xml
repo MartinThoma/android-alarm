@@ -49,4 +49,9 @@
     <string name="feature_alarm_blink_medium">中</string>
     <string name="feature_alarm_blink_fast">快</string>
     <string name="feature_alarm_silent_warning">无声且不振动：此闹钟只通过屏幕唤醒你。</string>
+    <string name="feature_alarm_sound_phone">本机声音</string>
+    <string name="feature_alarm_sound_phone_alarms">闹钟铃声</string>
+    <string name="feature_alarm_sound_phone_ringtones">来电铃声</string>
+    <string name="feature_alarm_sound_show_ringtones">显示来电铃声（%1$d）</string>
+    <string name="feature_alarm_sound_phone_unknown">手机声音</string>
 </resources>

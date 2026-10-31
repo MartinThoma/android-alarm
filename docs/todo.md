@@ -24,12 +24,15 @@ Things decided but not yet done. Requirements live in [requirements.md](requirem
 - [x] Timer set with a wheel (tap hours, minutes or seconds at the top), recent timers as chips, several timers listed like the alarms (2026-10-31).
 - [x] App icon: the head of a crowing rooster, with a monochrome layer for themed icons (Martin, 2026-10-31).
 - [ ] Lint crashed now and then in its Kotlin analysis of test sources ("Error while resolving FirRegularClassImpl"), so lint skips test sources for now (`ignoreTestSources`). Try again with the next AGP update.
-- [ ] Sound picker: the phone's own alarm tones and ringtones as a further group (AL-04).
+- [x] Sound picker: the phone's own alarm tones and ringtones as a further group, ringtones folded away; a chosen tone is copied into the app so it rings before the first unlock too (AL-04, 2026-10-31).
+- [ ] Phone sounds: the S25 lists no alarm tones at all, only 81 ringtones (Samsung's clock uses those), so they are folded behind one button. Still to check: a chosen tone rings after a reboot before unlocking.
 - [x] "No sound" per alarm, with a warning when it also does not vibrate; per-alarm screen brightness and a soft light pulse (off, slow, medium, fast; at most twice a second, WCAG 2.3.1) on the ringing screen (2026-10-31).
 - [ ] A slowly brightening screen before the alarm rings (sunrise), as a further light option.
-- [ ] Listen to all bundled sounds on the phone and tune them (`scripts/make_alarm_sounds.py`): sea, rain, thunderstorm, crickets, alarm clock, Canon in D, Für Elise.
+- [x] Listened to the bundled sounds on the phone (Martin, 2026-10-31): Canon in D, Für Elise and the alarm clock sound good; crickets and rain are fine.
+- [ ] Redo the sea and the thunderstorm (`scripts/make_alarm_sounds.py`): both sound bad, and the thunderstorm sounds just like rain (Martin, 2026-10-31).
 
-- [ ] Translations: Martin reviews German; native speakers review French, Spanish, Portuguese, Russian, Indonesian, Chinese and Arabic before the first release.
+- [x] German translation reviewed by Martin (2026-10-31).
+- [ ] Translations: native speakers review French, Spanish, Portuguese, Russian, Indonesian, Chinese and Arabic before the first release.
 - [ ] Translations by the community through Hosted Weblate (free for libre projects, used by many F-Droid apps); Italian, Polish, Turkish, Japanese and Hindi are the next candidates.
 
 ## Ideas

@@ -9,6 +9,7 @@ object TideIcons {
     val ArrowForward = R.drawable.ic_arrow_forward
     val Delete = R.drawable.ic_delete
     val Edit = R.drawable.ic_edit
+    val ExpandMore = R.drawable.ic_expand_more
     val Flag = R.drawable.ic_flag
     val Pause = R.drawable.ic_pause
     val Play = R.drawable.ic_play

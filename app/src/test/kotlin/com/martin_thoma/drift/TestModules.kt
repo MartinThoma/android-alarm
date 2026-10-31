@@ -7,6 +7,9 @@ import com.martin_thoma.drift.core.database.DatabaseModule
 import com.martin_thoma.drift.core.database.DriftDatabase
 import com.martin_thoma.drift.core.database.TimerDao
 import com.martin_thoma.drift.core.domain.TimeSource
+import com.martin_thoma.drift.core.ringing.PhoneSound
+import com.martin_thoma.drift.core.ringing.PhoneSoundSource
+import com.martin_thoma.drift.core.ringing.PhoneSoundsModule
 import com.martin_thoma.drift.core.scheduling.ApplicationScope
 import com.martin_thoma.drift.core.scheduling.SchedulingModule
 import dagger.Module
@@ -56,4 +59,23 @@ object FakeTimeModule {
     @Singleton
     @ApplicationScope
     fun applicationScope(): CoroutineScope = CoroutineScope(SupervisorJob())
+}
+
+/** A phone with two alarm tones and three ringtones. */
+@Module
+@TestInstallIn(components = [SingletonComponent::class], replaces = [PhoneSoundsModule::class])
+object FakePhoneSoundsModule {
+    private const val MEDIA = "content://media/internal/audio/media/"
+
+    val sounds =
+        listOf(
+            PhoneSound(MEDIA + 1, "Morning Glory", PhoneSound.Kind.ALARM),
+            PhoneSound(MEDIA + 2, "Sunrise", PhoneSound.Kind.ALARM),
+            PhoneSound(MEDIA + 3, "Bells", PhoneSound.Kind.RINGTONE),
+            PhoneSound(MEDIA + 4, "Over the Horizon", PhoneSound.Kind.RINGTONE),
+            PhoneSound(MEDIA + 5, "Pulse", PhoneSound.Kind.RINGTONE),
+        )
+
+    @Provides
+    fun source(): PhoneSoundSource = PhoneSoundSource { sounds }
 }

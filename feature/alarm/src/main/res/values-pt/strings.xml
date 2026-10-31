@@ -49,4 +49,9 @@
     <string name="feature_alarm_blink_medium">Médio</string>
     <string name="feature_alarm_blink_fast">Rápido</string>
     <string name="feature_alarm_silent_warning">Sem som e sem vibração: este alarme só acorda você pela tela.</string>
+    <string name="feature_alarm_sound_phone">Neste telefone</string>
+    <string name="feature_alarm_sound_phone_alarms">Toques de alarme</string>
+    <string name="feature_alarm_sound_phone_ringtones">Toques de chamada</string>
+    <string name="feature_alarm_sound_show_ringtones">Mostrar toques de chamada (%1$d)</string>
+    <string name="feature_alarm_sound_phone_unknown">Som do telefone</string>
 </resources>

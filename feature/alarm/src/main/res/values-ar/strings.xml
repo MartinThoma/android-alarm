@@ -49,4 +49,9 @@
     <string name="feature_alarm_blink_medium">متوسط</string>
     <string name="feature_alarm_blink_fast">سريع</string>
     <string name="feature_alarm_silent_warning">بلا صوت ولا اهتزاز: هذا المنبه يوقظك عبر الشاشة فقط.</string>
+    <string name="feature_alarm_sound_phone">على هذا الهاتف</string>
+    <string name="feature_alarm_sound_phone_alarms">نغمات المنبّه</string>
+    <string name="feature_alarm_sound_phone_ringtones">نغمات الرنين</string>
+    <string name="feature_alarm_sound_show_ringtones">عرض نغمات الرنين (%1$d)</string>
+    <string name="feature_alarm_sound_phone_unknown">صوت الهاتف</string>
 </resources>
