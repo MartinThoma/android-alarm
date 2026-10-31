@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Compose draws the UI; this theme only styles the window and the system splash screen. -->
+    <style name="Theme.Tide" parent="android:Theme.Material.Light.NoActionBar" />
+</resources>
