@@ -58,33 +58,74 @@ val NightTideColors =
 
 val LocalTideColors = staticCompositionLocalOf { DayTideColors }
 
-internal fun TideColors.toColorScheme(dark: Boolean): ColorScheme {
-    val onAccent = if (dark) sand else onSea
-    return if (dark) {
+/** Every role is set, so no Material baseline (purple) colour shows up in dialogs or pickers. */
+internal fun TideColors.toColorScheme(dark: Boolean): ColorScheme =
+    if (dark) {
         darkColorScheme(
             primary = accent,
-            onPrimary = onAccent,
+            onPrimary = sand,
+            primaryContainer = shallow,
+            onPrimaryContainer = onSand,
+            inversePrimary = DayTideColors.sea,
+            secondary = accent,
+            onSecondary = sand,
             secondaryContainer = shallow,
             onSecondaryContainer = accent,
+            tertiary = accent,
+            onTertiary = sand,
+            tertiaryContainer = Color(0xFF3A393E),
+            onTertiaryContainer = onSand,
             background = sand,
             onBackground = onSand,
             surface = sand,
             onSurface = onSand,
+            surfaceVariant = Color(0xFF3A393E),
             onSurfaceVariant = onSandVariant,
+            surfaceTint = accent,
+            inverseSurface = onSand,
+            inverseOnSurface = sand,
+            outline = Color(0xFF8E8B86),
+            outlineVariant = Color(0xFF45444A),
+            surfaceBright = Color(0xFF3A393E),
+            surfaceDim = Color(0xFF1F1E21),
+            surfaceContainerLowest = Color(0xFF1F1E21),
+            surfaceContainerLow = Color(0xFF262529),
             surfaceContainer = navigationBar,
+            surfaceContainerHigh = Color(0xFF333237),
+            surfaceContainerHighest = Color(0xFF3A393E),
         )
     } else {
         lightColorScheme(
             primary = accent,
-            onPrimary = onAccent,
+            onPrimary = onSea,
+            primaryContainer = shallow,
+            onPrimaryContainer = onSand,
+            inversePrimary = shallow,
+            secondary = sea,
+            onSecondary = onSea,
             secondaryContainer = sea,
             onSecondaryContainer = onSea,
+            tertiary = sea,
+            onTertiary = onSea,
+            tertiaryContainer = wetSand,
+            onTertiaryContainer = onSand,
             background = sand,
             onBackground = onSand,
             surface = sand,
             onSurface = onSand,
+            surfaceVariant = wetSand,
             onSurfaceVariant = onSandVariant,
+            surfaceTint = accent,
+            inverseSurface = onSand,
+            inverseOnSurface = sand,
+            outline = Color(0xFF7C8486),
+            outlineVariant = Color(0xFFCFC4B2),
+            surfaceBright = Color(0xFFF6F0E6),
+            surfaceDim = wetSand,
+            surfaceContainerLowest = Color(0xFFF6F0E6),
+            surfaceContainerLow = Color(0xFFF1E9DD),
             surfaceContainer = navigationBar,
+            surfaceContainerHigh = Color(0xFFE9DFCF),
+            surfaceContainerHighest = wetSand,
         )
     }
-}

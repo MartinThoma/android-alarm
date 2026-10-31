@@ -9,6 +9,7 @@ dependencies {
     compileOnly(libs.kotlin.gradle.plugin)
     compileOnly(libs.compose.gradle.plugin)
     compileOnly(libs.ksp.gradle.plugin)
+    compileOnly(libs.room.gradle.plugin)
 }
 
 gradlePlugin {
@@ -28,6 +29,14 @@ gradlePlugin {
         register("androidFeature") {
             id = "tide.android.feature"
             implementationClass = "AndroidFeatureConventionPlugin"
+        }
+        register("jvmLibrary") {
+            id = "tide.jvm.library"
+            implementationClass = "JvmLibraryConventionPlugin"
+        }
+        register("room") {
+            id = "tide.room"
+            implementationClass = "RoomConventionPlugin"
         }
         register("hilt") {
             id = "tide.hilt"

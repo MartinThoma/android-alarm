@@ -2,6 +2,8 @@ package com.martin_thoma.tide.core.designsystem
 
 /** Material Symbols (Apache-2.0), stored as vector drawables. */
 object TideIcons {
+    val Add = R.drawable.ic_add
+    val Delete = R.drawable.ic_delete
     val Alarm = R.drawable.ic_alarm
     val AlarmFilled = R.drawable.ic_alarm_filled
     val Stopwatch = R.drawable.ic_stopwatch

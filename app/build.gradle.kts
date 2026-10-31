@@ -36,6 +36,7 @@ android {
 
 dependencies {
     implementation(project(":core:designsystem"))
+    implementation(project(":core:scheduling"))
     implementation(project(":feature:alarm"))
     implementation(project(":feature:stopwatch"))
     implementation(project(":feature:timer"))

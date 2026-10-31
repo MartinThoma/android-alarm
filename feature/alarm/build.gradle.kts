@@ -5,3 +5,8 @@ plugins {
 android {
     namespace = "com.martin_thoma.tide.feature.alarm"
 }
+
+dependencies {
+    implementation(project(":core:data"))
+    implementation(project(":core:domain"))
+}

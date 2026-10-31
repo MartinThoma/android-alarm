@@ -4,7 +4,6 @@ import android.provider.Settings
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
@@ -44,7 +43,6 @@ fun TideBackground(
         remember(context) {
             Settings.Global.getFloat(context.contentResolver, Settings.Global.ANIMATOR_DURATION_SCALE, 1f) > 0f
         }
-    val shoreline by animateFloatAsState(targetValue = level, animationSpec = tween(durationMillis = 4_000), label = "tide")
 
     var lap = 0f
     var swell = 0f
@@ -55,7 +53,7 @@ fun TideBackground(
     }
 
     Canvas(modifier = modifier.fillMaxSize()) {
-        val y0 = size.height * shoreline
+        val y0 = size.height * level
         val lapOffset = lap * 5f * density
         val swellOffset = -swell * 3f * density
         drawRect(colors.sand)

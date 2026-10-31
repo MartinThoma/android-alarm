@@ -18,7 +18,12 @@ dependencyResolutionManagement {
 rootProject.name = "Tide"
 
 include(":app")
+include(":core:data")
+include(":core:database")
 include(":core:designsystem")
+include(":core:domain")
+include(":core:model")
+include(":core:scheduling")
 include(":feature:alarm")
 include(":feature:stopwatch")
 include(":feature:timer")
