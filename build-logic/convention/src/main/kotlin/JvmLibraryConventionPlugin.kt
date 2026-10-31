@@ -1,6 +1,6 @@
-import com.martin_thoma.tide.buildlogic.JAVA_VERSION
-import com.martin_thoma.tide.buildlogic.configureKotlin
-import com.martin_thoma.tide.buildlogic.libs
+import com.martin_thoma.drift.buildlogic.JAVA_VERSION
+import com.martin_thoma.drift.buildlogic.configureKotlin
+import com.martin_thoma.drift.buildlogic.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPluginExtension

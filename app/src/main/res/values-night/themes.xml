@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.Tide" parent="android:Theme.Material.NoActionBar">
+    <style name="Theme.Drift" parent="android:Theme.Material.NoActionBar">
         <item name="android:windowBackground">@color/tide_sand</item>
         <item name="android:windowSplashScreenBackground">@color/tide_sand</item>
     </style>

@@ -1,7 +1,7 @@
 plugins {
-    alias(libs.plugins.tide.android.library)
+    alias(libs.plugins.drift.android.library)
 }
 
 android {
-    namespace = "com.martin_thoma.tide.core.notifications"
+    namespace = "com.martin_thoma.drift.core.notifications"
 }

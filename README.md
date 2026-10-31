@@ -1,4 +1,4 @@
-# Tide
+# Drift
 
 [![CI](https://github.com/MartinThoma/android-alarm/actions/workflows/ci.yml/badge.svg)](https://github.com/MartinThoma/android-alarm/actions/workflows/ci.yml)
 [![License: GPL-3.0](https://img.shields.io/github/license/MartinThoma/android-alarm)](LICENSE)

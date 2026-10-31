@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">Tide</string>
+    <string name="app_name" translatable="false">Drift</string>
     <string name="tab_alarm">Alarm</string>
     <string name="tab_stopwatch">Stopwatch</string>
     <string name="tab_timer">Timer</string>

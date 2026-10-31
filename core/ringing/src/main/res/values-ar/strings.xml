@@ -6,7 +6,7 @@
     <string name="core_ringing_snoozed_until">مؤجل حتى %1$s</string>
     <string name="core_ringing_missed">منبه فائت</string>
     <string name="core_ringing_missed_text">رنّ %1$s في %2$s ثم توقف تلقائيًا.</string>
-    <string name="core_ringing_sound_tide">رنين Tide</string>
+    <string name="core_ringing_sound_default">رنين Drift</string>
     <string name="core_ringing_sound_sea">البحر</string>
     <string name="core_ringing_sound_rain">المطر</string>
     <string name="core_ringing_sound_thunder">عاصفة رعدية</string>

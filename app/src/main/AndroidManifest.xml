@@ -8,12 +8,12 @@
         tools:node="remove" />
 
     <application
-        android:name=".TideApplication"
+        android:name=".DriftApplication"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Tide">
+        android:theme="@style/Theme.Drift">
 
         <activity
             android:name=".MainActivity"

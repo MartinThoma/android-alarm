@@ -6,7 +6,7 @@
     <string name="core_ringing_snoozed_until">Отложен до %1$s</string>
     <string name="core_ringing_missed">Пропущенный будильник</string>
     <string name="core_ringing_missed_text">%1$s: звонил в %2$s и выключился автоматически.</string>
-    <string name="core_ringing_sound_tide">Колокольчик Tide</string>
+    <string name="core_ringing_sound_default">Колокольчик Drift</string>
     <string name="core_ringing_sound_sea">Море</string>
     <string name="core_ringing_sound_rain">Дождь</string>
     <string name="core_ringing_sound_thunder">Гроза</string>

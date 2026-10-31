@@ -1,9 +1,9 @@
 plugins {
-    alias(libs.plugins.tide.android.feature)
+    alias(libs.plugins.drift.android.feature)
 }
 
 android {
-    namespace = "com.martin_thoma.tide.feature.alarm"
+    namespace = "com.martin_thoma.drift.feature.alarm"
 }
 
 dependencies {

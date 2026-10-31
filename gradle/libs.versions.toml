@@ -70,10 +70,10 @@ spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
 
 # Convention plugins defined in build-logic
-tide-android-application = { id = "tide.android.application" }
-tide-android-library = { id = "tide.android.library" }
-tide-android-compose = { id = "tide.android.compose" }
-tide-android-feature = { id = "tide.android.feature" }
-tide-hilt = { id = "tide.hilt" }
-tide-jvm-library = { id = "tide.jvm.library" }
-tide-room = { id = "tide.room" }
+drift-android-application = { id = "drift.android.application" }
+drift-android-library = { id = "drift.android.library" }
+drift-android-compose = { id = "drift.android.compose" }
+drift-android-feature = { id = "drift.android.feature" }
+drift-hilt = { id = "drift.hilt" }
+drift-jvm-library = { id = "drift.jvm.library" }
+drift-room = { id = "drift.room" }

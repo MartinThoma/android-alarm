@@ -2,7 +2,7 @@ plugins {
     `kotlin-dsl`
 }
 
-group = "com.martin_thoma.tide.buildlogic"
+group = "com.martin_thoma.drift.buildlogic"
 
 dependencies {
     compileOnly(libs.android.gradle.plugin)
@@ -15,31 +15,31 @@ dependencies {
 gradlePlugin {
     plugins {
         register("androidApplication") {
-            id = "tide.android.application"
+            id = "drift.android.application"
             implementationClass = "AndroidApplicationConventionPlugin"
         }
         register("androidLibrary") {
-            id = "tide.android.library"
+            id = "drift.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"
         }
         register("androidCompose") {
-            id = "tide.android.compose"
+            id = "drift.android.compose"
             implementationClass = "AndroidComposeConventionPlugin"
         }
         register("androidFeature") {
-            id = "tide.android.feature"
+            id = "drift.android.feature"
             implementationClass = "AndroidFeatureConventionPlugin"
         }
         register("jvmLibrary") {
-            id = "tide.jvm.library"
+            id = "drift.jvm.library"
             implementationClass = "JvmLibraryConventionPlugin"
         }
         register("room") {
-            id = "tide.room"
+            id = "drift.room"
             implementationClass = "RoomConventionPlugin"
         }
         register("hilt") {
-            id = "tide.hilt"
+            id = "drift.hilt"
             implementationClass = "HiltConventionPlugin"
         }
     }

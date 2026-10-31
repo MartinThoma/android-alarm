@@ -1,5 +1,5 @@
 ---
-name: Tide
+name: Drift
 description: A beach seen from above whose tide rises toward the next alarm; the working UI floats on it as frosted glass.
 colors:
   day-sand: "#F0DCAC"
@@ -188,7 +188,9 @@ components:
     typography: "{typography.label-medium}"
 ---
 
-# Design System: Tide
+# Design System: Drift
+
+The design language is called Tide: the water level is how the app shows time. The product is called Drift (renamed from Tide on 2026-10-31, so it can be found in searches); code names such as `TideSurface` and `TideLevel` name the design language and stay.
 
 ## Overview
 

@@ -6,7 +6,7 @@
     <string name="core_ringing_snoozed_until">Adiado até %1$s</string>
     <string name="core_ringing_missed">Alarme perdido</string>
     <string name="core_ringing_missed_text">%1$s tocou às %2$s e parou sozinho.</string>
-    <string name="core_ringing_sound_tide">Sino Tide</string>
+    <string name="core_ringing_sound_default">Sino Drift</string>
     <string name="core_ringing_sound_sea">Mar</string>
     <string name="core_ringing_sound_rain">Chuva</string>
     <string name="core_ringing_sound_thunder">Tempestade</string>

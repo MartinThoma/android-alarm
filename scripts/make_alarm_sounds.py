@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Synthesise Tide's bundled alarm sounds. Every sound loops seamlessly.
+"""Synthesise Drift's bundled alarm sounds. Every sound loops seamlessly.
 
 All sounds are generated from scratch here, so they carry the project's licence (GPL-3.0).
 The two classical pieces are public domain compositions, arranged and rendered by this script.
@@ -113,7 +113,7 @@ MUSIC_BOX = [(1.0, 1.0), (2.0, 0.35), (3.0, 0.12), (4.2, 0.05)]
 PIANO = [(1.0, 1.0), (2.0, 0.45), (3.0, 0.2), (4.0, 0.1), (5.0, 0.05)]
 
 
-def tide_chime() -> list[float]:
+def chime() -> list[float]:
     """A calm, rising D major pentatonic figure; the default sound."""
     out = silence(4.0)
     for start, name in [(0.0, "D5"), (0.32, "F#5"), (0.64, "A5"), (0.96, "D6"), (1.6, "A5")]:
@@ -267,7 +267,7 @@ def fur_elise() -> list[float]:
 
 def main() -> None:
     rng = random.Random(20261031)
-    write("tide_chime", tide_chime(), quality=5)
+    write("chime", chime(), quality=5)
     write("sound_sea", sea(rng))
     write("sound_rain", rain(rng))
     write("sound_thunder", thunder(rng))

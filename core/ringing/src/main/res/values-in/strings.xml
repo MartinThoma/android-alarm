@@ -6,7 +6,7 @@
     <string name="core_ringing_snoozed_until">Ditunda hingga %1$s</string>
     <string name="core_ringing_missed">Alarm terlewat</string>
     <string name="core_ringing_missed_text">%1$s berbunyi pukul %2$s dan berhenti sendiri.</string>
-    <string name="core_ringing_sound_tide">Lonceng Tide</string>
+    <string name="core_ringing_sound_default">Lonceng Drift</string>
     <string name="core_ringing_sound_sea">Laut</string>
     <string name="core_ringing_sound_rain">Hujan</string>
     <string name="core_ringing_sound_thunder">Badai petir</string>

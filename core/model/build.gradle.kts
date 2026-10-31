@@ -1,3 +1,3 @@
 plugins {
-    alias(libs.plugins.tide.jvm.library)
+    alias(libs.plugins.drift.jvm.library)
 }

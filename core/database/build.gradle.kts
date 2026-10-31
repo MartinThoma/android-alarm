@@ -1,11 +1,11 @@
 plugins {
-    alias(libs.plugins.tide.android.library)
-    alias(libs.plugins.tide.room)
-    alias(libs.plugins.tide.hilt)
+    alias(libs.plugins.drift.android.library)
+    alias(libs.plugins.drift.room)
+    alias(libs.plugins.drift.hilt)
 }
 
 android {
-    namespace = "com.martin_thoma.tide.core.database"
+    namespace = "com.martin_thoma.drift.core.database"
 }
 
 dependencies {

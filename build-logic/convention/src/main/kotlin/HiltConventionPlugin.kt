@@ -1,4 +1,4 @@
-import com.martin_thoma.tide.buildlogic.libs
+import com.martin_thoma.drift.buildlogic.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies

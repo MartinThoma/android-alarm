@@ -1,10 +1,10 @@
 import com.android.build.api.dsl.LibraryExtension
-import com.martin_thoma.tide.buildlogic.JAVA_VERSION
-import com.martin_thoma.tide.buildlogic.TideSdk
-import com.martin_thoma.tide.buildlogic.configureKotlin
-import com.martin_thoma.tide.buildlogic.configureTideLint
-import com.martin_thoma.tide.buildlogic.configureTideUnitTests
-import com.martin_thoma.tide.buildlogic.libs
+import com.martin_thoma.drift.buildlogic.DriftSdk
+import com.martin_thoma.drift.buildlogic.JAVA_VERSION
+import com.martin_thoma.drift.buildlogic.configureDriftLint
+import com.martin_thoma.drift.buildlogic.configureDriftUnitTests
+import com.martin_thoma.drift.buildlogic.configureKotlin
+import com.martin_thoma.drift.buildlogic.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -16,19 +16,19 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
             pluginManager.apply("com.android.library")
 
             extensions.configure<LibraryExtension> {
-                compileSdk = TideSdk.COMPILE
+                compileSdk = DriftSdk.COMPILE
                 defaultConfig {
-                    minSdk = TideSdk.MIN
+                    minSdk = DriftSdk.MIN
                 }
                 compileOptions {
                     sourceCompatibility = JAVA_VERSION
                     targetCompatibility = JAVA_VERSION
                 }
                 lint {
-                    targetSdk = TideSdk.TARGET
-                    configureTideLint()
+                    targetSdk = DriftSdk.TARGET
+                    configureDriftLint()
                 }
-                testOptions { configureTideUnitTests() }
+                testOptions { configureDriftUnitTests() }
             }
             configureKotlin()
 

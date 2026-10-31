@@ -1,6 +1,6 @@
 # Requirements Analysis: FOSS Android Clock App (Alarm · Stopwatch · Timer)
 
-*Version 0.2, draft, 2026-10-31. App name: "Tide".*
+*Version 0.2, draft, 2026-10-31. App name: "Drift" (first "Tide", renamed on 2026-10-31 so it can be found in searches).*
 
 ## 1. Purpose and vision
 

@@ -6,7 +6,7 @@
     <string name="core_ringing_snoozed_until">Schlummern bis %1$s</string>
     <string name="core_ringing_missed">Verpasster Wecker</string>
     <string name="core_ringing_missed_text">%1$s hat um %2$s geklingelt und von selbst aufgehört.</string>
-    <string name="core_ringing_sound_tide">Tide-Klang</string>
+    <string name="core_ringing_sound_default">Drift-Klang</string>
     <string name="core_ringing_sound_sea">Meer</string>
     <string name="core_ringing_sound_rain">Regen</string>
     <string name="core_ringing_sound_thunder">Gewitter</string>

@@ -6,7 +6,7 @@
     <string name="core_ringing_snoozed_until">Pospuesta hasta las %1$s</string>
     <string name="core_ringing_missed">Alarma perdida</string>
     <string name="core_ringing_missed_text">%1$s sonó a las %2$s. Se detuvo automáticamente.</string>
-    <string name="core_ringing_sound_tide">Campanilla Tide</string>
+    <string name="core_ringing_sound_default">Campanilla Drift</string>
     <string name="core_ringing_sound_sea">Mar</string>
     <string name="core_ringing_sound_rain">Lluvia</string>
     <string name="core_ringing_sound_thunder">Tormenta</string>

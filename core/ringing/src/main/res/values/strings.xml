@@ -6,7 +6,7 @@
     <string name="core_ringing_snoozed_until">Snoozed until %1$s</string>
     <string name="core_ringing_missed">Missed alarm</string>
     <string name="core_ringing_missed_text">%1$s rang at %2$s and stopped by itself.</string>
-    <string name="core_ringing_sound_tide">Tide chime</string>
+    <string name="core_ringing_sound_default">Drift chime</string>
     <string name="core_ringing_sound_sea">Sea</string>
     <string name="core_ringing_sound_rain">Rain</string>
     <string name="core_ringing_sound_thunder">Thunderstorm</string>

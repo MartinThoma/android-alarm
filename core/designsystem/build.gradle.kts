@@ -1,10 +1,10 @@
 plugins {
-    alias(libs.plugins.tide.android.library)
-    alias(libs.plugins.tide.android.compose)
+    alias(libs.plugins.drift.android.library)
+    alias(libs.plugins.drift.android.compose)
 }
 
 android {
-    namespace = "com.martin_thoma.tide.core.designsystem"
+    namespace = "com.martin_thoma.drift.core.designsystem"
 }
 
 dependencies {

@@ -1,4 +1,4 @@
-import com.martin_thoma.tide.buildlogic.libs
+import com.martin_thoma.drift.buildlogic.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
@@ -10,10 +10,10 @@ import org.gradle.kotlin.dsl.dependencies
 class AndroidFeatureConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
-            pluginManager.apply("tide.android.library")
-            pluginManager.apply("tide.android.compose")
+            pluginManager.apply("drift.android.library")
+            pluginManager.apply("drift.android.compose")
             pluginManager.apply("org.jetbrains.kotlin.plugin.serialization")
-            pluginManager.apply("tide.hilt")
+            pluginManager.apply("drift.hilt")
 
             dependencies {
                 add("implementation", project(":core:designsystem"))

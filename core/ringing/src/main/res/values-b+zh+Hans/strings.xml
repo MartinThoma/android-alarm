@@ -6,7 +6,7 @@
     <string name="core_ringing_snoozed_until">已推迟到 %1$s</string>
     <string name="core_ringing_missed">错过的闹钟</string>
     <string name="core_ringing_missed_text">%1$s 于 %2$s 响铃，已自动停止。</string>
-    <string name="core_ringing_sound_tide">Tide 铃声</string>
+    <string name="core_ringing_sound_default">Drift 铃声</string>
     <string name="core_ringing_sound_sea">大海</string>
     <string name="core_ringing_sound_rain">雨声</string>
     <string name="core_ringing_sound_thunder">雷雨</string>

@@ -1,16 +1,16 @@
 plugins {
-    alias(libs.plugins.tide.android.application)
-    alias(libs.plugins.tide.android.compose)
-    alias(libs.plugins.tide.hilt)
+    alias(libs.plugins.drift.android.application)
+    alias(libs.plugins.drift.android.compose)
+    alias(libs.plugins.drift.hilt)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.roborazzi)
 }
 
 android {
-    namespace = "com.martin_thoma.tide"
+    namespace = "com.martin_thoma.drift"
 
     defaultConfig {
-        applicationId = "com.martin_thoma.tide"
+        applicationId = "com.martin_thoma.drift"
         versionCode = 1
         versionName = "0.1.0"
     }

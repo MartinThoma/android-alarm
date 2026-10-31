@@ -15,7 +15,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Tide"
+rootProject.name = "Drift"
 
 include(":app")
 include(":core:data")
