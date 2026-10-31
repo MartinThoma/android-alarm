@@ -18,4 +18,5 @@
     <string name="core_ringing_times_up">Время вышло</string>
     <string name="core_ringing_add_minute">+1 мин</string>
     <string name="core_ringing_stop">Стоп</string>
+    <string name="core_ringing_sound_none">Без звука</string>
 </resources>

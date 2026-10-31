@@ -1,10 +1,13 @@
 package com.martin_thoma.drift.feature.timer
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -17,18 +20,23 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.FilledIconButton
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
@@ -53,6 +61,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavKey
 import com.martin_thoma.drift.core.designsystem.GlassPane
 import com.martin_thoma.drift.core.designsystem.LocalTideColors
+import com.martin_thoma.drift.core.designsystem.SwipeToDelete
+import com.martin_thoma.drift.core.designsystem.TideAware
 import com.martin_thoma.drift.core.designsystem.TideIcons
 import com.martin_thoma.drift.core.designsystem.TideLevel
 import com.martin_thoma.drift.core.designsystem.TideSurface
@@ -69,14 +79,20 @@ data object TimerRoute : NavKey
 
 private val RING_SIZE = 296.dp
 
+@Serializable
+data class TimerDetailRoute(
+    val timerId: Long,
+) : NavKey
+
 /**
- * One timer at a time, full screen (requirements TM-08): the time left inside a ring that empties
- * as it runs, the tide rising behind it. Several timers: swipe between them. With no timers, the
- * number pad shows straight away.
+ * The timer tab. No timers: the wheel to set one. One timer: full screen, the time left inside a
+ * ring that empties as it runs, the tide rising behind it (requirements TM-08). Several: a list
+ * like the alarms, the one that ends next on top (Martin, 2026-10-31).
  */
 @Composable
 fun TimerScreen(
     onNewTimer: () -> Unit,
+    onOpenTimer: (timerId: Long) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val viewModel: TimerViewModel = hiltViewModel()
@@ -87,51 +103,119 @@ fun TimerScreen(
         NewTimerContent(recents = recents, onStart = viewModel::create, onBack = null, modifier = modifier)
         return
     }
-    var now by remember { mutableLongStateOf(viewModel.now()) }
-    val anyRunning = current.any { it.isRunning }
-    // Seconds are enough here; the screen only ticks while it is shown and a timer runs.
-    LaunchedEffect(anyRunning) {
-        now = viewModel.now()
-        while (anyRunning) {
-            delay(1_000 - now % 1_000)
-            now = viewModel.now()
-        }
+    val now = rememberSecondTicks(current.any { it.isRunning }, viewModel::now)
+    if (current.size == 1) {
+        SingleTimerContent(
+            timer = current.single(),
+            now = now,
+            onStartOrPause = viewModel::startOrPause,
+            onAddMinute = viewModel::addMinute,
+            onReset = viewModel::reset,
+            leading = { DeleteButton { viewModel.delete(current.single()) } },
+            trailing = { NewTimerButton(onNewTimer) },
+            modifier = modifier,
+        )
+    } else {
+        TimerListContent(
+            timers = current,
+            now = now,
+            onNewTimer = onNewTimer,
+            onOpen = { onOpenTimer(it.id) },
+            onStartOrPause = viewModel::startOrPause,
+            onReset = viewModel::reset,
+            onDelete = viewModel::delete,
+            modifier = modifier,
+        )
     }
-    TimerPagesContent(
-        timers = current,
+}
+
+/** One timer of several, opened from the list. */
+@Composable
+fun TimerDetailScreen(
+    timerId: Long,
+    onBack: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val viewModel: TimerViewModel = hiltViewModel()
+    val timers by viewModel.timers.collectAsStateWithLifecycle()
+    val current = timers ?: return
+    val timer = current.find { it.id == timerId }
+    // Deleted, here or from its notification: back to the list.
+    LaunchedEffect(timer == null) { if (timer == null) onBack() }
+    timer ?: return
+    val now = rememberSecondTicks(timer.isRunning, viewModel::now)
+    SingleTimerContent(
+        timer = timer,
         now = now,
-        onNewTimer = onNewTimer,
         onStartOrPause = viewModel::startOrPause,
         onAddMinute = viewModel::addMinute,
         onReset = viewModel::reset,
-        onDelete = viewModel::delete,
+        leading = {
+            IconButton(onClick = onBack) {
+                Icon(
+                    painterResource(TideIcons.ArrowBack),
+                    contentDescription = stringResource(R.string.feature_timer_back),
+                    tint = LocalTideColors.current.onSea,
+                )
+            }
+        },
+        trailing = { DeleteButton { viewModel.delete(timer) } },
         modifier = modifier,
     )
 }
 
+/** The current time, every second while [running]; the screen only ticks while it is shown. */
 @Composable
-internal fun TimerPagesContent(
-    timers: List<Timer>,
+private fun rememberSecondTicks(
+    running: Boolean,
+    clock: () -> Long,
+): Long {
+    var now by remember { mutableLongStateOf(clock()) }
+    LaunchedEffect(running) {
+        now = clock()
+        while (running) {
+            delay(1_000 - now % 1_000)
+            now = clock()
+        }
+    }
+    return now
+}
+
+@Composable
+private fun DeleteButton(onDelete: () -> Unit) {
+    IconButton(onClick = onDelete) {
+        Icon(
+            painterResource(TideIcons.Delete),
+            contentDescription = stringResource(R.string.feature_timer_delete),
+            tint = LocalTideColors.current.onSea,
+        )
+    }
+}
+
+@Composable
+private fun NewTimerButton(onNewTimer: () -> Unit) {
+    IconButton(onClick = onNewTimer) {
+        Icon(
+            painterResource(TideIcons.Add),
+            contentDescription = stringResource(R.string.feature_timer_new),
+            tint = LocalTideColors.current.onSea,
+        )
+    }
+}
+
+@Composable
+internal fun SingleTimerContent(
+    timer: Timer,
     now: Long,
-    onNewTimer: () -> Unit,
     onStartOrPause: (Timer) -> Unit,
     onAddMinute: (Timer) -> Unit,
     onReset: (Timer) -> Unit,
-    onDelete: (Timer) -> Unit,
+    leading: @Composable () -> Unit,
+    trailing: @Composable () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val pager = rememberPagerState { timers.size }
-    // A timer just added is the one to see.
-    var knownCount by remember { mutableIntStateOf(timers.size) }
-    LaunchedEffect(timers.size) {
-        if (timers.size > knownCount) pager.animateScrollToPage(timers.lastIndex)
-        knownCount = timers.size
-    }
-    val shown = timers.getOrNull(pager.currentPage) ?: timers.last()
-    // The tide follows the timer on screen: it comes in as that timer runs out.
-    val level = if (shown.isIdle) TideLevel.LOW else TideLevel.forProgress(shown.progress(now))
-    val colors = LocalTideColors.current
-
+    // The tide follows the timer: it comes in as the timer runs out.
+    val level = if (timer.isIdle) TideLevel.LOW else TideLevel.forProgress(timer.progress(now))
     TideSurface(level = level, modifier = modifier) {
         Column(
             modifier =
@@ -141,56 +225,185 @@ internal fun TimerPagesContent(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Row(Modifier.fillMaxWidth().padding(horizontal = 4.dp, vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = { onDelete(shown) }) {
-                    Icon(
-                        painterResource(TideIcons.Delete),
-                        contentDescription = stringResource(R.string.feature_timer_delete),
-                        tint = colors.onSea,
-                    )
-                }
-                PageDots(count = timers.size, current = pager.currentPage, modifier = Modifier.weight(1f))
-                IconButton(onClick = onNewTimer) {
-                    Icon(
-                        painterResource(TideIcons.Add),
-                        contentDescription = stringResource(R.string.feature_timer_new),
-                        tint = colors.onSea,
-                    )
-                }
+                leading()
+                Spacer(Modifier.weight(1f))
+                trailing()
             }
-            HorizontalPager(state = pager, key = { timers[it].id }, modifier = Modifier.weight(1f)) { page ->
-                TimerPage(timers[page], now, onStartOrPause, onAddMinute, onReset)
+            TimerPage(timer, now, onStartOrPause, onAddMinute, onReset)
+        }
+    }
+}
+
+/** Several timers, like the alarm list: the one that ends next large on top, all of them on glass below. */
+@Composable
+internal fun TimerListContent(
+    timers: List<Timer>,
+    now: Long,
+    onNewTimer: () -> Unit,
+    onOpen: (Timer) -> Unit,
+    onStartOrPause: (Timer) -> Unit,
+    onReset: (Timer) -> Unit,
+    onDelete: (Timer) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val colors = LocalTideColors.current
+    val locale = LocalConfiguration.current.locales[0]
+    val next = timers.filter { it.isRunning }.minByOrNull { it.remaining(now) }
+    val level = next?.let { TideLevel.forProgress(it.progress(now)) } ?: TideLevel.LOW
+    TideSurface(level = level, modifier = modifier) {
+        Scaffold(
+            containerColor = Color.Transparent,
+            contentWindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal),
+            floatingActionButton = {
+                FloatingActionButton(
+                    onClick = onNewTimer,
+                    shape = CircleShape,
+                    containerColor = colors.accent,
+                    contentColor = colors.onAccent,
+                ) {
+                    Icon(painterResource(TideIcons.Add), contentDescription = stringResource(R.string.feature_timer_new))
+                }
+            },
+        ) { padding ->
+            LazyColumn(
+                modifier = Modifier.fillMaxSize().padding(padding),
+                contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 48.dp, bottom = 112.dp),
+            ) {
+                if (next != null) {
+                    item(key = "next") {
+                        Column(Modifier.padding(horizontal = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                            TideAware {
+                                Text(
+                                    formatDuration(next.remaining(now) + 999, locale),
+                                    style = MaterialTheme.typography.displayLarge.copy(fontSize = 96.sp, lineHeight = 96.sp),
+                                )
+                            }
+                            TideAware { Text(statusText(next, now), style = MaterialTheme.typography.titleLarge) }
+                        }
+                        Spacer(Modifier.height(32.dp))
+                    }
+                }
+                item(key = "sheet") {
+                    GlassPane(Modifier.fillMaxWidth()) {
+                        Column(Modifier.animateContentSize()) {
+                            timers.forEachIndexed { index, timer ->
+                                key(timer.id) {
+                                    if (index >
+                                        0
+                                    ) {
+                                        HorizontalDivider(
+                                            Modifier.padding(horizontal = 20.dp),
+                                            color = colors.onGlass.copy(alpha = 0.12f),
+                                        )
+                                    }
+                                    SwipeToDelete(onDelete = { onDelete(timer) }) {
+                                        TimerRow(timer, now, onOpen, onStartOrPause, onReset)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
 }
 
+/** A timer in the list: time left, label and state, a small ring, and its main button. */
 @Composable
-private fun PageDots(
-    count: Int,
-    current: Int,
-    modifier: Modifier = Modifier,
+private fun TimerRow(
+    timer: Timer,
+    now: Long,
+    onOpen: (Timer) -> Unit,
+    onStartOrPause: (Timer) -> Unit,
+    onReset: (Timer) -> Unit,
 ) {
-    if (count < 2) {
-        Spacer(modifier)
-        return
-    }
     val colors = LocalTideColors.current
-    Row(modifier, horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)) {
-        repeat(count) { index ->
-            Box(
-                Modifier
-                    .size(
-                        if (index ==
-                            current
-                        ) {
-                            8.dp
-                        } else {
-                            6.dp
-                        },
-                    ).background(colors.onSea.copy(alpha = if (index == current) 0.9f else 0.35f), CircleShape),
+    val locale = LocalConfiguration.current.locales[0]
+    val expired = timer.hasExpired(now)
+    val remaining = timer.remaining(now)
+    Row(
+        modifier = Modifier.fillMaxWidth().clickable { onOpen(timer) }.padding(start = 20.dp, end = 12.dp, top = 14.dp, bottom = 14.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            Text(
+                text = if (expired) "+" + formatDuration(-remaining, locale) else formatDuration(remaining + 999, locale),
+                style = MaterialTheme.typography.displaySmall,
+                color = if (expired) colors.accent else colors.onGlass,
             )
+            Text(statusText(timer, now), style = MaterialTheme.typography.bodyMedium, color = colors.onGlassVariant, maxLines = 1)
+        }
+        Canvas(Modifier.size(32.dp)) {
+            val stroke = 4.dp.toPx()
+            val arc = Size(size.width - stroke, size.height - stroke)
+            val topLeft = Offset(stroke / 2, stroke / 2)
+            drawArc(colors.onGlass.copy(alpha = 0.12f), 0f, 360f, false, topLeft, arc, style = Stroke(stroke))
+            val left = 1f - timer.progress(now)
+            if (left >
+                0f
+            ) {
+                drawArc(
+                    colors.accent,
+                    -90f + 360f * (1f - left),
+                    360f * left,
+                    false,
+                    topLeft,
+                    arc,
+                    style = Stroke(stroke, cap = StrokeCap.Round),
+                )
+            }
+        }
+        FilledIconButton(
+            onClick = { if (expired) onReset(timer) else onStartOrPause(timer) },
+            modifier = Modifier.size(48.dp),
+            shape = CircleShape,
+            colors = IconButtonDefaults.filledIconButtonColors(containerColor = colors.accent, contentColor = colors.onAccent),
+        ) {
+            val (icon, label) =
+                when {
+                    expired -> TideIcons.Stop to R.string.feature_timer_stop
+                    timer.isRunning -> TideIcons.Pause to R.string.feature_timer_pause
+                    timer.isIdle -> TideIcons.Play to R.string.feature_timer_start
+                    else -> TideIcons.Play to R.string.feature_timer_resume
+                }
+            Icon(painterResource(icon), contentDescription = stringResource(label))
         }
     }
+}
+
+/** "Tea · Rings at 16:10", "Tea · Paused", "Tea · Time's up". */
+@Composable
+private fun statusText(
+    timer: Timer,
+    now: Long,
+): String {
+    val locale = LocalConfiguration.current.locales[0]
+    val timeFormatter = rememberTimeFormatter()
+    val name = timer.label.ifEmpty { stringResource(R.string.feature_timer_title) }
+    val state =
+        when {
+            timer.hasExpired(now) -> {
+                stringResource(R.string.feature_timer_times_up)
+            }
+
+            timer.isRunning -> {
+                stringResource(
+                    R.string.feature_timer_rings_at,
+                    timeFormatter.format(Instant.ofEpochMilli(checkNotNull(timer.endsAt)).atZone(ZoneId.systemDefault())),
+                )
+            }
+
+            timer.isIdle -> {
+                stringResource(R.string.feature_timer_of, formatDuration(timer.setMillis, locale))
+            }
+
+            else -> {
+                stringResource(R.string.feature_timer_paused_short)
+            }
+        }
+    return "$name · $state"
 }
 
 @Composable

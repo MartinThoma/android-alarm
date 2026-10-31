@@ -31,6 +31,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Switch
@@ -72,6 +75,7 @@ import com.martin_thoma.drift.core.designsystem.TideSurface
 import com.martin_thoma.drift.core.designsystem.keepOnOpenWater
 import com.martin_thoma.drift.core.designsystem.rememberTimeFormatter
 import com.martin_thoma.drift.core.model.Alarm
+import com.martin_thoma.drift.core.model.Blink
 import com.martin_thoma.drift.core.ringing.AlarmSounds
 import kotlinx.serialization.Serializable
 import java.text.NumberFormat
@@ -109,6 +113,8 @@ fun AlarmEditorScreen(
         onVolume = viewModel::setVolume,
         onPreviewVolume = viewModel::previewVolume,
         onVibrate = viewModel::setVibrate,
+        onBrightness = viewModel::setBrightness,
+        onBlink = viewModel::setBlink,
         onSnoozeMinutes = viewModel::setSnoozeMinutes,
         modifier = modifier,
     )
@@ -127,6 +133,8 @@ internal fun AlarmEditorContent(
     onVolume: (Int) -> Unit,
     onPreviewVolume: (Int) -> Unit,
     onVibrate: (Boolean) -> Unit,
+    onBrightness: (Int?) -> Unit,
+    onBlink: (Blink) -> Unit,
     onSnoozeMinutes: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -194,9 +202,22 @@ internal fun AlarmEditorContent(
                             PaneDivider()
                             SoundRow(alarm.soundUri, onChooseSound)
                             PaneDivider()
-                            VolumeRow(alarm.volumePercent, onVolume, onPreviewVolume)
+                            VolumeRow(alarm.volumePercent, onVolume, onPreviewVolume, enabled = !AlarmSounds.isSilent(alarm.soundUri))
                             PaneDivider()
                             VibrateRow(alarm.vibrate, onVibrate)
+                            // Never silent by accident: say plainly what is left to wake up by.
+                            if (AlarmSounds.isSilent(alarm.soundUri) && !alarm.vibrate) {
+                                Text(
+                                    stringResource(R.string.feature_alarm_silent_warning),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = LocalTideColors.current.danger,
+                                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
+                                )
+                            }
+                            PaneDivider()
+                            BrightnessRows(alarm.brightnessPercent, onBrightness)
+                            PaneDivider()
+                            BlinkRow(alarm.blink, onBlink)
                             PaneDivider()
                             SnoozeRow(alarm.snoozeMinutes, onSnoozeMinutes)
                         }
@@ -292,7 +313,7 @@ private fun SoundRow(
     soundUri: String?,
     onClick: () -> Unit,
 ) {
-    val title = AlarmSounds.builtIn(soundUri)?.let { stringResource(it.title) } ?: AlarmSounds.custom(soundUri)?.title.orEmpty()
+    val title = soundTitle(soundUri)
     SettingRow(title = stringResource(R.string.feature_alarm_sound), modifier = Modifier.clickable(role = Role.Button, onClick = onClick)) {
         Text(title, style = MaterialTheme.typography.bodyLarge, color = LocalTideColors.current.onGlassVariant)
     }
@@ -303,6 +324,7 @@ private fun VolumeRow(
     percent: Int,
     onVolume: (Int) -> Unit,
     onPreview: (Int) -> Unit,
+    enabled: Boolean,
 ) {
     val colors = LocalTideColors.current
     val locale = LocalConfiguration.current.locales[0]
@@ -325,6 +347,7 @@ private fun VolumeRow(
                 onPreview(value.toInt())
             },
             valueRange = 0f..100f,
+            enabled = enabled,
             colors =
                 SliderDefaults.colors(
                     thumbColor = colors.accent,
@@ -332,6 +355,94 @@ private fun VolumeRow(
                     inactiveTrackColor = colors.onGlass.copy(alpha = 0.15f),
                 ),
         )
+    }
+}
+
+/** A switch to light the ringing screen at its own brightness, and a slider for it. */
+@Composable
+private fun BrightnessRows(
+    percent: Int?,
+    onBrightness: (Int?) -> Unit,
+) {
+    val colors = LocalTideColors.current
+    val locale = LocalConfiguration.current.locales[0]
+    SettingRow(
+        title = stringResource(R.string.feature_alarm_brighten),
+        modifier =
+            Modifier.toggleable(value = percent != null, role = Role.Switch, onValueChange = {
+                onBrightness(if (it) DEFAULT_BRIGHTNESS else null)
+            }),
+    ) {
+        Switch(checked = percent != null, onCheckedChange = null, colors = glassSwitchColors())
+    }
+    if (percent == null) return
+    var value by remember(percent) { mutableFloatStateOf(percent.toFloat()) }
+    Column(Modifier.padding(start = 20.dp, end = 20.dp, bottom = 12.dp)) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                stringResource(R.string.feature_alarm_brightness),
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.weight(1f),
+            )
+            Text(
+                NumberFormat.getPercentInstance(locale).format(value / 100.0),
+                style = MaterialTheme.typography.bodyLarge,
+                color = colors.onGlassVariant,
+            )
+        }
+        Slider(
+            value = value,
+            onValueChange = { value = it },
+            onValueChangeFinished = { onBrightness(value.toInt()) },
+            valueRange = 1f..100f,
+            colors =
+                SliderDefaults.colors(
+                    thumbColor = colors.accent,
+                    activeTrackColor = colors.accent,
+                    inactiveTrackColor = colors.onGlass.copy(alpha = 0.15f),
+                ),
+        )
+    }
+}
+
+private const val DEFAULT_BRIGHTNESS = 100
+
+/** Off, slow, medium, fast: a single choice, as Material's segmented buttons. */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun BlinkRow(
+    blink: Blink,
+    onBlink: (Blink) -> Unit,
+) {
+    val colors = LocalTideColors.current
+    Column(Modifier.padding(horizontal = 20.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text(stringResource(R.string.feature_alarm_blink), style = MaterialTheme.typography.bodyLarge)
+        val options =
+            listOf(
+                Blink.OFF to R.string.feature_alarm_blink_off,
+                Blink.SLOW to R.string.feature_alarm_blink_slow,
+                Blink.MEDIUM to R.string.feature_alarm_blink_medium,
+                Blink.FAST to R.string.feature_alarm_blink_fast,
+            )
+        SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
+            options.forEachIndexed { index, (option, label) ->
+                SegmentedButton(
+                    selected = blink == option,
+                    onClick = { onBlink(option) },
+                    shape = SegmentedButtonDefaults.itemShape(index, options.size),
+                    colors =
+                        SegmentedButtonDefaults.colors(
+                            activeContainerColor = colors.accent,
+                            activeContentColor = colors.onAccent,
+                            inactiveContainerColor = Color.Transparent,
+                            inactiveContentColor = colors.onGlass,
+                            activeBorderColor = colors.accent,
+                            inactiveBorderColor = colors.onGlassVariant.copy(alpha = 0.5f),
+                        ),
+                    label = { Text(stringResource(label), maxLines = 1) },
+                )
+            }
+        }
     }
 }
 

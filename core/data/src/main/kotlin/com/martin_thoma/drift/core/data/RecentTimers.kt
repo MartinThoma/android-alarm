@@ -15,7 +15,7 @@ data class RecentTimer(
     val label: String = "",
 )
 
-/** The last few timers started, newest first; a few common durations until there are any. */
+/** The last few timers started, newest first, topped up with common durations. */
 @Singleton
 class RecentTimers
     @Inject
@@ -32,10 +32,14 @@ class RecentTimers
             val next = (listOf(timer) + loadSaved()).distinct().take(MAX)
             // One line per timer: milliseconds, a tab, the label.
             saved.edit { putString(KEY, next.joinToString("\n") { "${it.setMillis}\t${it.label.replace('\n', ' ').replace('\t', ' ')}" }) }
-            state.value = next
+            state.value = withDefaults(next)
         }
 
-        private fun load(): List<RecentTimer> = loadSaved().ifEmpty { DEFAULTS }
+        private fun load(): List<RecentTimer> = withDefaults(loadSaved())
+
+        /** Common durations fill the free places, so one recent timer does not hide them all. */
+        private fun withDefaults(recent: List<RecentTimer>): List<RecentTimer> =
+            (recent + DEFAULTS.filter { default -> recent.none { it.setMillis == default.setMillis && it.label.isEmpty() } }).take(MAX)
 
         private fun loadSaved(): List<RecentTimer> =
             saved

@@ -1,18 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- The head of a crowing rooster (drawn for Drift, GPL-3.0). Kept inside the 66 dp safe zone. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <path
-        android:fillColor="#8FE3D3"
-        android:pathData="M0,0H108V60Q94.5,54 81,60T54,60T27,60T0,60Z" />
-    <path
-        android:fillColor="#35B9CC"
-        android:pathData="M0,0H108V52Q94.5,46 81,52T54,52T27,52T0,52Z" />
-    <path
-        android:pathData="M108,60Q94.5,54 81,60T54,60T27,60T0,60"
-        android:strokeWidth="1.5"
-        android:strokeColor="#B3FFFFFF"
-        android:strokeLineCap="round" />
+    <group
+        android:scaleX="0.9"
+        android:scaleY="0.9"
+        android:translateX="-5"
+        android:translateY="9">
+        <!-- comb -->
+        <path
+            android:fillColor="#E5533D"
+            android:pathData="M38,50C34,44 36,38 41,38C40,31 46,28 50,32C51,25 58,24 60,30C63,26 69,29 67,35C71,36 71,42 66,44L48,50Z" />
+        <!-- neck and head -->
+        <path
+            android:fillColor="#FFF7EA"
+            android:pathData="M30,96C29,80 33,66 38,57C42,49 46,43 53,40C60,37 66,39 69,44L70,47C69,53 65,57 61,60C57,68 57,82 63,96Z" />
+        <path
+            android:fillColor="#F3E2BF"
+            android:pathData="M30,96C29,80 33,66 38,57C37,68 37,82 40,96Z" />
+        <!-- open beak: upper, mouth, lower -->
+        <path
+            android:fillColor="#F5B53D"
+            android:pathData="M66,41L84,31L72,46Z" />
+        <path
+            android:fillColor="#B5412F"
+            android:pathData="M72,46L83,39L80,49L70,50Z" />
+        <path
+            android:fillColor="#E99A2C"
+            android:pathData="M70,50L83,51L66,56Z" />
+        <!-- wattle -->
+        <path
+            android:fillColor="#E5533D"
+            android:pathData="M62,56C60,63 62,70 66,70C70,70 71,63 68,56Z" />
+        <!-- eye -->
+        <path
+            android:fillColor="#24170F"
+            android:pathData="M57.2,44.5a2.3,2.3 0,1 0,4.6 0a2.3,2.3 0,1 0,-4.6 0Z" />
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M59.45,43.8a0.75,0.75 0,1 0,1.5 0a0.75,0.75 0,1 0,-1.5 0Z" />
+        <!-- crowing -->
+        <path
+            android:pathData="M88,33A7,7 0,0 1,89 45"
+            android:strokeWidth="2.2"
+            android:strokeColor="#FFFFFF"
+            android:strokeLineCap="round" />
+        <path
+            android:pathData="M92,28A13,13 0,0 1,94 49"
+            android:strokeAlpha="0.65"
+            android:strokeWidth="2.2"
+            android:strokeColor="#FFFFFF"
+            android:strokeLineCap="round" />
+    </group>
 </vector>

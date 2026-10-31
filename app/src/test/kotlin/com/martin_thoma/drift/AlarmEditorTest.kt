@@ -9,14 +9,18 @@ import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.v2.createEmptyComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import com.github.takahirom.roborazzi.captureRoboImage
 import com.martin_thoma.drift.core.data.AlarmRepository
 import com.martin_thoma.drift.core.model.Alarm
+import com.martin_thoma.drift.core.model.Blink
+import com.martin_thoma.drift.core.ringing.AlarmSounds
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
@@ -82,8 +86,9 @@ class AlarmEditorTest {
                 compose.waitForIdle()
             }
             compose.onNode(hasSetTextAction()).performTextInput("Work")
-            compose.onNodeWithContentDescription("Longer snooze").performClick()
-            compose.onNode(hasText("Vibrate") and hasClickAction()).performClick()
+            // The editor is longer than the screen: scroll to each setting, as a person would.
+            compose.onNodeWithContentDescription("Longer snooze").performScrollTo().performClick()
+            compose.onNode(hasText("Vibrate") and hasClickAction()).performScrollTo().performClick()
             await { alarm()?.let { it.label == "Work" && it.snoozeMinutes == 15 && !it.vibrate && it.repeatDays.size == 5 } == true }
             compose.onRoot().captureRoboImage("../docs/screenshots/alarm-editor.png")
 
@@ -104,5 +109,20 @@ class AlarmEditorTest {
             await { alarm() == null }
         }
         assertNull(alarm())
+    }
+
+    @Test
+    fun `light settings are saved, and a silent alarm without vibration is called out`() {
+        runBlocking { repository.save(Alarm(time = LocalTime.of(6, 30), soundUri = AlarmSounds.SILENT_URI, vibrate = false)) }
+        ActivityScenario.launch(MainActivity::class.java).use {
+            await { compose.onAllNodesWithText("Once · No sound").fetchSemanticsNodes().isNotEmpty() }
+            compose.onNode(hasText("Once · No sound") and hasClickAction()).performClick()
+            await { compose.onAllNodesWithText("Edit alarm").fetchSemanticsNodes().isNotEmpty() }
+            compose.onNodeWithText("Silent and without vibration: this alarm wakes you only with the screen.").assertExists()
+
+            compose.onNode(hasText("Brighten the screen") and hasClickAction()).performScrollTo().performClick()
+            compose.onNodeWithText("Fast").performScrollTo().performClick()
+            await { alarm()?.let { it.brightnessPercent == 100 && it.blink == Blink.FAST } == true }
+        }
     }
 }

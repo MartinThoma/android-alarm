@@ -43,4 +43,12 @@
     <string name="feature_alarm_change_time">Change time</string>
     <string name="feature_alarm_set_confirmation">Alarm set · rings %1$s</string>
     <string name="feature_alarm_done">Done</string>
+    <string name="feature_alarm_brighten">Brighten the screen</string>
+    <string name="feature_alarm_brightness">Brightness</string>
+    <string name="feature_alarm_blink">Pulse</string>
+    <string name="feature_alarm_blink_off">Off</string>
+    <string name="feature_alarm_blink_slow">Slow</string>
+    <string name="feature_alarm_blink_medium">Medium</string>
+    <string name="feature_alarm_blink_fast">Fast</string>
+    <string name="feature_alarm_silent_warning">Silent and without vibration: this alarm wakes you only with the screen.</string>
 </resources>

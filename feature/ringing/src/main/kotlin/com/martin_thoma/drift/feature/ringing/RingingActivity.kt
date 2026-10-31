@@ -40,6 +40,16 @@ class RingingActivity : ComponentActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         // Only snooze and the dismiss slider end the alarm; back must not silence it by accident.
         onBackPressedDispatcher.addCallback(this) {}
+        // The alarm's own screen brightness, only for this window; the phone's returns when it closes.
+        lifecycleScope.launch {
+            ringingState.status.collect { status ->
+                val percent = (status as? RingingStatus.Ringing)?.alarm?.brightnessPercent
+                window.attributes =
+                    window.attributes.apply {
+                        screenBrightness = percent?.let { it / 100f } ?: WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
+                    }
+            }
+        }
         // Closes when the alarm stops, however that happens (also from the notification or auto-silence).
         lifecycleScope.launch {
             ringingState.status.first { it == RingingStatus.Idle }

@@ -41,4 +41,12 @@
     <string name="feature_alarm_change_time">更改时间</string>
     <string name="feature_alarm_set_confirmation">闹钟已设置 · %1$s响铃</string>
     <string name="feature_alarm_done">完成</string>
+    <string name="feature_alarm_brighten">调亮屏幕</string>
+    <string name="feature_alarm_brightness">亮度</string>
+    <string name="feature_alarm_blink">闪烁</string>
+    <string name="feature_alarm_blink_off">关</string>
+    <string name="feature_alarm_blink_slow">慢</string>
+    <string name="feature_alarm_blink_medium">中</string>
+    <string name="feature_alarm_blink_fast">快</string>
+    <string name="feature_alarm_silent_warning">无声且不振动：此闹钟只通过屏幕唤醒你。</string>
 </resources>

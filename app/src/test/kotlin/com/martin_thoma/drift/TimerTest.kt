@@ -7,13 +7,20 @@ import android.app.NotificationManager
 import android.content.Intent
 import android.os.Looper
 import android.provider.Settings
+import androidx.compose.ui.test.hasAnyAncestor
+import androidx.compose.ui.test.hasClickAction
+import androidx.compose.ui.test.hasContentDescription
+import androidx.compose.ui.test.hasScrollToIndexAction
 import androidx.compose.ui.test.hasSetTextAction
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.v2.createEmptyComposeRule
+import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performTextInput
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
@@ -100,9 +107,10 @@ class TimerTest {
     fun `a timer counts down, rings when it runs out, and plus one minute restarts it`() {
         val start = nowMillis()
         ActivityScenario.launch(MainActivity::class.java).use {
-            // 1. With no timers, the timer tab opens on the number pad: 1-0-0-0 is 10:00.
+            // 1. With no timers, the timer tab opens on the wheel; minutes are selected: turn it to 10.
             compose.onNodeWithText("Timer").performClick()
-            listOf("1", "0", "0", "0").forEach { compose.onNodeWithText(it).performClick() }
+            compose.onNode(hasScrollToIndexAction() and hasAnyAncestor(hasContentDescription("Minutes"))).performScrollToIndex(10)
+            compose.waitUntil(5_000) { compose.onAllNodes(hasContentDescription("Minutes: 10")).fetchSemanticsNodes().isNotEmpty() }
             compose.onNode(hasSetTextAction()).performTextInput("Tea")
             compose.onRoot().captureRoboImage("../docs/screenshots/timer-new.png")
             compose.onNodeWithContentDescription("Start").performClick()
@@ -113,6 +121,22 @@ class TimerTest {
             shadowOf(Looper.getMainLooper()).idleFor(Duration.ofSeconds(1))
             compose.waitUntil(5_000) { compose.onAllNodesWithText("06:33").fetchSemanticsNodes().isNotEmpty() }
             compose.onRoot().captureRoboImage("../docs/screenshots/timer.png")
+
+            // 2b. A second timer from the recent ones: now they are listed, like the alarms.
+            compose.onNodeWithContentDescription("New timer").performClick()
+            compose.onNodeWithText("3 min").performClick()
+            awaitUntil { runBlocking { repository.getAll() }.size == 2 }
+            compose.waitUntil(5_000) { compose.onAllNodesWithText("Timer · Rings at 4:06 PM").fetchSemanticsNodes().isNotEmpty() }
+            compose.onRoot().captureRoboImage("../docs/screenshots/timers.png")
+
+            // Tapping one opens it full screen; back returns to the list.
+            compose.onNode(hasText("Tea · Rings at 4:10 PM") and hasClickAction()).performClick()
+            compose.waitUntil(5_000) { compose.onAllNodesWithContentDescription("Back").fetchSemanticsNodes().isNotEmpty() }
+            compose.onNodeWithContentDescription("Back").performClick()
+            // Deleting the short one from its own screen leaves only the tea timer.
+            compose.onNode(hasText("Timer · Rings at 4:06 PM") and hasClickAction()).performClick()
+            compose.onNodeWithContentDescription("Delete timer").performClick()
+            awaitUntil { runBlocking { repository.getAll() }.size == 1 }
         }
         val timer = runBlocking { repository.getAll() }.single()
         assertEquals("Tea", timer.label)

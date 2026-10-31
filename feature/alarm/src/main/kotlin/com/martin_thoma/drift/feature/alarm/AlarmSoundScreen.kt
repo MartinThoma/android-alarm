@@ -210,6 +210,16 @@ private fun LazyListScope.soundGroup(
                         onClick = { onSelect(sound.uri) },
                     )
                 }
+                // Silence sits with the default: a deliberate choice, not a sound among others.
+                if (group == SoundGroup.DEFAULT) {
+                    PaneDivider()
+                    SoundRow(
+                        title = soundTitle(AlarmSounds.SILENT_URI),
+                        selected = state.selected == AlarmSounds.SILENT_URI,
+                        playing = false,
+                        onClick = { onSelect(AlarmSounds.SILENT_URI) },
+                    )
+                }
             }
         }
     }

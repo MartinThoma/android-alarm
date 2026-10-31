@@ -41,4 +41,12 @@
     <string name="feature_alarm_change_time">Alterar horário</string>
     <string name="feature_alarm_set_confirmation">Alarme definido · toca %1$s</string>
     <string name="feature_alarm_done">Concluído</string>
+    <string name="feature_alarm_brighten">Clarear a tela</string>
+    <string name="feature_alarm_brightness">Brilho</string>
+    <string name="feature_alarm_blink">Piscar</string>
+    <string name="feature_alarm_blink_off">Não</string>
+    <string name="feature_alarm_blink_slow">Lento</string>
+    <string name="feature_alarm_blink_medium">Médio</string>
+    <string name="feature_alarm_blink_fast">Rápido</string>
+    <string name="feature_alarm_silent_warning">Sem som e sem vibração: este alarme só acorda você pela tela.</string>
 </resources>

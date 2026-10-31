@@ -13,9 +13,13 @@
     <string name="feature_timer_of">dari %1$s</string>
     <string name="feature_timer_stop">Hentikan</string>
     <string name="feature_timer_times_up">Waktu habis</string>
-    <string name="feature_timer_backspace">Hapus digit</string>
     <string name="feature_timer_back">Kembali</string>
     <string name="feature_timer_rings_at">Berbunyi pukul %1$s</string>
     <string name="feature_timer_paused_short">Dijeda</string>
     <string name="feature_timer_minutes">%1$d mnt</string>
+    <string name="feature_timer_hours">Jam</string>
+    <string name="feature_timer_minutes_unit">Menit</string>
+    <string name="feature_timer_seconds">Detik</string>
+    <string name="feature_timer_increase">Tambah</string>
+    <string name="feature_timer_decrease">Kurangi</string>
 </resources>

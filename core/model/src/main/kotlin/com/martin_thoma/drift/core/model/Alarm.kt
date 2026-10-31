@@ -22,11 +22,16 @@ data class Alarm(
     val snoozeMinutes: Int = DEFAULT_SNOOZE_MINUTES,
     /** Set while the alarm is snoozed: it rings again at this moment, even if it is turned off. */
     val snoozedUntil: Instant? = null,
+    /** Screen brightness of the ringing screen, 1 to 100, or `null` to keep the phone's own. */
+    val brightnessPercent: Int? = null,
+    /** Whether, and how fast, the ringing screen pulses with light. */
+    val blink: Blink = Blink.OFF,
 ) {
     init {
         require(time.second == 0 && time.nano == 0) { "Alarms are set to the minute: $time" }
         require(volumePercent in 0..100) { "volumePercent out of range: $volumePercent" }
         require(snoozeMinutes in 1..60) { "snoozeMinutes out of range: $snoozeMinutes" }
+        require(brightnessPercent == null || brightnessPercent in 1..100) { "brightnessPercent out of range: $brightnessPercent" }
     }
 
     val isRepeating: Boolean get() = repeatDays.isNotEmpty()

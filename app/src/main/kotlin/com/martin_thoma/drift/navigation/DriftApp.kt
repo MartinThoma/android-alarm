@@ -27,6 +27,8 @@ import com.martin_thoma.drift.feature.stopwatch.StopwatchRoute
 import com.martin_thoma.drift.feature.stopwatch.StopwatchScreen
 import com.martin_thoma.drift.feature.timer.NewTimerRoute
 import com.martin_thoma.drift.feature.timer.NewTimerScreen
+import com.martin_thoma.drift.feature.timer.TimerDetailRoute
+import com.martin_thoma.drift.feature.timer.TimerDetailScreen
 import com.martin_thoma.drift.feature.timer.TimerRoute
 import com.martin_thoma.drift.feature.timer.TimerScreen
 
@@ -89,7 +91,10 @@ fun DriftApp(
                     }
                     entry<AlarmSoundRoute> { key -> AlarmSoundScreen(alarmId = key.alarmId, onBack = { backStack.removeLastOrNull() }) }
                     entry<StopwatchRoute> { StopwatchScreen() }
-                    entry<TimerRoute> { TimerScreen(onNewTimer = { backStack.add(NewTimerRoute) }) }
+                    entry<TimerRoute> {
+                        TimerScreen(onNewTimer = { backStack.add(NewTimerRoute) }, onOpenTimer = { backStack.add(TimerDetailRoute(it)) })
+                    }
+                    entry<TimerDetailRoute> { key -> TimerDetailScreen(timerId = key.timerId, onBack = { backStack.removeLastOrNull() }) }
                     entry<NewTimerRoute> { NewTimerScreen(onDone = { backStack.removeLastOrNull() }) }
                 },
         )

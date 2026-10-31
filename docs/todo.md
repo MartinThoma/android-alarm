@@ -20,10 +20,13 @@ Things decided but not yet done. Requirements live in [requirements.md](requirem
 - [ ] Google Play: decide whether the one-time $25 account fee and the closed test (12 testers, 14 days) are worth it. The release workflow then needs only an upload step.
 - [x] Bright turquoise beach by day, bioluminescent beach with moon jellyfish by night, alarms on one frosted glass sheet (2026-10-31, from Martin's reference photos).
 - [x] Alarm editor (weekdays, label, sound, volume with preview, vibration, snooze length, visible Delete), stopwatch and timer (2026-10-31).
-- [ ] Stopwatch: share or copy the laps (SW-06), keep the screen on (SW-07). Timer: presets and recent durations (TM-04), sound per timer (TM-05).
+- [ ] Stopwatch: share or copy the laps (SW-06), keep the screen on (SW-07). Timer: sound per timer (TM-05).
+- [x] Timer set with a wheel (tap hours, minutes or seconds at the top), recent timers as chips, several timers listed like the alarms (2026-10-31).
+- [x] App icon: the head of a crowing rooster, with a monochrome layer for themed icons (Martin, 2026-10-31).
 - [ ] Lint crashed now and then in its Kotlin analysis of test sources ("Error while resolving FirRegularClassImpl"), so lint skips test sources for now (`ignoreTestSources`). Try again with the next AGP update.
 - [ ] Sound picker: the phone's own alarm tones and ringtones as a further group (AL-04).
-- [ ] "No sound" as an option (Martin): the alarm then wakes by vibration and/or by slowly brightening the screen. Both also as extra modes next to a sound, chosen per alarm. Reliability first: warn if an alarm has neither sound nor vibration.
+- [x] "No sound" per alarm, with a warning when it also does not vibrate; per-alarm screen brightness and a soft light pulse (off, slow, medium, fast; at most twice a second, WCAG 2.3.1) on the ringing screen (2026-10-31).
+- [ ] A slowly brightening screen before the alarm rings (sunrise), as a further light option.
 - [ ] Listen to all bundled sounds on the phone and tune them (`scripts/make_alarm_sounds.py`): sea, rain, thunderstorm, crickets, alarm clock, Canon in D, Für Elise.
 
 - [ ] Translations: Martin reviews German; native speakers review French, Spanish, Portuguese, Russian, Indonesian, Chinese and Arabic before the first release.

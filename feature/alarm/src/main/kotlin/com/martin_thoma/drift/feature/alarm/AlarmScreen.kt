@@ -92,6 +92,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavKey
 import com.martin_thoma.drift.core.designsystem.GlassPane
 import com.martin_thoma.drift.core.designsystem.LocalTideColors
+import com.martin_thoma.drift.core.designsystem.SwipeToDelete
 import com.martin_thoma.drift.core.designsystem.TideAware
 import com.martin_thoma.drift.core.designsystem.TideIcons
 import com.martin_thoma.drift.core.designsystem.TideLevel
@@ -326,68 +327,6 @@ private fun NextAlarmText(
     }
 }
 
-/** Share of the row's width a swipe must cover before letting go deletes the alarm. */
-private const val DELETE_THRESHOLD = 0.5f
-
-/**
- * Swiping a row towards the start deletes it, once it has moved past [DELETE_THRESHOLD] of its
- * width; short of that it springs back, however fast the swipe. Material's SwipeToDismissBox
- * deleted after 56 dp, and for any swipe faster than 125 dp/s (Martin, on the S25).
- */
-@Composable
-private fun SwipeToDelete(
-    onDelete: () -> Unit,
-    modifier: Modifier = Modifier,
-    content: @Composable () -> Unit,
-) {
-    val colors = LocalTideColors.current
-    val haptics = LocalHapticFeedback.current
-    var width by remember { mutableIntStateOf(0) }
-    var offset by remember { mutableFloatStateOf(0f) }
-    // Past the threshold the row turns red and the phone ticks once: letting go now deletes.
-    val armed = width > 0 && -offset >= width * DELETE_THRESHOLD
-    LaunchedEffect(armed) {
-        if (armed) haptics.performHapticFeedback(HapticFeedbackType.GestureThresholdActivate)
-    }
-    Box(modifier.onSizeChanged { width = it.width }) {
-        if (offset < 0f) {
-            val background by animateColorAsState(
-                if (armed) colors.danger else colors.danger.copy(alpha = 0.18f),
-                label = "deleteBackground",
-            )
-            val icon by animateColorAsState(if (armed) colors.onDanger else colors.danger, label = "deleteIcon")
-            Row(
-                Modifier.matchParentSize().background(background).padding(horizontal = 24.dp),
-                horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Icon(painterResource(TideIcons.Delete), contentDescription = null, tint = icon)
-            }
-        }
-        Box(
-            Modifier
-                .offset { IntOffset(offset.roundToInt(), 0) }
-                .draggable(
-                    state = rememberDraggableState { delta -> offset = (offset + delta).coerceIn(-width.toFloat(), 0f) },
-                    orientation = Orientation.Horizontal,
-                    reverseDirection = LocalLayoutDirection.current == LayoutDirection.Rtl,
-                    onDragStopped = {
-                        if (-offset >= width * DELETE_THRESHOLD) {
-                            animate(offset, -width.toFloat(), animationSpec = tween(DELETE_SLIDE_MILLIS)) { value, _ -> offset = value }
-                            onDelete()
-                        } else {
-                            animate(offset, 0f, animationSpec = spring()) { value, _ -> offset = value }
-                        }
-                    },
-                ),
-        ) {
-            content()
-        }
-    }
-}
-
-private const val DELETE_SLIDE_MILLIS = 180
-
 @Composable
 private fun AlarmRow(
     alarm: Alarm,
@@ -483,7 +422,7 @@ internal fun AlarmTimeDialog(
 }
 
 @Composable
-private fun glassSwitchColors(): SwitchColors {
+internal fun glassSwitchColors(): SwitchColors {
     val colors = LocalTideColors.current
     return SwitchDefaults.colors(
         checkedTrackColor = colors.accent,
@@ -529,7 +468,7 @@ private fun alarmDetails(
         }
     val labelled = if (alarm.label.isEmpty()) days else stringResource(R.string.feature_alarm_with_label, days, alarm.label)
     // The default sound goes unmentioned; any other sound is named.
-    val sound = AlarmSounds.builtIn(alarm.soundUri)?.let { stringResource(it.title) } ?: AlarmSounds.custom(alarm.soundUri)?.title
+    val sound = soundTitle(alarm.soundUri).ifEmpty { null }
     val details =
         if (alarm.soundUri == null ||
             sound == null

@@ -25,9 +25,10 @@ class AlarmPlayer
         private val focusRequest = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT).setAudioAttributes(ATTRIBUTES).build()
         private var player: MediaPlayer? = null
 
-        /** Plays [soundUri], or the bundled chime if it is `null` or cannot play. */
+        /** Plays [soundUri], or the bundled chime if it is `null` or cannot play. A silent alarm plays nothing. */
         fun play(soundUri: String?) {
             stop()
+            if (AlarmSounds.isSilent(soundUri)) return
             audioManager.requestAudioFocus(focusRequest)
             val chosen = prepare(soundUri)
             if (chosen != null) start(chosen, onError = ::playFallback) else playFallback()

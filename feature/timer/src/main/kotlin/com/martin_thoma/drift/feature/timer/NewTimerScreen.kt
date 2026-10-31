@@ -1,6 +1,7 @@
 package com.martin_thoma.drift.feature.timer
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,11 +17,16 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -30,24 +36,30 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -61,14 +73,27 @@ import com.martin_thoma.drift.core.designsystem.TideLevel
 import com.martin_thoma.drift.core.designsystem.TideSurface
 import com.martin_thoma.drift.core.designsystem.formatDuration
 import com.martin_thoma.drift.core.designsystem.keepOnOpenWater
-import com.martin_thoma.drift.core.model.Timer
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.serialization.Serializable
 import java.util.Locale
+import kotlin.math.abs
 
 @Serializable
 data object NewTimerRoute : NavKey
 
-private const val MAX_DIGITS = 6
+/** The three parts of a duration; the wheel sets the one selected at the top. */
+private enum class Field(
+    val max: Int,
+    val label: Int,
+    val millis: Long,
+) {
+    HOURS(23, R.string.feature_timer_hours, 3_600_000),
+    MINUTES(59, R.string.feature_timer_minutes_unit, 60_000),
+    SECONDS(59, R.string.feature_timer_seconds, 1_000),
+}
+
+private val WHEEL_ITEM = 52.dp
+private const val WHEEL_VISIBLE = 5
 
 /** A further timer, while others run. */
 @Composable
@@ -90,8 +115,8 @@ fun NewTimerScreen(
 }
 
 /**
- * Setting a timer (requirements TM-01, TM-04): recent timers start with one tap; otherwise digits
- * fill from the right, so 1-0-0-0 is 10:00.
+ * Setting a timer (requirements TM-01, TM-04): recent timers start with one tap; otherwise tap
+ * hours, minutes or seconds at the top and turn the wheel below to set it (Martin, 2026-10-31).
  */
 @Composable
 internal fun NewTimerContent(
@@ -100,12 +125,31 @@ internal fun NewTimerContent(
     onBack: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
-    var digits by rememberSaveable { mutableStateOf("") }
+    var hours by rememberSaveable { mutableIntStateOf(0) }
+    var minutes by rememberSaveable { mutableIntStateOf(0) }
+    var seconds by rememberSaveable { mutableIntStateOf(0) }
+    var unit by rememberSaveable { mutableStateOf(Field.MINUTES) }
     var label by rememberSaveable { mutableStateOf("") }
     val colors = LocalTideColors.current
     val locale = LocalConfiguration.current.locales[0]
-    val millis = Timer.durationFromDigits(digits)
+    val millis = hours * Field.HOURS.millis + minutes * Field.MINUTES.millis + seconds * Field.SECONDS.millis
     var level by remember { mutableFloatStateOf(TideLevel.LOW) }
+
+    fun valueOf(u: Field) =
+        when (u) {
+            Field.HOURS -> hours
+            Field.MINUTES -> minutes
+            Field.SECONDS -> seconds
+        }
+
+    fun set(
+        u: Field,
+        value: Int,
+    ) = when (u) {
+        Field.HOURS -> hours = value
+        Field.MINUTES -> minutes = value
+        Field.SECONDS -> seconds = value
+    }
 
     TideSurface(level = level, modifier = modifier) {
         Column(
@@ -126,14 +170,28 @@ internal fun NewTimerContent(
                     }
                 }
             }
-            Display(
-                digits,
-                locale,
-                Modifier.keepOnOpenWater { level = it }.semantics { contentDescription = formatDuration(millis, locale) },
-            )
-            Spacer(Modifier.height(20.dp))
+            Row(Modifier.keepOnOpenWater { level = it }, verticalAlignment = Alignment.Top) {
+                Field.entries.forEachIndexed { index, u ->
+                    if (index >
+                        0
+                    ) {
+                        Text(
+                            ":",
+                            style = MaterialTheme.typography.displayLarge.copy(fontSize = 64.sp),
+                            color = colors.onSea.copy(alpha = 0.6f),
+                        )
+                    }
+                    Segment(value = valueOf(u), unit = u, selected = unit == u, locale = locale, onSelect = { unit = u })
+                }
+            }
+            Spacer(Modifier.height(12.dp))
             RecentChips(recents, locale, onStart = { onStart(it.setMillis, it.label) })
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.weight(1f))
+            // The wheel starts afresh for each unit, at that unit's value.
+            key(unit) {
+                NumberWheel(value = valueOf(unit), unit = unit, locale = locale, onValue = { set(unit, it) })
+            }
+            Spacer(Modifier.weight(1f))
             OutlinedTextField(
                 value = label,
                 onValueChange = { label = it.take(40) },
@@ -147,12 +205,6 @@ internal fun NewTimerContent(
                         focusedBorderColor = colors.accent,
                         unfocusedBorderColor = colors.glassRim,
                     ),
-            )
-            Spacer(Modifier.weight(1f))
-            Keypad(
-                locale = locale,
-                onDigits = { typed -> if (digits.length < MAX_DIGITS) digits = (digits + typed).take(MAX_DIGITS).trimStart('0') },
-                onBackspace = { digits = digits.dropLast(1) },
             )
             Spacer(Modifier.height(16.dp))
             FilledIconButton(
@@ -173,31 +225,118 @@ internal fun NewTimerContent(
     }
 }
 
-/** hh:mm:ss, the typed digits strong and the zeros before them faint. */
+/** One of hours, minutes, seconds: tap it to set it with the wheel. The one being set is marked. */
 @Composable
-private fun Display(
-    digits: String,
+private fun Segment(
+    value: Int,
+    unit: Field,
+    selected: Boolean,
     locale: Locale,
-    modifier: Modifier = Modifier,
+    onSelect: () -> Unit,
 ) {
     val colors = LocalTideColors.current
-    val padded = digits.padStart(MAX_DIGITS, '0')
-    val text = "${padded.substring(0, 2)}:${padded.substring(2, 4)}:${padded.substring(4, 6)}"
-    var digitIndex = 0
-    val firstTyped = MAX_DIGITS - digits.length
-    Text(
-        text =
-            buildAnnotatedString {
-                for (char in text) {
-                    val typed = if (char == ':') digitIndex > firstTyped else digitIndex++ >= firstTyped
-                    withStyle(SpanStyle(color = if (typed) colors.onSea else colors.onSea.copy(alpha = 0.35f))) {
-                        append(localizeDigit(char, locale))
-                    }
+    val name = stringResource(unit.label)
+    Column(
+        modifier =
+            Modifier
+                .clip(RoundedCornerShape(16.dp))
+                .background(if (selected) colors.glass else colors.glass.copy(alpha = 0f))
+                .selectable(selected = selected, role = Role.Tab, onClick = onSelect)
+                .padding(horizontal = 6.dp)
+                .semantics { contentDescription = "$name: $value" },
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Text(
+            String.format(locale, "%02d", value),
+            style = MaterialTheme.typography.displayLarge.copy(fontSize = 64.sp),
+            color = if (selected) colors.onGlass else colors.onSea,
+        )
+        Text(
+            name,
+            style = MaterialTheme.typography.labelMedium,
+            color = if (selected) colors.accent else colors.onSea.copy(alpha = 0.7f),
+            modifier = Modifier.padding(bottom = 6.dp),
+        )
+    }
+}
+
+/**
+ * A wheel of numbers that snaps to the one in the middle. TalkBack users get "increase" and
+ * "decrease" actions instead of turning it.
+ */
+@Composable
+private fun NumberWheel(
+    value: Int,
+    unit: Field,
+    locale: Locale,
+    onValue: (Int) -> Unit,
+) {
+    val colors = LocalTideColors.current
+    val state = rememberLazyListState(initialFirstVisibleItemIndex = value)
+    // The item in the middle: the list is padded by two items above and below.
+    val centre by remember {
+        derivedStateOf {
+            val itemPx =
+                state.layoutInfo.visibleItemsInfo
+                    .firstOrNull()
+                    ?.size ?: 1
+            (state.firstVisibleItemIndex + if (state.firstVisibleItemScrollOffset > itemPx / 2) 1 else 0).coerceIn(0, unit.max)
+        }
+    }
+    LaunchedEffect(state) {
+        snapshotFlow { centre }.distinctUntilChanged().collect(onValue)
+    }
+    // A value set another way (TalkBack's actions) turns the wheel, too.
+    LaunchedEffect(value) {
+        if (value != centre) state.animateScrollToItem(value)
+    }
+    val name = stringResource(unit.label)
+    val increase = stringResource(R.string.feature_timer_increase)
+    val decrease = stringResource(R.string.feature_timer_decrease)
+    Box(
+        modifier =
+            Modifier
+                .width(160.dp)
+                .height(WHEEL_ITEM * WHEEL_VISIBLE)
+                .semantics {
+                    contentDescription = name
+                    stateDescription = centre.toString()
+                    customActions =
+                        listOf(
+                            CustomAccessibilityAction(increase) {
+                                onValue((centre + 1).coerceAtMost(unit.max))
+                                true
+                            },
+                            CustomAccessibilityAction(decrease) {
+                                onValue((centre - 1).coerceAtLeast(0))
+                                true
+                            },
+                        )
+                },
+        contentAlignment = Alignment.Center,
+    ) {
+        // The window that shows which number is chosen.
+        GlassPane(Modifier.fillMaxWidth().height(WHEEL_ITEM), shape = RoundedCornerShape(16.dp)) {}
+        LazyColumn(
+            state = state,
+            flingBehavior = rememberSnapFlingBehavior(state),
+            contentPadding = PaddingValues(vertical = WHEEL_ITEM * (WHEEL_VISIBLE / 2)),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            items(unit.max + 1) { number ->
+                val distance = abs(number - centre)
+                Box(Modifier.height(WHEEL_ITEM).fillMaxWidth(), contentAlignment = Alignment.Center) {
+                    Text(
+                        String.format(locale, "%02d", number),
+                        style = MaterialTheme.typography.headlineLarge.copy(fontSize = if (distance == 0) 34.sp else 26.sp),
+                        color = if (distance == 0) colors.onGlass else colors.onSand,
+                        modifier = Modifier.alpha(if (distance == 0) 1f else (0.55f - 0.2f * (distance - 1)).coerceAtLeast(0.15f)),
+                    )
                 }
-            },
-        style = MaterialTheme.typography.displayLarge.copy(fontSize = 76.sp),
-        modifier = modifier,
-    )
+            }
+        }
+    }
 }
 
 /** Recent timers: one tap starts one again, with its label. */
@@ -225,52 +364,6 @@ private fun RecentChips(
                     style = MaterialTheme.typography.labelLarge,
                     modifier = Modifier.padding(horizontal = 18.dp, vertical = 12.dp),
                 )
-            }
-        }
-    }
-}
-
-private fun localizeDigit(
-    char: Char,
-    locale: Locale,
-): String = if (char.isDigit()) String.format(locale, "%d", char.digitToInt()) else char.toString()
-
-/** Light keys: large digits that answer a touch, without a box around every one. */
-@Composable
-private fun Keypad(
-    locale: Locale,
-    onDigits: (String) -> Unit,
-    onBackspace: () -> Unit,
-) {
-    val colors = LocalTideColors.current
-    val rows = listOf(listOf("1", "2", "3"), listOf("4", "5", "6"), listOf("7", "8", "9"), listOf("00", "0", null))
-    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        rows.forEach { row ->
-            Row(horizontalArrangement = Arrangement.spacedBy(24.dp)) {
-                row.forEach { key ->
-                    Box(
-                        modifier =
-                            Modifier
-                                .size(width = 80.dp, height = 64.dp)
-                                .clip(CircleShape)
-                                .clickable(role = Role.Button) { if (key == null) onBackspace() else onDigits(key) },
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        if (key == null) {
-                            Icon(
-                                painterResource(TideIcons.Backspace),
-                                contentDescription = stringResource(R.string.feature_timer_backspace),
-                                tint = colors.onSand,
-                            )
-                        } else {
-                            Text(
-                                key.map { localizeDigit(it, locale) }.joinToString(""),
-                                style = MaterialTheme.typography.headlineLarge.copy(fontSize = 30.sp),
-                                color = colors.onSand,
-                            )
-                        }
-                    }
-                }
             }
         }
     }

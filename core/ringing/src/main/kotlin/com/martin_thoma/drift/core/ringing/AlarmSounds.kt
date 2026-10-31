@@ -42,6 +42,14 @@ object AlarmSounds {
             BuiltInSound("fur_elise", SoundCategory.CLASSICS, R.string.core_ringing_sound_fur_elise, R.raw.sound_fur_elise),
         )
 
+    /**
+     * No sound at all: the alarm wakes by vibration and light only. Chosen on purpose, so unlike a
+     * sound that fails, it never falls back to the chime.
+     */
+    const val SILENT_URI = "drift:sound/none"
+
+    fun isSilent(soundUri: String?): Boolean = soundUri == SILENT_URI
+
     /** The built-in sound an alarm with [soundUri] rings with, or `null` for any other sound. */
     fun builtIn(soundUri: String?): BuiltInSound? = if (soundUri == null) Default else builtIn.find { it.uri == soundUri }
 

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.martin_thoma.drift.core.data.AlarmRepository
 import com.martin_thoma.drift.core.model.Alarm
+import com.martin_thoma.drift.core.model.Blink
 import com.martin_thoma.drift.core.ringing.SoundPreview
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -67,6 +68,11 @@ internal class AlarmEditorViewModel
         fun setSnoozeMinutes(minutes: Int) = change { it.copy(snoozeMinutes = minutes.coerceIn(1, MAX_SNOOZE)) }
 
         fun setVolume(percent: Int) = change { it.copy(volumePercent = percent.coerceIn(0, 100)) }
+
+        /** `null` keeps the phone's own brightness on the ringing screen. */
+        fun setBrightness(percent: Int?) = change { it.copy(brightnessPercent = percent?.coerceIn(1, 100)) }
+
+        fun setBlink(blink: Blink) = change { it.copy(blink = blink) }
 
         /** A short sample at [percent], exactly as loud as the alarm will ring (requirements AL-06). */
         fun previewVolume(percent: Int) {

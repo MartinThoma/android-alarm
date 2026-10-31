@@ -41,4 +41,12 @@
     <string name="feature_alarm_change_time">Modifier l’heure</string>
     <string name="feature_alarm_set_confirmation">Alarme réglée · sonne %1$s</string>
     <string name="feature_alarm_done">Terminé</string>
+    <string name="feature_alarm_brighten">Éclairer l’écran</string>
+    <string name="feature_alarm_brightness">Luminosité</string>
+    <string name="feature_alarm_blink">Clignoter</string>
+    <string name="feature_alarm_blink_off">Non</string>
+    <string name="feature_alarm_blink_slow">Lent</string>
+    <string name="feature_alarm_blink_medium">Moyen</string>
+    <string name="feature_alarm_blink_fast">Rapide</string>
+    <string name="feature_alarm_silent_warning">Silencieuse et sans vibration : cette alarme vous réveille uniquement avec l’écran.</string>
 </resources>

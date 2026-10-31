@@ -41,4 +41,12 @@
     <string name="feature_alarm_change_time">Cambiar hora</string>
     <string name="feature_alarm_set_confirmation">Alarma puesta · suena %1$s</string>
     <string name="feature_alarm_done">Listo</string>
+    <string name="feature_alarm_brighten">Iluminar la pantalla</string>
+    <string name="feature_alarm_brightness">Brillo</string>
+    <string name="feature_alarm_blink">Parpadear</string>
+    <string name="feature_alarm_blink_off">No</string>
+    <string name="feature_alarm_blink_slow">Lento</string>
+    <string name="feature_alarm_blink_medium">Medio</string>
+    <string name="feature_alarm_blink_fast">Rápido</string>
+    <string name="feature_alarm_silent_warning">Sin sonido ni vibración: esta alarma solo te despierta con la pantalla.</string>
 </resources>

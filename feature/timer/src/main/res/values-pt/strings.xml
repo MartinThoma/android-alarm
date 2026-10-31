@@ -13,9 +13,13 @@
     <string name="feature_timer_of">de %1$s</string>
     <string name="feature_timer_stop">Parar</string>
     <string name="feature_timer_times_up">Tempo esgotado</string>
-    <string name="feature_timer_backspace">Apagar dígito</string>
     <string name="feature_timer_back">Voltar</string>
     <string name="feature_timer_rings_at">Toca às %1$s</string>
     <string name="feature_timer_paused_short">Pausado</string>
     <string name="feature_timer_minutes">%1$d min</string>
+    <string name="feature_timer_hours">Horas</string>
+    <string name="feature_timer_minutes_unit">Minutos</string>
+    <string name="feature_timer_seconds">Segundos</string>
+    <string name="feature_timer_increase">Aumentar</string>
+    <string name="feature_timer_decrease">Diminuir</string>
 </resources>

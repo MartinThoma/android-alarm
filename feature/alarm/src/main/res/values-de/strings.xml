@@ -41,4 +41,12 @@
     <string name="feature_alarm_change_time">Uhrzeit ändern</string>
     <string name="feature_alarm_set_confirmation">Wecker gestellt · klingelt %1$s</string>
     <string name="feature_alarm_done">Fertig</string>
+    <string name="feature_alarm_brighten">Bildschirm aufhellen</string>
+    <string name="feature_alarm_brightness">Helligkeit</string>
+    <string name="feature_alarm_blink">Blinken</string>
+    <string name="feature_alarm_blink_off">Aus</string>
+    <string name="feature_alarm_blink_slow">Langsam</string>
+    <string name="feature_alarm_blink_medium">Mittel</string>
+    <string name="feature_alarm_blink_fast">Schnell</string>
+    <string name="feature_alarm_silent_warning">Lautlos und ohne Vibration: Dieser Wecker weckt dich nur über den Bildschirm.</string>
 </resources>

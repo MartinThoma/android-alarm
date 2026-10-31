@@ -17,7 +17,7 @@ class SoundPreview
             soundUri: String?,
             volumePercent: Int,
         ) {
-            if (ringing.status.value != RingingStatus.Idle) return
+            if (ringing.status.value != RingingStatus.Idle || AlarmSounds.isSilent(soundUri)) return
             volume.apply(volumePercent)
             player.play(soundUri)
         }

@@ -69,7 +69,7 @@ internal class AlarmSoundViewModel
                 return
             }
             viewModelScope.launch { repository.setSound(alarmId, soundUri.takeUnless { it == AlarmSounds.Default.uri }) }
-            play(soundUri)
+            if (AlarmSounds.isSilent(soundUri)) stopPreview() else play(soundUri)
         }
 
         fun add(source: Uri) {

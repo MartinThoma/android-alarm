@@ -41,4 +41,12 @@
     <string name="feature_alarm_change_time">تغيير الوقت</string>
     <string name="feature_alarm_set_confirmation">تم ضبط المنبه · يرن %1$s</string>
     <string name="feature_alarm_done">تم</string>
+    <string name="feature_alarm_brighten">إضاءة الشاشة</string>
+    <string name="feature_alarm_brightness">السطوع</string>
+    <string name="feature_alarm_blink">الوميض</string>
+    <string name="feature_alarm_blink_off">إيقاف</string>
+    <string name="feature_alarm_blink_slow">بطيء</string>
+    <string name="feature_alarm_blink_medium">متوسط</string>
+    <string name="feature_alarm_blink_fast">سريع</string>
+    <string name="feature_alarm_silent_warning">بلا صوت ولا اهتزاز: هذا المنبه يوقظك عبر الشاشة فقط.</string>
 </resources>

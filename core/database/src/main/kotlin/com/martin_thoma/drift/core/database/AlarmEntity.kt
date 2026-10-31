@@ -1,5 +1,6 @@
 package com.martin_thoma.drift.core.database
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -18,4 +19,8 @@ data class AlarmEntity(
     val snoozeMinutes: Int,
     /** Epoch milliseconds; set while the alarm is snoozed. Added in version 2. */
     val snoozedUntil: Long? = null,
+    /** Added in version 4. */
+    val brightnessPercent: Int? = null,
+    /** A [com.martin_thoma.drift.core.model.Blink] name. Added in version 4. */
+    @ColumnInfo(defaultValue = "OFF") val blink: String = "OFF",
 )

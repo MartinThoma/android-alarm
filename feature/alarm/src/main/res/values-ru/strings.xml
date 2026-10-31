@@ -41,4 +41,12 @@
     <string name="feature_alarm_change_time">Изменить время</string>
     <string name="feature_alarm_set_confirmation">Будильник установлен · зазвонит %1$s</string>
     <string name="feature_alarm_done">Готово</string>
+    <string name="feature_alarm_brighten">Яркий экран</string>
+    <string name="feature_alarm_brightness">Яркость</string>
+    <string name="feature_alarm_blink">Мигание</string>
+    <string name="feature_alarm_blink_off">Выкл.</string>
+    <string name="feature_alarm_blink_slow">Медленно</string>
+    <string name="feature_alarm_blink_medium">Средне</string>
+    <string name="feature_alarm_blink_fast">Быстро</string>
+    <string name="feature_alarm_silent_warning">Без звука и вибрации: этот будильник будит только экраном.</string>
 </resources>

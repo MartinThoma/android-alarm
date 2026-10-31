@@ -2,5 +2,4 @@
 <resources>
     <!-- Keep in sync with DayTideColors / NightTideColors in :core:designsystem. -->
     <color name="tide_sand">#F0DCAC</color>
-    <color name="ic_launcher_sand">#F0DCAC</color>
 </resources>

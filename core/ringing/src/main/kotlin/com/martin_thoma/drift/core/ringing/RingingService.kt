@@ -112,8 +112,11 @@ class RingingService : Service() {
                     return@launch
                 }
                 notifications.cancelSnoozed(alarm.id)
-                volume.apply(alarm.volumePercent)
-                player.play(alarm.soundUri)
+                // A silent alarm leaves the volume alone: nothing plays.
+                if (!AlarmSounds.isSilent(alarm.soundUri)) {
+                    volume.apply(alarm.volumePercent)
+                    player.play(alarm.soundUri)
+                }
                 if (alarm.vibrate) vibrator.start()
                 state.update(RingingStatus.Ringing(alarm, since))
                 notifications.update(notifications.ringing(alarm, since))

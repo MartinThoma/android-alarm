@@ -3,6 +3,7 @@ package com.martin_thoma.drift.core.data
 import com.martin_thoma.drift.core.database.AlarmDao
 import com.martin_thoma.drift.core.database.AlarmEntity
 import com.martin_thoma.drift.core.model.Alarm
+import com.martin_thoma.drift.core.model.Blink
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.time.DayOfWeek
@@ -56,6 +57,9 @@ internal fun AlarmEntity.toModel() =
         vibrate = vibrate,
         snoozeMinutes = snoozeMinutes,
         snoozedUntil = snoozedUntil?.let(Instant::ofEpochMilli),
+        brightnessPercent = brightnessPercent,
+        // An unknown name (from a later version) means no blinking rather than a crash.
+        blink = Blink.entries.find { it.name == blink } ?: Blink.OFF,
     )
 
 internal fun Alarm.toEntity() =
@@ -71,6 +75,8 @@ internal fun Alarm.toEntity() =
         vibrate = vibrate,
         snoozeMinutes = snoozeMinutes,
         snoozedUntil = snoozedUntil?.toEpochMilli(),
+        brightnessPercent = brightnessPercent,
+        blink = blink.name,
     )
 
 private fun DayOfWeek.bit() = 1 shl (value - 1)

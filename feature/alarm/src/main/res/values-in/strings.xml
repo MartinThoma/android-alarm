@@ -41,4 +41,12 @@
     <string name="feature_alarm_change_time">Ubah waktu</string>
     <string name="feature_alarm_set_confirmation">Alarm dipasang · berbunyi %1$s</string>
     <string name="feature_alarm_done">Selesai</string>
+    <string name="feature_alarm_brighten">Terangkan layar</string>
+    <string name="feature_alarm_brightness">Kecerahan</string>
+    <string name="feature_alarm_blink">Berkedip</string>
+    <string name="feature_alarm_blink_off">Mati</string>
+    <string name="feature_alarm_blink_slow">Lambat</string>
+    <string name="feature_alarm_blink_medium">Sedang</string>
+    <string name="feature_alarm_blink_fast">Cepat</string>
+    <string name="feature_alarm_silent_warning">Tanpa suara dan getar: alarm ini hanya membangunkan Anda lewat layar.</string>
 </resources>

@@ -5,12 +5,15 @@ import android.content.Context
 import android.content.Intent
 import android.media.AudioManager
 import android.os.Looper
+import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import com.martin_thoma.drift.core.data.AlarmRepository
 import com.martin_thoma.drift.core.model.Alarm
+import com.martin_thoma.drift.core.ringing.AlarmSounds
 import com.martin_thoma.drift.core.ringing.RingingService
 import com.martin_thoma.drift.core.ringing.RingingState
 import com.martin_thoma.drift.core.ringing.RingingStatus
+import com.martin_thoma.drift.feature.ringing.RingingActivity
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
@@ -118,5 +121,23 @@ class RingingTest {
         assertEquals(RingingStatus.Idle, ringingState.status.value)
         assertEquals(2, audioManager.getStreamVolume(AudioManager.STREAM_ALARM))
         awaitUntil { context.getSystemService(NotificationManager::class.java).activeNotifications.any { it.tag == "snoozed:$id" } }
+    }
+
+    @Test
+    fun `a silent alarm rings without sound and leaves the volume alone`() {
+        ring(Alarm(time = LocalTime.of(6, 30), volumePercent = 100, soundUri = AlarmSounds.SILENT_URI))
+
+        assertEquals(2, audioManager.getStreamVolume(AudioManager.STREAM_ALARM))
+        assertTrue(shadowOf(audioManager).lastAudioFocusRequest == null)
+    }
+
+    @Test
+    fun `the ringing screen uses the alarm's own brightness`() {
+        ringingState.update(RingingStatus.Ringing(Alarm(id = 1, time = LocalTime.of(6, 30), brightnessPercent = 30), Instant.EPOCH))
+
+        ActivityScenario.launch(RingingActivity::class.java).use { scenario ->
+            shadowOf(Looper.getMainLooper()).idle()
+            scenario.onActivity { assertEquals(0.3f, it.window.attributes.screenBrightness, 0.001f) }
+        }
     }
 }

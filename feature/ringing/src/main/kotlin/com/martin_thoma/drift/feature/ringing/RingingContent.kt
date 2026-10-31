@@ -1,7 +1,13 @@
 package com.martin_thoma.drift.feature.ringing
 
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animate
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.Orientation
@@ -38,6 +44,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
@@ -67,6 +74,7 @@ import com.martin_thoma.drift.core.designsystem.rememberDateFormatter
 import com.martin_thoma.drift.core.designsystem.rememberTimeFormatter
 import com.martin_thoma.drift.core.designsystem.tideVariantColor
 import com.martin_thoma.drift.core.model.Alarm
+import com.martin_thoma.drift.core.model.Blink
 import com.martin_thoma.drift.core.ringing.RingingStatus
 import java.time.LocalTime
 import java.time.ZonedDateTime
@@ -112,6 +120,7 @@ private fun AlarmRinging(
 ) {
     val timeFormatter = rememberTimeFormatter()
     val dateFormatter = rememberDateFormatter("EEEEdMMMM")
+    if (status.alarm.blink != Blink.OFF) LightPulse(status.alarm.blink)
     RingingLayout(
         headline = {
             TideAware { underwater ->
@@ -168,6 +177,25 @@ private fun TimerRinging(
         },
     )
 }
+
+/**
+ * Light that swells and fades at the alarm's pulse rate, over the beach but under the time and the
+ * buttons, so they stay readable. A soft wave, never a hard flash (see [Blink]).
+ */
+@Composable
+private fun LightPulse(blink: Blink) {
+    val halfCycle = (500 / blink.pulsesPerSecond).toInt()
+    val transition = rememberInfiniteTransition(label = "lightPulse")
+    val strength by transition.animateFloat(
+        initialValue = 0f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(tween(halfCycle, easing = FastOutSlowInEasing), RepeatMode.Reverse),
+        label = "lightPulseStrength",
+    )
+    Box(Modifier.fillMaxSize().background(Color.White.copy(alpha = LIGHT_PULSE_MAX_ALPHA * strength)))
+}
+
+private const val LIGHT_PULSE_MAX_ALPHA = 0.75f
 
 @Composable
 private fun BigText(
