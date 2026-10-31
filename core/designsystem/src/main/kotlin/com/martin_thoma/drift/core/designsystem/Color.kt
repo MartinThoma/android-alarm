@@ -41,6 +41,9 @@ data class TideColors(
     val onGlassVariant: Color,
     val accent: Color,
     val onAccent: Color,
+    /** Destructive actions, e.g. a row about to be deleted. */
+    val danger: Color,
+    val onDanger: Color,
     val dismissThumb: Color,
     val onDismissThumb: Color,
     val dismissThumbRim: Color,
@@ -72,6 +75,8 @@ val DayTideColors =
         onGlassVariant = Color(0xFF1F4148),
         accent = Color(0xFF006A73),
         onAccent = Color(0xFFFFFFFF),
+        danger = Color(0xFFC63D2F),
+        onDanger = Color(0xFFFFFFFF),
         dismissThumb = Color(0xFF006A73),
         onDismissThumb = Color(0xFFFFFFFF),
         dismissThumbRim = Color.Transparent,
@@ -102,6 +107,8 @@ val NightTideColors =
         onGlassVariant = Color(0xFFA2B3BB),
         accent = Color(0xFF62D2FF),
         onAccent = Color(0xFF021827),
+        danger = Color(0xFFC94A3E),
+        onDanger = Color(0xFFFFFFFF),
         // Calmer than the snooze pane: a dark thumb with a glowing rim.
         dismissThumb = Color(0xFF0B2638),
         onDismissThumb = Color(0xFF5FD4FF),

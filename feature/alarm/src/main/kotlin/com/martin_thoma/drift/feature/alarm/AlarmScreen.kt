@@ -6,9 +6,18 @@ import android.content.res.Resources
 import android.text.format.DateFormat
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animate
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.draggable
+import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -18,6 +27,7 @@ import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
@@ -37,20 +47,19 @@ import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
-import androidx.compose.material3.SwipeToDismissBox
-import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchColors
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimePicker
-import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -58,16 +67,24 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.CustomAccessibilityAction
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -82,6 +99,7 @@ import com.martin_thoma.drift.core.designsystem.TideSurface
 import com.martin_thoma.drift.core.designsystem.TideTheme
 import com.martin_thoma.drift.core.designsystem.rememberTimeFormatter
 import com.martin_thoma.drift.core.domain.NextTrigger
+import com.martin_thoma.drift.core.domain.UpcomingAlarm
 import com.martin_thoma.drift.core.model.Alarm
 import com.martin_thoma.drift.core.ringing.AlarmSounds
 import kotlinx.coroutines.launch
@@ -94,6 +112,7 @@ import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.Locale
+import kotlin.math.roundToInt
 import kotlin.time.toKotlinDuration
 
 @Serializable
@@ -255,6 +274,30 @@ private fun NextAlarm(
 ) {
     val upcoming = state.upcoming
     val now = state.now
+    // An invisible copy of the full hero keeps its height, so the alarms below never jump when the
+    // last alarm is turned off or on (Martin, on the S25). It follows the font size, unlike a fixed height.
+    // The copy uses the same formatting, so it is as tall in every script (Arabic digits are taller),
+    // and the box takes the taller of the two, so a long label is never cut off.
+    Box(modifier, contentAlignment = Alignment.TopStart) {
+        Column(Modifier.alpha(0f).clearAndSetSemantics {}, verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text(
+                timeFormatter.format(LocalTime.MIDNIGHT),
+                style = MaterialTheme.typography.displayLarge.copy(fontSize = 96.sp, lineHeight = 96.sp),
+            )
+            Text(stringResource(R.string.feature_alarm_in_minutes, 0), style = MaterialTheme.typography.titleLarge)
+        }
+        NextAlarmText(state, upcoming, now, timeFormatter)
+    }
+}
+
+@Composable
+private fun NextAlarmText(
+    state: AlarmListUiState,
+    upcoming: UpcomingAlarm?,
+    now: ZonedDateTime?,
+    timeFormatter: DateTimeFormatter,
+    modifier: Modifier = Modifier,
+) {
     Column(modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
         if (upcoming == null || now == null) {
             if (!state.loading) {
@@ -283,6 +326,68 @@ private fun NextAlarm(
     }
 }
 
+/** Share of the row's width a swipe must cover before letting go deletes the alarm. */
+private const val DELETE_THRESHOLD = 0.5f
+
+/**
+ * Swiping a row towards the start deletes it, once it has moved past [DELETE_THRESHOLD] of its
+ * width; short of that it springs back, however fast the swipe. Material's SwipeToDismissBox
+ * deleted after 56 dp, and for any swipe faster than 125 dp/s (Martin, on the S25).
+ */
+@Composable
+private fun SwipeToDelete(
+    onDelete: () -> Unit,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    val colors = LocalTideColors.current
+    val haptics = LocalHapticFeedback.current
+    var width by remember { mutableIntStateOf(0) }
+    var offset by remember { mutableFloatStateOf(0f) }
+    // Past the threshold the row turns red and the phone ticks once: letting go now deletes.
+    val armed = width > 0 && -offset >= width * DELETE_THRESHOLD
+    LaunchedEffect(armed) {
+        if (armed) haptics.performHapticFeedback(HapticFeedbackType.GestureThresholdActivate)
+    }
+    Box(modifier.onSizeChanged { width = it.width }) {
+        if (offset < 0f) {
+            val background by animateColorAsState(
+                if (armed) colors.danger else colors.danger.copy(alpha = 0.18f),
+                label = "deleteBackground",
+            )
+            val icon by animateColorAsState(if (armed) colors.onDanger else colors.danger, label = "deleteIcon")
+            Row(
+                Modifier.matchParentSize().background(background).padding(horizontal = 24.dp),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Icon(painterResource(TideIcons.Delete), contentDescription = null, tint = icon)
+            }
+        }
+        Box(
+            Modifier
+                .offset { IntOffset(offset.roundToInt(), 0) }
+                .draggable(
+                    state = rememberDraggableState { delta -> offset = (offset + delta).coerceIn(-width.toFloat(), 0f) },
+                    orientation = Orientation.Horizontal,
+                    reverseDirection = LocalLayoutDirection.current == LayoutDirection.Rtl,
+                    onDragStopped = {
+                        if (-offset >= width * DELETE_THRESHOLD) {
+                            animate(offset, -width.toFloat(), animationSpec = tween(DELETE_SLIDE_MILLIS)) { value, _ -> offset = value }
+                            onDelete()
+                        } else {
+                            animate(offset, 0f, animationSpec = spring()) { value, _ -> offset = value }
+                        }
+                    },
+                ),
+        ) {
+            content()
+        }
+    }
+}
+
+private const val DELETE_SLIDE_MILLIS = 180
+
 @Composable
 private fun AlarmRow(
     alarm: Alarm,
@@ -293,31 +398,7 @@ private fun AlarmRow(
     onDelete: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val dismissState = rememberSwipeToDismissBoxState()
-    LaunchedEffect(dismissState.currentValue) {
-        if (dismissState.currentValue == SwipeToDismissBoxValue.EndToStart) onDelete()
-    }
-    SwipeToDismissBox(
-        state = dismissState,
-        enableDismissFromStartToEnd = false,
-        modifier = modifier,
-        backgroundContent = {
-            // The row is transparent on the glass, so the hint only shows while swiping.
-            if (dismissState.dismissDirection == SwipeToDismissBoxValue.EndToStart) {
-                Row(
-                    Modifier.fillMaxSize().padding(horizontal = 24.dp),
-                    horizontalArrangement = Arrangement.End,
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(
-                        painterResource(TideIcons.Delete),
-                        contentDescription = stringResource(R.string.feature_alarm_delete),
-                        tint = LocalTideColors.current.onGlassVariant,
-                    )
-                }
-            }
-        },
-    ) {
+    SwipeToDelete(onDelete = onDelete, modifier = modifier) {
         val colors = LocalTideColors.current
         val deleteLabel = stringResource(R.string.feature_alarm_delete)
         Row(
