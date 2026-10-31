@@ -1,6 +1,5 @@
 package com.martin_thoma.tide.feature.ringing
 
-import android.text.format.DateFormat
 import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
@@ -39,8 +38,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
@@ -62,12 +59,13 @@ import com.martin_thoma.tide.core.designsystem.TideIcons
 import com.martin_thoma.tide.core.designsystem.TideLevel
 import com.martin_thoma.tide.core.designsystem.TideSurface
 import com.martin_thoma.tide.core.designsystem.TideTheme
+import com.martin_thoma.tide.core.designsystem.rememberDateFormatter
+import com.martin_thoma.tide.core.designsystem.rememberTimeFormatter
 import com.martin_thoma.tide.core.designsystem.tideVariantColor
 import com.martin_thoma.tide.core.model.Alarm
 import com.martin_thoma.tide.core.ringing.RingingStatus
 import java.time.LocalTime
 import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 import kotlin.math.roundToInt
 
 /** Past this share of the track, letting go dismisses; before it, the handle slides back. */
@@ -93,10 +91,8 @@ internal fun RingingContent(
     TideSurface(level = TideLevel.HIGH, modifier = modifier) {
         // While the alarm loads (a few milliseconds), only the sea shows.
         val alarm = (status as? RingingStatus.Ringing)?.alarm ?: return@TideSurface
-        val locale = LocalConfiguration.current.locales[0]
-        val is24Hour = DateFormat.is24HourFormat(LocalContext.current)
-        val timeFormatter = remember(is24Hour, locale) { DateTimeFormatter.ofPattern(if (is24Hour) "HH:mm" else "h:mm a", locale) }
-        val dateFormatter = remember(locale) { DateTimeFormatter.ofPattern(DateFormat.getBestDateTimePattern(locale, "EEEEdMMMM"), locale) }
+        val timeFormatter = rememberTimeFormatter()
+        val dateFormatter = rememberDateFormatter("EEEEdMMMM")
 
         // Placed by the waterline: snooze on the water, clear of the foam; the dismiss slider on the sand.
         BoxWithConstraints(Modifier.fillMaxSize()) {

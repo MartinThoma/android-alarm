@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_alarm_none">Tidak ada alarm</string>
+    <string name="feature_alarm_empty">Ketuk + untuk memasang alarm pertama Anda.</string>
+    <string name="feature_alarm_in_minutes">dalam %1$d mnt</string>
+    <string name="feature_alarm_in_hours_minutes">dalam %1$d j %2$d mnt</string>
+    <string name="feature_alarm_in_days_hours">dalam %1$d h %2$d j</string>
+    <string name="feature_alarm_once">Sekali</string>
+    <string name="feature_alarm_every_day">Setiap hari</string>
+    <string name="feature_alarm_new">Alarm baru</string>
+    <string name="feature_alarm_set">Pasang alarm</string>
+    <string name="feature_alarm_cancel">Batal</string>
+    <string name="feature_alarm_deleted">Alarm dihapus</string>
+    <string name="feature_alarm_undo">Urungkan</string>
+    <string name="feature_alarm_delete">Hapus</string>
+    <string name="feature_alarm_snoozed_until">Ditunda hingga %1$s</string>
+    <string name="feature_alarm_choose_sound">Pilih suara</string>
+    <string name="feature_alarm_back">Kembali</string>
+    <string name="feature_alarm_sound_title">Suara alarm</string>
+    <string name="feature_alarm_sound_default">Bawaan</string>
+    <string name="feature_alarm_sound_nature">Alam</string>
+    <string name="feature_alarm_sound_noisy">Bising</string>
+    <string name="feature_alarm_sound_classics">Klasik</string>
+    <string name="feature_alarm_sound_custom">Suara saya</string>
+    <string name="feature_alarm_sound_add">Tambah file suara</string>
+    <string name="feature_alarm_sound_add_hint">MP3, WAV, atau OGG, hingga 30 MB</string>
+    <string name="feature_alarm_sound_delete">Hapus %1$s</string>
+    <string name="feature_alarm_sound_playing">Sedang diputar</string>
+    <string name="feature_alarm_sound_too_large">File ini lebih dari 30 MB. Pilih yang lebih pendek.</string>
+    <string name="feature_alarm_sound_not_playable">File ini tidak dapat diputar. Pilih file MP3, WAV, atau OGG.</string>
+</resources>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="core_ringing_channel_ringing">Alarm berbunyi</string>
+    <string name="core_ringing_channel_ringing_description">Menampilkan alarm saat berbunyi, juga di layar kunci.</string>
+    <string name="core_ringing_channel_upcoming">Alarm mendatang</string>
+    <string name="core_ringing_channel_upcoming_description">Alarm yang ditunda, hingga berbunyi lagi.</string>
+    <string name="core_ringing_channel_missed">Alarm terlewat</string>
+    <string name="core_ringing_channel_missed_description">Alarm yang berbunyi hingga berhenti sendiri.</string>
+    <string name="core_ringing_alarm">Alarm</string>
+    <string name="core_ringing_snooze">Tunda</string>
+    <string name="core_ringing_dismiss">Matikan</string>
+    <string name="core_ringing_snoozed_until">Ditunda hingga %1$s</string>
+    <string name="core_ringing_missed">Alarm terlewat</string>
+    <string name="core_ringing_missed_text">%1$s berbunyi pukul %2$s dan berhenti sendiri.</string>
+    <string name="core_ringing_sound_tide">Lonceng Tide</string>
+    <string name="core_ringing_sound_sea">Laut</string>
+    <string name="core_ringing_sound_rain">Hujan</string>
+    <string name="core_ringing_sound_thunder">Badai petir</string>
+    <string name="core_ringing_sound_crickets">Jangkrik</string>
+    <string name="core_ringing_sound_alarm_clock">Jam weker</string>
+    <string name="core_ringing_sound_canon_in_d">Canon in D · Pachelbel</string>
+    <string name="core_ringing_sound_fur_elise">Für Elise · Beethoven</string>
+</resources>

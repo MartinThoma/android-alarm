@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tab_alarm">闹钟</string>
+    <string name="tab_stopwatch">秒表</string>
+    <string name="tab_timer">计时器</string>
+</resources>

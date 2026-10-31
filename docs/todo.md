@@ -21,10 +21,11 @@ Things decided but not yet done. Requirements live in [requirements.md](requirem
 - [x] Bright turquoise beach by day, bioluminescent beach with moon jellyfish by night, alarms on one frosted glass sheet (2026-10-31, from Martin's reference photos).
 - [ ] Alarm editor: a visible Delete button, so swiping is not the only way to delete (requirements section 8).
 - [ ] Sound picker: a volume slider next to the sounds (requirements AL-05), and the phone's own alarm tones and ringtones as a further group (AL-04).
+- [ ] "No sound" as an option (Martin): the alarm then wakes by vibration and/or by slowly brightening the screen. Both also as extra modes next to a sound, chosen per alarm. Reliability first: warn if an alarm has neither sound nor vibration.
 - [ ] Listen to all bundled sounds on the phone and tune them (`scripts/make_alarm_sounds.py`): sea, rain, thunderstorm, crickets, alarm clock, Canon in D, Für Elise.
 
-- [ ] Translations: Martin reviews German; a native speaker reviews French and Spanish before the first release.
-- [ ] Translations by the community through Hosted Weblate (free for libre projects, used by many F-Droid apps); Brazilian Portuguese, Italian and Polish are the next candidates.
+- [ ] Translations: Martin reviews German; native speakers review French, Spanish, Portuguese, Russian, Indonesian, Chinese and Arabic before the first release.
+- [ ] Translations by the community through Hosted Weblate (free for libre projects, used by many F-Droid apps); Italian, Polish, Turkish, Japanese and Hindi are the next candidates.
 
 ## Ideas
 

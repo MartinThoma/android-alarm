@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_alarm_none">Nenhum alarme</string>
+    <string name="feature_alarm_empty">Toque em + para criar seu primeiro alarme.</string>
+    <string name="feature_alarm_in_minutes">em %1$d min</string>
+    <string name="feature_alarm_in_hours_minutes">em %1$d h %2$d min</string>
+    <string name="feature_alarm_in_days_hours">em %1$d d %2$d h</string>
+    <string name="feature_alarm_once">Uma vez</string>
+    <string name="feature_alarm_every_day">Todos os dias</string>
+    <string name="feature_alarm_new">Novo alarme</string>
+    <string name="feature_alarm_set">Definir alarme</string>
+    <string name="feature_alarm_cancel">Cancelar</string>
+    <string name="feature_alarm_deleted">Alarme excluído</string>
+    <string name="feature_alarm_undo">Desfazer</string>
+    <string name="feature_alarm_delete">Excluir</string>
+    <string name="feature_alarm_snoozed_until">Adiado até %1$s</string>
+    <string name="feature_alarm_choose_sound">Escolher som</string>
+    <string name="feature_alarm_back">Voltar</string>
+    <string name="feature_alarm_sound_title">Som do alarme</string>
+    <string name="feature_alarm_sound_default">Padrão</string>
+    <string name="feature_alarm_sound_nature">Natureza</string>
+    <string name="feature_alarm_sound_noisy">Barulhento</string>
+    <string name="feature_alarm_sound_classics">Clássicos</string>
+    <string name="feature_alarm_sound_custom">Meus sons</string>
+    <string name="feature_alarm_sound_add">Adicionar arquivo de som</string>
+    <string name="feature_alarm_sound_add_hint">MP3, WAV ou OGG, até 30 MB</string>
+    <string name="feature_alarm_sound_delete">Excluir %1$s</string>
+    <string name="feature_alarm_sound_playing">Tocando</string>
+    <string name="feature_alarm_sound_too_large">Este arquivo tem mais de 30 MB. Escolha um mais curto.</string>
+    <string name="feature_alarm_sound_not_playable">Não é possível reproduzir este arquivo. Escolha um arquivo MP3, WAV ou OGG.</string>
+</resources>

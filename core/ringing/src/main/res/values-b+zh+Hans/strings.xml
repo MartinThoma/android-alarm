@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="core_ringing_channel_ringing">正在响铃的闹钟</string>
+    <string name="core_ringing_channel_ringing_description">在闹钟响铃时显示，锁屏上也会显示。</string>
+    <string name="core_ringing_channel_upcoming">即将响铃的闹钟</string>
+    <string name="core_ringing_channel_upcoming_description">已推迟的闹钟，直到再次响铃。</string>
+    <string name="core_ringing_channel_missed">错过的闹钟</string>
+    <string name="core_ringing_channel_missed_description">一直响到自动停止的闹钟。</string>
+    <string name="core_ringing_alarm">闹钟</string>
+    <string name="core_ringing_snooze">稍后提醒</string>
+    <string name="core_ringing_dismiss">关闭</string>
+    <string name="core_ringing_snoozed_until">已推迟到 %1$s</string>
+    <string name="core_ringing_missed">错过的闹钟</string>
+    <string name="core_ringing_missed_text">%1$s 于 %2$s 响铃，已自动停止。</string>
+    <string name="core_ringing_sound_tide">Tide 铃声</string>
+    <string name="core_ringing_sound_sea">大海</string>
+    <string name="core_ringing_sound_rain">雨声</string>
+    <string name="core_ringing_sound_thunder">雷雨</string>
+    <string name="core_ringing_sound_crickets">蟋蟀</string>
+    <string name="core_ringing_sound_alarm_clock">经典闹钟</string>
+    <string name="core_ringing_sound_canon_in_d">D大调卡农 · 帕赫贝尔</string>
+    <string name="core_ringing_sound_fur_elise">致爱丽丝 · 贝多芬</string>
+</resources>

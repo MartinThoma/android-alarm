@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_stopwatch_title">秒表</string>
+    <string name="feature_stopwatch_placeholder">即将推出。</string>
+</resources>

@@ -1,7 +1,6 @@
 package com.martin_thoma.tide.feature.alarm
 
 import android.net.Uri
-import android.text.format.DateFormat
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
@@ -42,8 +41,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -58,13 +55,11 @@ import com.martin_thoma.tide.core.designsystem.LocalTideColors
 import com.martin_thoma.tide.core.designsystem.TideIcons
 import com.martin_thoma.tide.core.designsystem.TideLevel
 import com.martin_thoma.tide.core.designsystem.TideSurface
+import com.martin_thoma.tide.core.designsystem.rememberTimeFormatter
 import com.martin_thoma.tide.core.ringing.AlarmSounds
-import com.martin_thoma.tide.core.ringing.BuiltInSound
 import com.martin_thoma.tide.core.ringing.CustomSound
 import com.martin_thoma.tide.core.ringing.ImportResult
-import com.martin_thoma.tide.core.ringing.SoundCategory
 import kotlinx.serialization.Serializable
-import java.time.format.DateTimeFormatter
 
 @Serializable
 data class AlarmSoundRoute(
@@ -114,9 +109,7 @@ internal fun AlarmSoundContent(
     modifier: Modifier = Modifier,
 ) {
     val colors = LocalTideColors.current
-    val is24Hour = DateFormat.is24HourFormat(LocalContext.current)
-    val locale = LocalConfiguration.current.locales[0]
-    val timeFormatter = remember(is24Hour, locale) { DateTimeFormatter.ofPattern(if (is24Hour) "HH:mm" else "h:mm a", locale) }
+    val timeFormatter = rememberTimeFormatter()
 
     TideSurface(level = TideLevel.LOW, modifier = modifier) {
         Scaffold(
@@ -161,27 +154,14 @@ internal fun AlarmSoundContent(
                 contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 112.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                soundGroup(R.string.feature_alarm_sound_default, AlarmSounds.builtIn.filter { it.category == null }, state, onSelect)
-                soundGroup(
-                    R.string.feature_alarm_sound_nature,
-                    AlarmSounds.builtIn.filter { it.category == SoundCategory.NATURE },
-                    state,
-                    onSelect,
-                )
-                soundGroup(
-                    R.string.feature_alarm_sound_noisy,
-                    AlarmSounds.builtIn.filter { it.category == SoundCategory.NOISY },
-                    state,
-                    onSelect,
-                )
-                soundGroup(
-                    R.string.feature_alarm_sound_classics,
-                    AlarmSounds.builtIn.filter { it.category == SoundCategory.CLASSICS },
-                    state,
-                    onSelect,
-                )
+                listOf(
+                    SoundGroup.DEFAULT,
+                    SoundGroup.NATURE,
+                    SoundGroup.NOISY,
+                    SoundGroup.CLASSICS,
+                ).forEach { soundGroup(it, state, onSelect) }
                 item(key = "custom") {
-                    GroupHeading(R.string.feature_alarm_sound_custom)
+                    GroupHeading(SoundGroup.MINE)
                     GlassPane(Modifier.fillMaxWidth()) {
                         Column {
                             state.customSounds.forEach { sound ->
@@ -212,13 +192,13 @@ internal fun AlarmSoundContent(
 }
 
 private fun LazyListScope.soundGroup(
-    heading: Int,
-    sounds: List<BuiltInSound>,
+    group: SoundGroup,
     state: AlarmSoundUiState,
     onSelect: (String) -> Unit,
 ) {
-    item(key = heading) {
-        GroupHeading(heading)
+    val sounds = AlarmSounds.builtIn.filter { it.category == group.category }
+    item(key = group.name) {
+        GroupHeading(group)
         GlassPane(Modifier.fillMaxWidth()) {
             Column {
                 sounds.forEachIndexed { index, sound ->
@@ -236,13 +216,16 @@ private fun LazyListScope.soundGroup(
 }
 
 @Composable
-private fun GroupHeading(text: Int) {
-    Text(
-        text = stringResource(text),
-        style = MaterialTheme.typography.titleSmall,
-        color = LocalTideColors.current.onSandVariant,
-        modifier = Modifier.padding(start = 8.dp, top = 16.dp, bottom = 8.dp),
-    )
+private fun GroupHeading(group: SoundGroup) {
+    Row(
+        modifier = Modifier.padding(start = 4.dp, top = 16.dp, bottom = 10.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        // Decorative: the heading names the group for TalkBack.
+        SoundGroupArt(group)
+        Text(text = stringResource(group.heading), style = MaterialTheme.typography.titleMedium, color = LocalTideColors.current.onSand)
+    }
 }
 
 @Composable

@@ -70,6 +70,13 @@ class ScreenshotTest {
         compose.waitForIdle()
     }
 
+    private fun awaitTextContaining(text: String) {
+        compose.waitUntil(timeoutMillis = 5_000) {
+            compose.onAllNodes(hasText(text, substring = true)).fetchSemanticsNodes().isNotEmpty()
+        }
+        compose.waitForIdle()
+    }
+
     private fun saveSampleAlarms() =
         runBlocking {
             repository.save(Alarm(time = LocalTime.of(6, 30), repeatDays = weekdays, label = "Work"))
@@ -135,6 +142,19 @@ class ScreenshotTest {
     }
 
     @Test
+    fun soundPickerAtNight() {
+        RuntimeEnvironment.setQualifiers("+night")
+        saveSampleAlarms()
+
+        ActivityScenario.launch(MainActivity::class.java).use {
+            awaitText("Mon–Fri · Work")
+            compose.onNode(hasText("Mon–Fri · Work") and hasClickAction()).performClick()
+            awaitText("Canon in D · Pachelbel")
+            compose.onRoot().captureRoboImage("../docs/screenshots/sounds-night.png")
+        }
+    }
+
+    @Test
     fun ringing() {
         time.now = ZonedDateTime.parse("2026-11-02T06:30:00+01:00[Europe/Berlin]")
         val alarm = Alarm(id = 1, time = LocalTime.of(6, 30), repeatDays = weekdays, label = "Work")
@@ -187,6 +207,35 @@ class ScreenshotTest {
         ActivityScenario.launch(RingingActivity::class.java).use {
             awaitText("Zum Beenden schieben")
             compose.onRoot().captureRoboImage("../docs/screenshots/de/ringing.png")
+        }
+    }
+
+    /** Arabic is written right to left: the whole layout, the arrows and the dismiss slider mirror. */
+    @Test
+    fun inArabic() {
+        RuntimeEnvironment.setQualifiers("+ar")
+        saveSampleAlarms()
+        time.now = ZonedDateTime.parse("2026-11-02T06:05:00+01:00[Europe/Berlin]")
+
+        ActivityScenario.launch(MainActivity::class.java).use {
+            awaitTextContaining("بعد")
+            compose.onRoot().captureRoboImage("../docs/screenshots/ar/alarms.png")
+            compose.onAllNodes(hasText("Work", substring = true) and hasClickAction())[0].performClick()
+            awaitText("صوت المنبه")
+            compose.onRoot().captureRoboImage("../docs/screenshots/ar/sounds.png")
+        }
+    }
+
+    @Test
+    fun ringingInArabicAndRussian() {
+        time.now = ZonedDateTime.parse("2026-11-02T06:30:00+01:00[Europe/Berlin]")
+        ringingState.update(RingingStatus.Ringing(Alarm(id = 1, time = LocalTime.of(6, 30)), time.now.toInstant()))
+        for ((qualifier, slide) in listOf("+ar" to "اسحب للإيقاف", "+ru" to "Проведите, чтобы выключить")) {
+            RuntimeEnvironment.setQualifiers(qualifier)
+            ActivityScenario.launch(RingingActivity::class.java).use {
+                awaitText(slide)
+                compose.onRoot().captureRoboImage("../docs/screenshots/${qualifier.drop(1)}/ringing.png")
+            }
         }
     }
 }

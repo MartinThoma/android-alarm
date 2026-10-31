@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="core_ringing_channel_ringing">Звонящие будильники</string>
+    <string name="core_ringing_channel_ringing_description">Показывает будильник, пока он звонит, в том числе на экране блокировки.</string>
+    <string name="core_ringing_channel_upcoming">Предстоящие будильники</string>
+    <string name="core_ringing_channel_upcoming_description">Отложенные будильники, пока они не зазвонят снова.</string>
+    <string name="core_ringing_channel_missed">Пропущенные будильники</string>
+    <string name="core_ringing_channel_missed_description">Будильники, которые звонили, пока не выключились сами.</string>
+    <string name="core_ringing_alarm">Будильник</string>
+    <string name="core_ringing_snooze">Отложить</string>
+    <string name="core_ringing_dismiss">Выключить</string>
+    <string name="core_ringing_snoozed_until">Отложен до %1$s</string>
+    <string name="core_ringing_missed">Пропущенный будильник</string>
+    <string name="core_ringing_missed_text">%1$s: звонил в %2$s и выключился автоматически.</string>
+    <string name="core_ringing_sound_tide">Колокольчик Tide</string>
+    <string name="core_ringing_sound_sea">Море</string>
+    <string name="core_ringing_sound_rain">Дождь</string>
+    <string name="core_ringing_sound_thunder">Гроза</string>
+    <string name="core_ringing_sound_crickets">Сверчки</string>
+    <string name="core_ringing_sound_alarm_clock">Классический будильник</string>
+    <string name="core_ringing_sound_canon_in_d">Канон ре мажор · Пахельбель</string>
+    <string name="core_ringing_sound_fur_elise">К Элизе · Бетховен</string>
+</resources>

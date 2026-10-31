@@ -15,7 +15,7 @@ Requires Android 15 (API 35) or newer. See [docs/requirements.md](docs/requireme
 
 > **Work in progress.** Alarms ring, snooze and dismiss, but have not been tested on a real phone yet. There is no alarm editor yet.
 
-In English, German, French and Spanish; each can also be chosen as the app's own language in Android's settings.
+In English, German, French, Spanish, Portuguese, Russian, Indonesian, Chinese (simplified) and Arabic; each can also be chosen as the app's own language in Android's settings.
 
 ## Screenshots
 

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tab_alarm">المنبه</string>
+    <string name="tab_stopwatch">ساعة الإيقاف</string>
+    <string name="tab_timer">المؤقت</string>
+</resources>

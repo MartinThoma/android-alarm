@@ -61,7 +61,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.CustomAccessibilityAction
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
@@ -77,7 +76,7 @@ import com.martin_thoma.tide.core.designsystem.TideIcons
 import com.martin_thoma.tide.core.designsystem.TideLevel
 import com.martin_thoma.tide.core.designsystem.TideSurface
 import com.martin_thoma.tide.core.designsystem.TideTheme
-import com.martin_thoma.tide.core.designsystem.tideVariantColor
+import com.martin_thoma.tide.core.designsystem.rememberTimeFormatter
 import com.martin_thoma.tide.core.domain.NextTrigger
 import com.martin_thoma.tide.core.model.Alarm
 import com.martin_thoma.tide.core.ringing.AlarmSounds
@@ -126,7 +125,7 @@ internal fun AlarmListContent(
 ) {
     val is24Hour = DateFormat.is24HourFormat(LocalContext.current)
     val locale = LocalConfiguration.current.locales[0]
-    val timeFormatter = remember(is24Hour, locale) { DateTimeFormatter.ofPattern(if (is24Hour) "HH:mm" else "h:mm a", locale) }
+    val timeFormatter = rememberTimeFormatter()
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     var showNewAlarm by rememberSaveable { mutableStateOf(false) }

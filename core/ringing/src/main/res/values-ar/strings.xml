@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="core_ringing_channel_ringing">المنبهات التي ترن</string>
+    <string name="core_ringing_channel_ringing_description">يعرض المنبه أثناء رنينه، حتى على شاشة القفل.</string>
+    <string name="core_ringing_channel_upcoming">المنبهات القادمة</string>
+    <string name="core_ringing_channel_upcoming_description">المنبهات المؤجلة حتى ترن مرة أخرى.</string>
+    <string name="core_ringing_channel_missed">المنبهات الفائتة</string>
+    <string name="core_ringing_channel_missed_description">منبهات رنّت حتى توقفت تلقائيًا.</string>
+    <string name="core_ringing_alarm">منبه</string>
+    <string name="core_ringing_snooze">غفوة</string>
+    <string name="core_ringing_dismiss">إيقاف</string>
+    <string name="core_ringing_snoozed_until">مؤجل حتى %1$s</string>
+    <string name="core_ringing_missed">منبه فائت</string>
+    <string name="core_ringing_missed_text">رنّ %1$s في %2$s ثم توقف تلقائيًا.</string>
+    <string name="core_ringing_sound_tide">رنين Tide</string>
+    <string name="core_ringing_sound_sea">البحر</string>
+    <string name="core_ringing_sound_rain">المطر</string>
+    <string name="core_ringing_sound_thunder">عاصفة رعدية</string>
+    <string name="core_ringing_sound_crickets">صراصير الليل</string>
+    <string name="core_ringing_sound_alarm_clock">منبه كلاسيكي</string>
+    <string name="core_ringing_sound_canon_in_d">كانون في ري · باخلبل</string>
+    <string name="core_ringing_sound_fur_elise">إلى إليز · بيتهوفن</string>
+</resources>

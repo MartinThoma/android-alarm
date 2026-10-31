@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_alarm_none">未设闹钟</string>
+    <string name="feature_alarm_empty">点按 + 设置第一个闹钟。</string>
+    <string name="feature_alarm_in_minutes">%1$d 分钟后</string>
+    <string name="feature_alarm_in_hours_minutes">%1$d 小时 %2$d 分钟后</string>
+    <string name="feature_alarm_in_days_hours">%1$d 天 %2$d 小时后</string>
+    <string name="feature_alarm_once">仅一次</string>
+    <string name="feature_alarm_every_day">每天</string>
+    <string name="feature_alarm_new">新建闹钟</string>
+    <string name="feature_alarm_set">设置闹钟</string>
+    <string name="feature_alarm_cancel">取消</string>
+    <string name="feature_alarm_deleted">闹钟已删除</string>
+    <string name="feature_alarm_undo">撤消</string>
+    <string name="feature_alarm_delete">删除</string>
+    <string name="feature_alarm_snoozed_until">已推迟到 %1$s</string>
+    <string name="feature_alarm_choose_sound">选择铃声</string>
+    <string name="feature_alarm_back">返回</string>
+    <string name="feature_alarm_sound_title">闹钟铃声</string>
+    <string name="feature_alarm_sound_default">默认</string>
+    <string name="feature_alarm_sound_nature">自然</string>
+    <string name="feature_alarm_sound_noisy">响亮</string>
+    <string name="feature_alarm_sound_classics">古典</string>
+    <string name="feature_alarm_sound_custom">我的声音</string>
+    <string name="feature_alarm_sound_add">添加声音文件</string>
+    <string name="feature_alarm_sound_add_hint">MP3、WAV 或 OGG，最大 30 MB</string>
+    <string name="feature_alarm_sound_delete">删除 %1$s</string>
+    <string name="feature_alarm_sound_playing">正在播放</string>
+    <string name="feature_alarm_sound_too_large">此文件超过 30 MB。请选择较短的文件。</string>
+    <string name="feature_alarm_sound_not_playable">无法播放此文件。请选择 MP3、WAV 或 OGG 文件。</string>
+</resources>

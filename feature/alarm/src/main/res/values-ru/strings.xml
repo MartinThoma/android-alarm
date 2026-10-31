@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_alarm_none">Нет будильников</string>
+    <string name="feature_alarm_empty">Нажмите +, чтобы завести первый будильник.</string>
+    <string name="feature_alarm_in_minutes">через %1$d мин</string>
+    <string name="feature_alarm_in_hours_minutes">через %1$d ч %2$d мин</string>
+    <string name="feature_alarm_in_days_hours">через %1$d д %2$d ч</string>
+    <string name="feature_alarm_once">Однократно</string>
+    <string name="feature_alarm_every_day">Каждый день</string>
+    <string name="feature_alarm_new">Новый будильник</string>
+    <string name="feature_alarm_set">Установить</string>
+    <string name="feature_alarm_cancel">Отмена</string>
+    <string name="feature_alarm_deleted">Будильник удалён</string>
+    <string name="feature_alarm_undo">Отменить</string>
+    <string name="feature_alarm_delete">Удалить</string>
+    <string name="feature_alarm_snoozed_until">Отложен до %1$s</string>
+    <string name="feature_alarm_choose_sound">Выбрать звук</string>
+    <string name="feature_alarm_back">Назад</string>
+    <string name="feature_alarm_sound_title">Звук будильника</string>
+    <string name="feature_alarm_sound_default">По умолчанию</string>
+    <string name="feature_alarm_sound_nature">Природа</string>
+    <string name="feature_alarm_sound_noisy">Громкие</string>
+    <string name="feature_alarm_sound_classics">Классика</string>
+    <string name="feature_alarm_sound_custom">Мои звуки</string>
+    <string name="feature_alarm_sound_add">Добавить аудиофайл</string>
+    <string name="feature_alarm_sound_add_hint">MP3, WAV или OGG, до 30 МБ</string>
+    <string name="feature_alarm_sound_delete">Удалить %1$s</string>
+    <string name="feature_alarm_sound_playing">Воспроизводится</string>
+    <string name="feature_alarm_sound_too_large">Файл больше 30 МБ. Выберите файл покороче.</string>
+    <string name="feature_alarm_sound_not_playable">Этот файл нельзя воспроизвести. Выберите файл MP3, WAV или OGG.</string>
+</resources>

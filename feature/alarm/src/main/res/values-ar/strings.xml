@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_alarm_none">لا يوجد منبه</string>
+    <string name="feature_alarm_empty">انقر على + لضبط أول منبه.</string>
+    <string name="feature_alarm_in_minutes">بعد %1$d د</string>
+    <string name="feature_alarm_in_hours_minutes">بعد %1$d س %2$d د</string>
+    <string name="feature_alarm_in_days_hours">بعد %1$d ي %2$d س</string>
+    <string name="feature_alarm_once">مرة واحدة</string>
+    <string name="feature_alarm_every_day">كل يوم</string>
+    <string name="feature_alarm_new">منبه جديد</string>
+    <string name="feature_alarm_set">ضبط المنبه</string>
+    <string name="feature_alarm_cancel">إلغاء</string>
+    <string name="feature_alarm_deleted">تم حذف المنبه</string>
+    <string name="feature_alarm_undo">تراجع</string>
+    <string name="feature_alarm_delete">حذف</string>
+    <string name="feature_alarm_snoozed_until">مؤجل حتى %1$s</string>
+    <string name="feature_alarm_choose_sound">اختيار الصوت</string>
+    <string name="feature_alarm_back">رجوع</string>
+    <string name="feature_alarm_sound_title">صوت المنبه</string>
+    <string name="feature_alarm_sound_default">الافتراضي</string>
+    <string name="feature_alarm_sound_nature">الطبيعة</string>
+    <string name="feature_alarm_sound_noisy">صاخب</string>
+    <string name="feature_alarm_sound_classics">كلاسيكيات</string>
+    <string name="feature_alarm_sound_custom">أصواتي</string>
+    <string name="feature_alarm_sound_add">إضافة ملف صوتي</string>
+    <string name="feature_alarm_sound_add_hint">MP3 أو WAV أو OGG، حتى 30 ميغابايت</string>
+    <string name="feature_alarm_sound_delete">حذف %1$s</string>
+    <string name="feature_alarm_sound_playing">قيد التشغيل</string>
+    <string name="feature_alarm_sound_too_large">حجم هذا الملف أكبر من 30 ميغابايت. اختر ملفًا أقصر.</string>
+    <string name="feature_alarm_sound_not_playable">لا يمكن تشغيل هذا الملف. اختر ملف MP3 أو WAV أو OGG.</string>
+</resources>
