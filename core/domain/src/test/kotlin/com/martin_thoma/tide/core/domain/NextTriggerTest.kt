@@ -119,6 +119,24 @@ class NextTriggerTest {
     }
 
     @Test
+    fun `a snooze rings before the regular trigger`() {
+        val snoozed = alarm("06:30", *weekdays.toTypedArray()).copy(snoozedUntil = at("2026-11-02T06:40").toInstant())
+        assertEquals(at("2026-11-02T06:40").toInstant(), NextTrigger.of(snoozed, at("2026-11-02T06:31"))?.toInstant())
+    }
+
+    @Test
+    fun `a snoozed one-time alarm rings although it is off`() {
+        val snoozed = alarm("06:30", enabled = false).copy(snoozedUntil = at("2026-11-02T06:40").toInstant())
+        assertEquals(at("2026-11-02T06:40").toInstant(), NextTrigger.of(snoozed, at("2026-11-02T06:31"))?.toInstant())
+    }
+
+    @Test
+    fun `a snooze that passed while the phone was off still rings`() {
+        val snoozed = alarm("06:30", enabled = false).copy(snoozedUntil = at("2026-11-02T06:40").toInstant())
+        assertEquals(at("2026-11-02T06:40").toInstant(), NextTrigger.of(snoozed, at("2026-11-02T07:15"))?.toInstant())
+    }
+
+    @Test
     fun `random alarms always ring after now, within a week, on a repeat day, at their time`() {
         val random = Random(42)
         val zones = listOf(berlin, ZoneId.of("America/New_York"), ZoneId.of("Australia/Lord_Howe"), ZoneId.of("UTC"))

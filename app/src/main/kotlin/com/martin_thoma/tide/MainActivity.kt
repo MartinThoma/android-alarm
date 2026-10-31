@@ -13,8 +13,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        // The sea is always under the status bar and always dark enough for light icons.
-        enableEdgeToEdge(statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT))
+        // Bright water by day takes dark status bar icons; the night sea takes light ones.
+        enableEdgeToEdge(statusBarStyle = SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT))
         super.onCreate(savedInstanceState)
         setContent {
             TideTheme {

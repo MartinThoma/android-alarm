@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_alarm_none">Aucune alarme</string>
+    <string name="feature_alarm_empty">Touchez + pour régler votre première alarme.</string>
+    <string name="feature_alarm_in_minutes">dans %1$d min</string>
+    <string name="feature_alarm_in_hours_minutes">dans %1$d h %2$d min</string>
+    <string name="feature_alarm_in_days_hours">dans %1$d j %2$d h</string>
+    <string name="feature_alarm_once">Une fois</string>
+    <string name="feature_alarm_every_day">Tous les jours</string>
+    <string name="feature_alarm_new">Nouvelle alarme</string>
+    <string name="feature_alarm_set">Régler</string>
+    <string name="feature_alarm_cancel">Annuler</string>
+    <string name="feature_alarm_deleted">Alarme supprimée</string>
+    <string name="feature_alarm_undo">Annuler</string>
+    <string name="feature_alarm_delete">Supprimer</string>
+    <string name="feature_alarm_snoozed_until">Répétition jusqu’à %1$s</string>
+    <string name="feature_alarm_choose_sound">Choisir la sonnerie</string>
+    <string name="feature_alarm_back">Retour</string>
+    <string name="feature_alarm_sound_title">Sonnerie</string>
+    <string name="feature_alarm_sound_default">Par défaut</string>
+    <string name="feature_alarm_sound_nature">Nature</string>
+    <string name="feature_alarm_sound_noisy">Bruyant</string>
+    <string name="feature_alarm_sound_classics">Classique</string>
+    <string name="feature_alarm_sound_custom">Mes sons</string>
+    <string name="feature_alarm_sound_add">Ajouter un fichier audio</string>
+    <string name="feature_alarm_sound_add_hint">MP3, WAV ou OGG, jusqu’à 30 Mo</string>
+    <string name="feature_alarm_sound_delete">Supprimer %1$s</string>
+    <string name="feature_alarm_sound_playing">Lecture en cours</string>
+    <string name="feature_alarm_sound_too_large">Ce fichier dépasse 30 Mo. Choisissez-en un plus court.</string>
+    <string name="feature_alarm_sound_not_playable">Ce fichier ne peut pas être lu. Choisissez un fichier MP3, WAV ou OGG.</string>
+</resources>

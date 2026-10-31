@@ -1,19 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="feature_alarm_next">Next alarm · %1$s</string>
     <string name="feature_alarm_none">No alarm set</string>
-    <string name="feature_alarm_empty">No alarms yet. Tap + to add one.</string>
+    <string name="feature_alarm_empty">Tap + to set your first alarm.</string>
     <string name="feature_alarm_in_minutes">in %1$d min</string>
     <string name="feature_alarm_in_hours_minutes">in %1$d h %2$d min</string>
     <string name="feature_alarm_in_days_hours">in %1$d d %2$d h</string>
     <string name="feature_alarm_once">Once</string>
     <string name="feature_alarm_every_day">Every day</string>
-    <string name="feature_alarm_range">%1$s–%2$s</string>
-    <string name="feature_alarm_with_label">%1$s · %2$s</string>
+    <string name="feature_alarm_range" translatable="false">%1$s–%2$s</string>
+    <string name="feature_alarm_with_label" translatable="false">%1$s · %2$s</string>
     <string name="feature_alarm_new">New alarm</string>
     <string name="feature_alarm_set">Set alarm</string>
     <string name="feature_alarm_cancel">Cancel</string>
     <string name="feature_alarm_deleted">Alarm deleted</string>
     <string name="feature_alarm_undo">Undo</string>
     <string name="feature_alarm_delete">Delete</string>
+    <string name="feature_alarm_snoozed_until">Snoozed until %1$s</string>
+    <string name="feature_alarm_choose_sound">Choose sound</string>
+    <string name="feature_alarm_back">Back</string>
+    <string name="feature_alarm_sound_title">Alarm sound</string>
+    <string name="feature_alarm_sound_default">Default</string>
+    <string name="feature_alarm_sound_nature">Nature</string>
+    <string name="feature_alarm_sound_noisy">Noisy</string>
+    <string name="feature_alarm_sound_classics">Classics</string>
+    <string name="feature_alarm_sound_custom">My sounds</string>
+    <string name="feature_alarm_sound_add">Add a sound file</string>
+    <string name="feature_alarm_sound_add_hint">MP3, WAV or OGG, up to 30 MB</string>
+    <string name="feature_alarm_sound_delete">Delete %1$s</string>
+    <string name="feature_alarm_sound_playing">Playing</string>
+    <string name="feature_alarm_sound_too_large">This file is larger than 30 MB. Choose a shorter one.</string>
+    <string name="feature_alarm_sound_not_playable">This file cannot be played. Choose an MP3, WAV or OGG file.</string>
 </resources>

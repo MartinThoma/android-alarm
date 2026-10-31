@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_ringing_alarm">Alarma</string>
+    <string name="feature_ringing_snooze">Posponer</string>
+    <string name="feature_ringing_snooze_minutes">%1$d min</string>
+    <string name="feature_ringing_slide_to_dismiss">Desliza para detener</string>
+    <string name="feature_ringing_dismiss">Detener</string>
+</resources>

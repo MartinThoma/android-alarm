@@ -6,6 +6,7 @@ import com.martin_thoma.tide.core.model.Alarm
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.time.DayOfWeek
+import java.time.Instant
 import java.time.LocalTime
 import javax.inject.Inject
 
@@ -30,6 +31,16 @@ internal class RoomAlarmRepository
             enabled: Boolean,
         ) = dao.setEnabled(id, enabled)
 
+        override suspend fun setSound(
+            id: Long,
+            soundUri: String?,
+        ) = dao.setSound(id, soundUri)
+
+        override suspend fun setSnoozedUntil(
+            id: Long,
+            until: Instant?,
+        ) = dao.setSnoozedUntil(id, until?.toEpochMilli())
+
         override suspend fun delete(id: Long) = dao.delete(id)
     }
 
@@ -44,6 +55,7 @@ internal fun AlarmEntity.toModel() =
         soundUri = soundUri,
         vibrate = vibrate,
         snoozeMinutes = snoozeMinutes,
+        snoozedUntil = snoozedUntil?.let(Instant::ofEpochMilli),
     )
 
 internal fun Alarm.toEntity() =
@@ -58,6 +70,7 @@ internal fun Alarm.toEntity() =
         soundUri = soundUri,
         vibrate = vibrate,
         snoozeMinutes = snoozeMinutes,
+        snoozedUntil = snoozedUntil?.toEpochMilli(),
     )
 
 private fun DayOfWeek.bit() = 1 shl (value - 1)

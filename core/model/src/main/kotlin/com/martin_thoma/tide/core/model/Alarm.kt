@@ -1,6 +1,7 @@
 package com.martin_thoma.tide.core.model
 
 import java.time.DayOfWeek
+import java.time.Instant
 import java.time.LocalTime
 
 /**
@@ -19,6 +20,8 @@ data class Alarm(
     val soundUri: String? = null,
     val vibrate: Boolean = true,
     val snoozeMinutes: Int = DEFAULT_SNOOZE_MINUTES,
+    /** Set while the alarm is snoozed: it rings again at this moment, even if it is turned off. */
+    val snoozedUntil: Instant? = null,
 ) {
     init {
         require(time.second == 0 && time.nano == 0) { "Alarms are set to the minute: $time" }
@@ -27,6 +30,12 @@ data class Alarm(
     }
 
     val isRepeating: Boolean get() = repeatDays.isNotEmpty()
+
+    /** Whether the alarm will ring again: it is on, or a snooze is pending. */
+    val isActive: Boolean get() = enabled || snoozedUntil != null
+
+    /** The alarm once it has started ringing: a pending snooze is used up, a one-time alarm turns off. */
+    fun afterRinging(): Alarm = copy(enabled = enabled && isRepeating, snoozedUntil = null)
 
     companion object {
         const val DEFAULT_VOLUME_PERCENT = 70

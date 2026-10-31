@@ -20,12 +20,24 @@ data class UpcomingAlarm(
  *   rings once, at the first occurrence.
  */
 object NextTrigger {
-    /** The next moment strictly after [now] at which [alarm] rings, or `null` if it is off. */
+    /**
+     * The next moment at which [alarm] rings, or `null` if it is off and not snoozed.
+     * The regular trigger is strictly after [now]. A snooze keeps its own moment even if that
+     * has passed (the phone was off, say): it then rings at once, since late beats missed.
+     */
     fun of(
         alarm: Alarm,
         now: ZonedDateTime,
     ): ZonedDateTime? {
-        if (!alarm.enabled) return null
+        val snooze = alarm.snoozedUntil?.atZone(now.zone)
+        val regular = if (alarm.enabled) regular(alarm, now) else null
+        return listOfNotNull(snooze, regular).minByOrNull { it.toInstant() }
+    }
+
+    private fun regular(
+        alarm: Alarm,
+        now: ZonedDateTime,
+    ): ZonedDateTime {
         val today = now.toLocalDate()
         // Seven days ahead covers every weekday; one more covers "today, but already passed".
         for (daysAhead in 0L..7L) {

@@ -1,6 +1,12 @@
 package com.martin_thoma.tide.feature.alarm
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.text.format.DateFormat
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,12 +21,11 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
@@ -42,6 +47,7 @@ import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -54,13 +60,17 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.customActions
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavKey
+import com.martin_thoma.tide.core.designsystem.GlassPane
 import com.martin_thoma.tide.core.designsystem.LocalTideColors
 import com.martin_thoma.tide.core.designsystem.TideAware
 import com.martin_thoma.tide.core.designsystem.TideIcons
@@ -70,11 +80,13 @@ import com.martin_thoma.tide.core.designsystem.TideTheme
 import com.martin_thoma.tide.core.designsystem.tideVariantColor
 import com.martin_thoma.tide.core.domain.NextTrigger
 import com.martin_thoma.tide.core.model.Alarm
+import com.martin_thoma.tide.core.ringing.AlarmSounds
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import java.time.DayOfWeek
 import java.time.Duration
 import java.time.LocalTime
+import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
@@ -85,12 +97,16 @@ import kotlin.time.toKotlinDuration
 data object AlarmRoute : NavKey
 
 @Composable
-fun AlarmScreen(modifier: Modifier = Modifier) {
+fun AlarmScreen(
+    onOpenAlarm: (alarmId: Long) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val viewModel: AlarmListViewModel = hiltViewModel()
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     AlarmListContent(
         state = state,
         onAdd = viewModel::add,
+        onOpen = { onOpenAlarm(it.id) },
         onToggle = viewModel::setEnabled,
         onDelete = viewModel::delete,
         onRestore = viewModel::restore,
@@ -102,6 +118,7 @@ fun AlarmScreen(modifier: Modifier = Modifier) {
 internal fun AlarmListContent(
     state: AlarmListUiState,
     onAdd: (LocalTime) -> Unit,
+    onOpen: (Alarm) -> Unit,
     onToggle: (Alarm, Boolean) -> Unit,
     onDelete: (Alarm) -> Unit,
     onRestore: (Alarm) -> Unit,
@@ -114,6 +131,9 @@ internal fun AlarmListContent(
     val scope = rememberCoroutineScope()
     var showNewAlarm by rememberSaveable { mutableStateOf(false) }
     val deletedMessage = stringResource(R.string.feature_alarm_deleted)
+    val context = LocalContext.current
+    // Without notifications, a ringing alarm cannot show its screen (requirements 6.4). The health check follows in step 4.
+    val notificationPermission = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) {}
     val undoLabel = stringResource(R.string.feature_alarm_undo)
 
     val level =
@@ -128,42 +148,75 @@ internal fun AlarmListContent(
             containerColor = Color.Transparent,
             contentWindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal),
             snackbarHost = { SnackbarHost(snackbarHostState) },
-            floatingActionButton = { NewAlarmButton(onClick = { showNewAlarm = true }) },
+            floatingActionButton = {
+                NewAlarmButton(
+                    onClick = {
+                        if (context.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                            notificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+                        }
+                        showNewAlarm = true
+                    },
+                )
+            },
         ) { padding ->
             LazyColumn(
                 modifier = Modifier.fillMaxSize().padding(padding),
-                contentPadding = PaddingValues(start = 24.dp, end = 24.dp, top = 48.dp, bottom = 112.dp),
+                contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 48.dp, bottom = 112.dp),
             ) {
                 item(key = "next") {
-                    NextAlarm(state, timeFormatter)
-                    Spacer(Modifier.height(40.dp))
+                    NextAlarm(state, timeFormatter, Modifier.padding(horizontal = 8.dp))
+                    Spacer(Modifier.height(32.dp))
                 }
                 if (!state.loading && state.alarms.isEmpty()) {
+                    // The empty sheet shows where alarms will be.
                     item(key = "empty") {
-                        TideAware { underwater ->
+                        GlassPane(Modifier.fillMaxWidth()) {
                             Text(
                                 text = stringResource(R.string.feature_alarm_empty),
                                 style = MaterialTheme.typography.bodyLarge,
-                                color = tideVariantColor(underwater),
+                                color = LocalTideColors.current.onGlassVariant,
+                                modifier = Modifier.padding(horizontal = 20.dp, vertical = 24.dp),
                             )
                         }
                     }
                 }
-                items(state.alarms, key = { it.id }) { alarm ->
-                    AlarmRow(
-                        alarm = alarm,
-                        timeFormatter = timeFormatter,
-                        locale = locale,
-                        onToggle = onToggle,
-                        onDelete = {
-                            onDelete(alarm)
-                            scope.launch {
-                                val result = snackbarHostState.showSnackbar(deletedMessage, undoLabel, duration = SnackbarDuration.Short)
-                                if (result == SnackbarResult.ActionPerformed) onRestore(alarm)
+                if (state.alarms.isNotEmpty()) {
+                    // One sheet of glass for all alarms, readable wherever the tide is.
+                    item(key = "alarms") {
+                        GlassPane(Modifier.fillMaxWidth()) {
+                            Column(Modifier.animateContentSize()) {
+                                state.alarms.forEachIndexed { index, alarm ->
+                                    key(alarm.id) {
+                                        if (index > 0) {
+                                            HorizontalDivider(
+                                                modifier = Modifier.padding(horizontal = 20.dp),
+                                                color = LocalContentColor.current.copy(alpha = 0.12f),
+                                            )
+                                        }
+                                        AlarmRow(
+                                            alarm = alarm,
+                                            timeFormatter = timeFormatter,
+                                            locale = locale,
+                                            onOpen = onOpen,
+                                            onToggle = onToggle,
+                                            onDelete = {
+                                                onDelete(alarm)
+                                                scope.launch {
+                                                    val result =
+                                                        snackbarHostState.showSnackbar(
+                                                            deletedMessage,
+                                                            undoLabel,
+                                                            duration = SnackbarDuration.Short,
+                                                        )
+                                                    if (result == SnackbarResult.ActionPerformed) onRestore(alarm)
+                                                }
+                                            },
+                                        )
+                                    }
+                                }
                             }
-                        },
-                        modifier = Modifier.animateItem(),
-                    )
+                        }
+                    }
                 }
             }
         }
@@ -185,30 +238,33 @@ internal fun AlarmListContent(
 private fun NextAlarm(
     state: AlarmListUiState,
     timeFormatter: DateTimeFormatter,
+    modifier: Modifier = Modifier,
 ) {
     val upcoming = state.upcoming
     val now = state.now
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Column(modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
         if (upcoming == null || now == null) {
             if (!state.loading) {
                 TideAware { Text(stringResource(R.string.feature_alarm_none), style = MaterialTheme.typography.headlineMedium) }
             }
         } else {
-            TideAware { underwater ->
-                Text(
-                    text = stringResource(R.string.feature_alarm_next, timeUntilText(timeUntil(now, upcoming.triggerAt))),
-                    style = MaterialTheme.typography.labelLarge,
-                    color = tideVariantColor(underwater),
-                )
-            }
             TideAware {
                 Text(
                     text = timeFormatter.format(upcoming.triggerAt),
                     style = MaterialTheme.typography.displayLarge.copy(fontSize = 96.sp, lineHeight = 96.sp),
                 )
             }
-            if (upcoming.alarm.label.isNotEmpty()) {
-                TideAware { Text(upcoming.alarm.label, style = MaterialTheme.typography.titleMedium) }
+            val countdown = timeUntilText(timeUntil(now, upcoming.triggerAt))
+            TideAware {
+                Text(
+                    text =
+                        if (upcoming.alarm.label.isEmpty()) {
+                            countdown
+                        } else {
+                            stringResource(R.string.feature_alarm_with_label, upcoming.alarm.label, countdown)
+                        },
+                    style = MaterialTheme.typography.titleLarge,
+                )
             }
         }
     }
@@ -219,6 +275,7 @@ private fun AlarmRow(
     alarm: Alarm,
     timeFormatter: DateTimeFormatter,
     locale: Locale,
+    onOpen: (Alarm) -> Unit,
     onToggle: (Alarm, Boolean) -> Unit,
     onDelete: () -> Unit,
     modifier: Modifier = Modifier,
@@ -232,40 +289,55 @@ private fun AlarmRow(
         enableDismissFromStartToEnd = false,
         modifier = modifier,
         backgroundContent = {
-            // The row is transparent over the beach, so the hint only shows while swiping.
+            // The row is transparent on the glass, so the hint only shows while swiping.
             if (dismissState.dismissDirection == SwipeToDismissBoxValue.EndToStart) {
-                TideAware(Modifier.fillMaxSize()) {
-                    Row(Modifier.fillMaxSize(), horizontalArrangement = Arrangement.End, verticalAlignment = Alignment.CenterVertically) {
-                        Icon(painterResource(TideIcons.Delete), contentDescription = stringResource(R.string.feature_alarm_delete))
-                    }
+                Row(
+                    Modifier.fillMaxSize().padding(horizontal = 24.dp),
+                    horizontalArrangement = Arrangement.End,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Icon(
+                        painterResource(TideIcons.Delete),
+                        contentDescription = stringResource(R.string.feature_alarm_delete),
+                        tint = LocalTideColors.current.onGlassVariant,
+                    )
                 }
             }
         },
     ) {
-        TideAware { underwater ->
-            Row(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .toggleable(value = alarm.enabled, role = Role.Switch, onValueChange = { onToggle(alarm, it) })
-                        .padding(vertical = 14.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                    Text(
-                        text = timeFormatter.format(alarm.time),
-                        style = MaterialTheme.typography.displaySmall,
-                        color = if (alarm.enabled) LocalContentColor.current else tideVariantColor(underwater),
-                    )
-                    Text(
-                        text = alarmDetails(alarm, locale),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = tideVariantColor(underwater),
-                    )
-                }
-                Switch(checked = alarm.enabled, onCheckedChange = null, colors = tideSwitchColors(underwater))
+        val colors = LocalTideColors.current
+        val deleteLabel = stringResource(R.string.feature_alarm_delete)
+        Row(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .clickable(onClickLabel = stringResource(R.string.feature_alarm_choose_sound)) { onOpen(alarm) }
+                    // Swiping is not the only way: TalkBack offers Delete as an action. The editor will show it, too.
+                    .semantics {
+                        customActions =
+                            listOf(
+                                CustomAccessibilityAction(deleteLabel) {
+                                    onDelete()
+                                    true
+                                },
+                            )
+                    }.padding(horizontal = 20.dp, vertical = 14.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                Text(
+                    text = timeFormatter.format(alarm.time),
+                    style = MaterialTheme.typography.displaySmall,
+                    color = if (alarm.enabled) colors.onGlass else colors.onGlassVariant,
+                )
+                Text(
+                    text = alarmDetails(alarm, locale, timeFormatter),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = colors.onGlassVariant,
+                )
             }
+            Switch(checked = alarm.enabled, onCheckedChange = { onToggle(alarm, it) }, colors = glassSwitchColors())
         }
     }
 }
@@ -278,7 +350,7 @@ private fun NewAlarmButton(onClick: () -> Unit) {
             onClick = onClick,
             shape = CircleShape,
             containerColor = if (underwater) colors.onSea else colors.accent,
-            contentColor = if (underwater) colors.sea else colors.sand,
+            contentColor = if (underwater) colors.sea else colors.onAccent,
         ) {
             Icon(painterResource(TideIcons.Add), contentDescription = stringResource(R.string.feature_alarm_new))
         }
@@ -308,15 +380,14 @@ private fun NewAlarmDialog(
 }
 
 @Composable
-private fun tideSwitchColors(underwater: Boolean): SwitchColors {
+private fun glassSwitchColors(): SwitchColors {
     val colors = LocalTideColors.current
-    val variant = tideVariantColor(underwater)
     return SwitchDefaults.colors(
-        checkedTrackColor = if (underwater) colors.onSea else colors.accent,
-        checkedThumbColor = if (underwater) colors.sea else colors.sand,
+        checkedTrackColor = colors.accent,
+        checkedThumbColor = colors.onAccent,
         uncheckedTrackColor = Color.Transparent,
-        uncheckedThumbColor = variant,
-        uncheckedBorderColor = variant,
+        uncheckedThumbColor = colors.onGlassVariant,
+        uncheckedBorderColor = colors.onGlassVariant,
     )
 }
 
@@ -332,6 +403,7 @@ private fun timeUntilText(timeUntil: TimeUntil): String =
 private fun alarmDetails(
     alarm: Alarm,
     locale: Locale,
+    timeFormatter: DateTimeFormatter,
 ): String {
     fun short(day: DayOfWeek) = day.getDisplayName(TextStyle.SHORT, locale)
 
@@ -342,7 +414,20 @@ private fun alarmDetails(
             is RepeatLabel.Range -> stringResource(R.string.feature_alarm_range, short(label.first), short(label.last))
             is RepeatLabel.Days -> label.days.joinToString(", ", transform = ::short)
         }
-    return if (alarm.label.isEmpty()) days else stringResource(R.string.feature_alarm_with_label, days, alarm.label)
+    val labelled = if (alarm.label.isEmpty()) days else stringResource(R.string.feature_alarm_with_label, days, alarm.label)
+    // The default sound goes unmentioned; any other sound is named.
+    val sound = AlarmSounds.builtIn(alarm.soundUri)?.let { stringResource(it.title) } ?: AlarmSounds.custom(alarm.soundUri)?.title
+    val details =
+        if (alarm.soundUri == null ||
+            sound == null
+        ) {
+            labelled
+        } else {
+            stringResource(R.string.feature_alarm_with_label, labelled, sound)
+        }
+    val snoozedUntil = alarm.snoozedUntil ?: return details
+    val until = timeFormatter.format(snoozedUntil.atZone(ZoneId.systemDefault()))
+    return stringResource(R.string.feature_alarm_with_label, stringResource(R.string.feature_alarm_snoozed_until, until), details)
 }
 
 @Preview(widthDp = 390, heightDp = 844)
@@ -360,6 +445,7 @@ private fun AlarmListPreview() {
         AlarmListContent(
             state = AlarmListUiState(loading = false, alarms = alarms, upcoming = NextTrigger.upcoming(alarms, now), now = now),
             onAdd = {},
+            onOpen = {},
             onToggle = { _, _ -> },
             onDelete = {},
             onRestore = {},

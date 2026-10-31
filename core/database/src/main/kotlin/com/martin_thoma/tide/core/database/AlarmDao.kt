@@ -20,10 +20,23 @@ interface AlarmDao {
     @Upsert
     suspend fun upsert(alarm: AlarmEntity): Long
 
-    @Query("UPDATE alarms SET enabled = :enabled WHERE id = :id")
+    /** Turning an alarm on or off also ends a pending snooze. */
+    @Query("UPDATE alarms SET enabled = :enabled, snoozedUntil = NULL WHERE id = :id")
     suspend fun setEnabled(
         id: Long,
         enabled: Boolean,
+    )
+
+    @Query("UPDATE alarms SET snoozedUntil = :until WHERE id = :id")
+    suspend fun setSnoozedUntil(
+        id: Long,
+        until: Long?,
+    )
+
+    @Query("UPDATE alarms SET soundUri = :soundUri WHERE id = :id")
+    suspend fun setSound(
+        id: Long,
+        soundUri: String?,
     )
 
     @Query("DELETE FROM alarms WHERE id = :id")

@@ -10,4 +10,5 @@ android {
 dependencies {
     api(project(":core:data"))
     api(project(":core:domain"))
+    implementation(project(":core:ringing"))
 }

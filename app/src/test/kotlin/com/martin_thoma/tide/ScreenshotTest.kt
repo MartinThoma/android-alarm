@@ -1,14 +1,20 @@
 package com.martin_thoma.tide
 
 import android.provider.Settings
+import androidx.compose.ui.test.hasClickAction
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.v2.createEmptyComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import com.github.takahirom.roborazzi.captureRoboImage
 import com.martin_thoma.tide.core.data.AlarmRepository
 import com.martin_thoma.tide.core.model.Alarm
+import com.martin_thoma.tide.core.ringing.RingingState
+import com.martin_thoma.tide.core.ringing.RingingStatus
+import com.martin_thoma.tide.feature.ringing.RingingActivity
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
@@ -45,6 +51,8 @@ class ScreenshotTest {
 
     @Inject lateinit var time: FakeTimeSource
 
+    @Inject lateinit var ringingState: RingingState
+
     private val weekdays = DayOfWeek.entries.take(5).toSet()
 
     @Before
@@ -76,7 +84,7 @@ class ScreenshotTest {
         time.now = ZonedDateTime.parse("2026-11-01T23:18:00+01:00[Europe/Berlin]") // Sunday evening
 
         ActivityScenario.launch(MainActivity::class.java).use {
-            awaitText("Next alarm · in 7 h 12 min")
+            awaitText("Work · in 7 h 12 min")
             awaitText("Mon–Fri · Work")
             compose.onRoot().captureRoboImage("../docs/screenshots/alarms-night.png")
         }
@@ -88,16 +96,97 @@ class ScreenshotTest {
         time.now = ZonedDateTime.parse("2026-11-02T06:05:00+01:00[Europe/Berlin]") // Monday morning
 
         ActivityScenario.launch(MainActivity::class.java).use {
-            awaitText("Next alarm · in 25 min")
+            awaitText("Work · in 25 min")
             compose.onRoot().captureRoboImage("../docs/screenshots/alarms-day.png")
+        }
+    }
+
+    @Test
+    fun alarmsAfternoonMidTide() {
+        saveSampleAlarms()
+        time.now = ZonedDateTime.parse("2026-11-01T22:00:00+01:00[Europe/Berlin]") // Sunday evening
+
+        ActivityScenario.launch(MainActivity::class.java).use {
+            awaitText("Work · in 8 h 30 min")
+            compose.onRoot().captureRoboImage("../docs/screenshots/alarms-midtide.png")
         }
     }
 
     @Test
     fun noAlarms() {
         ActivityScenario.launch(MainActivity::class.java).use {
-            awaitText("No alarms yet. Tap + to add one.")
+            awaitText("Tap + to set your first alarm.")
             compose.onRoot().captureRoboImage("../docs/screenshots/alarms-empty.png")
+        }
+    }
+
+    @Test
+    fun soundPicker() {
+        saveSampleAlarms()
+        time.now = ZonedDateTime.parse("2026-11-02T06:05:00+01:00[Europe/Berlin]")
+
+        ActivityScenario.launch(MainActivity::class.java).use {
+            awaitText("Mon–Fri · Work")
+            compose.onNode(hasText("Mon–Fri · Work") and hasClickAction()).performClick()
+            awaitText("Alarm sound")
+            awaitText("Canon in D · Pachelbel")
+            compose.onRoot().captureRoboImage("../docs/screenshots/sounds.png")
+        }
+    }
+
+    @Test
+    fun ringing() {
+        time.now = ZonedDateTime.parse("2026-11-02T06:30:00+01:00[Europe/Berlin]")
+        val alarm = Alarm(id = 1, time = LocalTime.of(6, 30), repeatDays = weekdays, label = "Work")
+        ringingState.update(RingingStatus.Ringing(alarm, time.now.toInstant()))
+
+        ActivityScenario.launch(RingingActivity::class.java).use {
+            awaitText("Slide to dismiss")
+            awaitText("Monday, November 2")
+            compose.onRoot().captureRoboImage("../docs/screenshots/ringing.png")
+        }
+    }
+
+    @Test
+    fun ringingAtNight() {
+        RuntimeEnvironment.setQualifiers("+night")
+        time.now = ZonedDateTime.parse("2026-11-02T06:30:00+01:00[Europe/Berlin]")
+        val alarm = Alarm(id = 1, time = LocalTime.of(6, 30), repeatDays = weekdays, label = "Work")
+        ringingState.update(RingingStatus.Ringing(alarm, time.now.toInstant()))
+
+        ActivityScenario.launch(RingingActivity::class.java).use {
+            awaitText("Slide to dismiss")
+            awaitText("Monday, November 2")
+            compose.onRoot().captureRoboImage("../docs/screenshots/ringing-night.png")
+        }
+    }
+
+    /** German has the longest words of the four languages, so it shows first whether text fits. */
+    @Test
+    fun inGerman() {
+        RuntimeEnvironment.setQualifiers("+de")
+        saveSampleAlarms()
+        time.now = ZonedDateTime.parse("2026-11-01T23:18:00+01:00[Europe/Berlin]")
+
+        ActivityScenario.launch(MainActivity::class.java).use {
+            awaitText("Work · in 7 Std. 12 Min.")
+            awaitText("Mo.–Fr. · Work")
+            compose.onRoot().captureRoboImage("../docs/screenshots/de/alarms.png")
+            compose.onNode(hasText("Mo.–Fr. · Work") and hasClickAction()).performClick()
+            awaitText("Grillenzirpen")
+            compose.onRoot().captureRoboImage("../docs/screenshots/de/sounds.png")
+        }
+    }
+
+    @Test
+    fun ringingInGerman() {
+        RuntimeEnvironment.setQualifiers("+de")
+        time.now = ZonedDateTime.parse("2026-11-02T06:30:00+01:00[Europe/Berlin]")
+        ringingState.update(RingingStatus.Ringing(Alarm(id = 1, time = LocalTime.of(6, 30), label = "Arbeit"), time.now.toInstant()))
+
+        ActivityScenario.launch(RingingActivity::class.java).use {
+            awaitText("Zum Beenden schieben")
+            compose.onRoot().captureRoboImage("../docs/screenshots/de/ringing.png")
         }
     }
 }

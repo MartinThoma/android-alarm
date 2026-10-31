@@ -14,6 +14,7 @@ kotlinxSerialization = "1.12.0"
 kotlinxCoroutines = "1.11.0"
 room = "2.8.5"
 junit4 = "4.13.2"
+androidxTestCore = "1.7.0"
 robolectric = "4.17"
 roborazzi = "1.77.0"
 spotless = "8.10.4"
@@ -38,6 +39,7 @@ hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt"
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinxSerialization" }
 junit4 = { module = "junit:junit", version.ref = "junit4" }
+androidx-test-core = { module = "androidx.test:core", version.ref = "androidxTestCore" }
 androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "hilt" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }

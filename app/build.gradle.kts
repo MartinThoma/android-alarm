@@ -28,13 +28,8 @@ android {
         generateLocaleConfig = true
     }
 
-    testOptions {
-        unitTests.isIncludeAndroidResources = true
-        unitTests.all {
-            // Robolectric reads FileDescriptor internals, which Java 17+ hides by default.
-            it.jvmArgs("--add-exports", "java.base/jdk.internal.access=ALL-UNNAMED")
-        }
-    }
+    // Robolectric tests need the app's resources.
+    testOptions.unitTests.isIncludeAndroidResources = true
 
     // F-Droid rejects the encrypted dependency metadata block in the APK (requirements NF-05).
     dependenciesInfo {
@@ -45,8 +40,10 @@ android {
 
 dependencies {
     implementation(project(":core:designsystem"))
+    implementation(project(":core:ringing"))
     implementation(project(":core:scheduling"))
     implementation(project(":feature:alarm"))
+    implementation(project(":feature:ringing"))
     implementation(project(":feature:stopwatch"))
     implementation(project(":feature:timer"))
 

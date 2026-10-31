@@ -13,13 +13,15 @@ The screen is a beach seen from above: the closer your next alarm, the higher th
 
 Requires Android 15 (API 35) or newer. See [docs/requirements.md](docs/requirements.md).
 
-> **Work in progress.** Alarms are stored and scheduled, but they do not ring yet.
+> **Work in progress.** Alarms ring, snooze and dismiss, but have not been tested on a real phone yet. There is no alarm editor yet.
+
+In English, German, French and Spanish; each can also be chosen as the app's own language in Android's settings.
 
 ## Screenshots
 
-| Evening, 7 h before the alarm | Morning, 25 min before | No alarms |
-|:---:|:---:|:---:|
-| <img src="docs/screenshots/alarms-night.png" alt="Alarm list in dark mode at low tide" width="250"> | <img src="docs/screenshots/alarms-day.png" alt="Alarm list in light mode at high tide" width="250"> | <img src="docs/screenshots/alarms-empty.png" alt="Empty alarm list on the beach" width="250"> |
+| Evening, 7 h before the alarm | Morning, 25 min before | Ringing | Ringing at night |
+|:---:|:---:|:---:|:---:|
+| <img src="docs/screenshots/alarms-night.png" alt="Alarm list at night: dark sea with glowing blue waves at low tide, alarms on a frosted glass sheet" width="200"> | <img src="docs/screenshots/alarms-day.png" alt="Alarm list by day: bright turquoise water at high tide over golden sand" width="200"> | <img src="docs/screenshots/ringing.png" alt="Ringing alarm at high tide, with snooze and slide to dismiss" width="200"> | <img src="docs/screenshots/ringing-night.png" alt="Ringing alarm at night with bioluminescent waves and moon jellyfish" width="200"> |
 
 The screenshots come from the app itself, rendered by its Robolectric tests. Update them with `./gradlew :app:recordRoborazziDebug`.
 

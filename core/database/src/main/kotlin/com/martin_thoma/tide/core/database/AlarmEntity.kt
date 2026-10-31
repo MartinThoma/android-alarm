@@ -16,4 +16,6 @@ data class AlarmEntity(
     val soundUri: String?,
     val vibrate: Boolean,
     val snoozeMinutes: Int,
+    /** Epoch milliseconds; set while the alarm is snoozed. Added in version 2. */
+    val snoozedUntil: Long? = null,
 )

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="core_ringing_channel_ringing">Alarmes qui sonnent</string>
+    <string name="core_ringing_channel_ringing_description">Affiche une alarme pendant qu’elle sonne, aussi sur l’écran de verrouillage.</string>
+    <string name="core_ringing_channel_upcoming">Alarmes à venir</string>
+    <string name="core_ringing_channel_upcoming_description">Alarmes en répétition, jusqu’à ce qu’elles sonnent à nouveau.</string>
+    <string name="core_ringing_channel_missed">Alarmes manquées</string>
+    <string name="core_ringing_channel_missed_description">Alarmes qui ont sonné jusqu’à leur arrêt automatique.</string>
+    <string name="core_ringing_alarm">Alarme</string>
+    <string name="core_ringing_snooze">Répéter</string>
+    <string name="core_ringing_dismiss">Arrêter</string>
+    <string name="core_ringing_snoozed_until">Répétition jusqu’à %1$s</string>
+    <string name="core_ringing_missed">Alarme manquée</string>
+    <string name="core_ringing_missed_text">%1$s a sonné à %2$s. Arrêt automatique.</string>
+    <string name="core_ringing_sound_tide">Carillon Tide</string>
+    <string name="core_ringing_sound_sea">Mer</string>
+    <string name="core_ringing_sound_rain">Pluie</string>
+    <string name="core_ringing_sound_thunder">Orage</string>
+    <string name="core_ringing_sound_crickets">Grillons</string>
+    <string name="core_ringing_sound_alarm_clock">Réveil</string>
+    <string name="core_ringing_sound_canon_in_d">Canon en ré · Pachelbel</string>
+    <string name="core_ringing_sound_fur_elise">La Lettre à Élise · Beethoven</string>
+</resources>

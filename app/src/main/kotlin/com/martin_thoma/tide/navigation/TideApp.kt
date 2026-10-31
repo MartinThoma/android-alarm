@@ -18,6 +18,8 @@ import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import com.martin_thoma.tide.feature.alarm.AlarmRoute
 import com.martin_thoma.tide.feature.alarm.AlarmScreen
+import com.martin_thoma.tide.feature.alarm.AlarmSoundRoute
+import com.martin_thoma.tide.feature.alarm.AlarmSoundScreen
 import com.martin_thoma.tide.feature.stopwatch.StopwatchRoute
 import com.martin_thoma.tide.feature.stopwatch.StopwatchScreen
 import com.martin_thoma.tide.feature.timer.TimerRoute
@@ -62,7 +64,8 @@ fun TideApp() {
                 ),
             entryProvider =
                 entryProvider {
-                    entry<AlarmRoute> { AlarmScreen() }
+                    entry<AlarmRoute> { AlarmScreen(onOpenAlarm = { backStack.add(AlarmSoundRoute(it)) }) }
+                    entry<AlarmSoundRoute> { key -> AlarmSoundScreen(alarmId = key.alarmId, onBack = { backStack.removeLastOrNull() }) }
                     entry<StopwatchRoute> { StopwatchScreen() }
                     entry<TimerRoute> { TimerScreen() }
                 },

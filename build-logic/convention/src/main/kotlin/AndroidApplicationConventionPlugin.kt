@@ -3,6 +3,7 @@ import com.martin_thoma.tide.buildlogic.JAVA_VERSION
 import com.martin_thoma.tide.buildlogic.TideSdk
 import com.martin_thoma.tide.buildlogic.configureKotlin
 import com.martin_thoma.tide.buildlogic.configureTideLint
+import com.martin_thoma.tide.buildlogic.configureTideUnitTests
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -23,6 +24,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                     targetCompatibility = JAVA_VERSION
                 }
                 lint { configureTideLint() }
+                testOptions { configureTideUnitTests() }
             }
             configureKotlin()
         }

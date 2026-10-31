@@ -35,14 +35,15 @@ class AlarmScheduler
 
         suspend fun rescheduleAll() = schedule(repository.getAll())
 
-        /** Records that [alarmId] fired for [triggerAt], so a slightly early delivery cannot ring twice. */
+        /**
+         * Records that [alarmId] fired for [triggerAt], so the next schedule starts after it.
+         * Returns false if this trigger was already handled, so a repeated delivery cannot ring twice.
+         */
         @Synchronized
         fun markFired(
             alarmId: Long,
             triggerAt: Instant,
-        ) {
-            lastFired[alarmId] = triggerAt
-        }
+        ): Boolean = lastFired.put(alarmId, triggerAt) != triggerAt
 
         @Synchronized
         fun schedule(alarms: List<Alarm>) {

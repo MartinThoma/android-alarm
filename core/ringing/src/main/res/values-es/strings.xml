@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="core_ringing_channel_ringing">Alarmas sonando</string>
+    <string name="core_ringing_channel_ringing_description">Muestra una alarma mientras suena, también en la pantalla de bloqueo.</string>
+    <string name="core_ringing_channel_upcoming">Próximas alarmas</string>
+    <string name="core_ringing_channel_upcoming_description">Alarmas pospuestas, hasta que vuelvan a sonar.</string>
+    <string name="core_ringing_channel_missed">Alarmas perdidas</string>
+    <string name="core_ringing_channel_missed_description">Alarmas que sonaron hasta detenerse solas.</string>
+    <string name="core_ringing_alarm">Alarma</string>
+    <string name="core_ringing_snooze">Posponer</string>
+    <string name="core_ringing_dismiss">Detener</string>
+    <string name="core_ringing_snoozed_until">Pospuesta hasta las %1$s</string>
+    <string name="core_ringing_missed">Alarma perdida</string>
+    <string name="core_ringing_missed_text">%1$s sonó a las %2$s. Se detuvo automáticamente.</string>
+    <string name="core_ringing_sound_tide">Campanilla Tide</string>
+    <string name="core_ringing_sound_sea">Mar</string>
+    <string name="core_ringing_sound_rain">Lluvia</string>
+    <string name="core_ringing_sound_thunder">Tormenta</string>
+    <string name="core_ringing_sound_crickets">Grillos</string>
+    <string name="core_ringing_sound_alarm_clock">Despertador</string>
+    <string name="core_ringing_sound_canon_in_d">Canon en re · Pachelbel</string>
+    <string name="core_ringing_sound_fur_elise">Para Elisa · Beethoven</string>
+</resources>

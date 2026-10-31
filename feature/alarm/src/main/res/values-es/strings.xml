@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_alarm_none">Ninguna alarma</string>
+    <string name="feature_alarm_empty">Toca + para poner tu primera alarma.</string>
+    <string name="feature_alarm_in_minutes">en %1$d min</string>
+    <string name="feature_alarm_in_hours_minutes">en %1$d h %2$d min</string>
+    <string name="feature_alarm_in_days_hours">en %1$d d %2$d h</string>
+    <string name="feature_alarm_once">Una vez</string>
+    <string name="feature_alarm_every_day">Todos los días</string>
+    <string name="feature_alarm_new">Nueva alarma</string>
+    <string name="feature_alarm_set">Poner alarma</string>
+    <string name="feature_alarm_cancel">Cancelar</string>
+    <string name="feature_alarm_deleted">Alarma eliminada</string>
+    <string name="feature_alarm_undo">Deshacer</string>
+    <string name="feature_alarm_delete">Eliminar</string>
+    <string name="feature_alarm_snoozed_until">Pospuesta hasta las %1$s</string>
+    <string name="feature_alarm_choose_sound">Elegir sonido</string>
+    <string name="feature_alarm_back">Atrás</string>
+    <string name="feature_alarm_sound_title">Sonido de alarma</string>
+    <string name="feature_alarm_sound_default">Predeterminado</string>
+    <string name="feature_alarm_sound_nature">Naturaleza</string>
+    <string name="feature_alarm_sound_noisy">Ruidoso</string>
+    <string name="feature_alarm_sound_classics">Clásica</string>
+    <string name="feature_alarm_sound_custom">Mis sonidos</string>
+    <string name="feature_alarm_sound_add">Añadir un archivo de audio</string>
+    <string name="feature_alarm_sound_add_hint">MP3, WAV u OGG, hasta 30 MB</string>
+    <string name="feature_alarm_sound_delete">Eliminar %1$s</string>
+    <string name="feature_alarm_sound_playing">Reproduciendo</string>
+    <string name="feature_alarm_sound_too_large">Este archivo supera los 30 MB. Elige uno más corto.</string>
+    <string name="feature_alarm_sound_not_playable">Este archivo no se puede reproducir. Elige un archivo MP3, WAV u OGG.</string>
+</resources>

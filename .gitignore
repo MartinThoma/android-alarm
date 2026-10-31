@@ -15,3 +15,6 @@ captures/
 
 # OS
 .DS_Store
+
+# Design review captures (copies of docs/screenshots)
+.impeccable/review/

@@ -14,17 +14,19 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.toSize
 
 private const val TIDE_CHANGE_MILLIS = 4_000
 private const val CONTENT_COLOR_MILLIS = 1_200
@@ -33,16 +35,19 @@ private const val CONTENT_COLOR_MILLIS = 1_200
 @Stable
 class TideState internal constructor(
     internal val level: State<Float>,
-    private val shallowBandPx: Float,
+    private val density: Float,
+    internal val motion: TideMotion,
 ) {
     internal var coordinates: LayoutCoordinates? = null
-    internal var heightPx by mutableIntStateOf(0)
+    internal var size by mutableStateOf(Size.Zero)
+    internal val heightPx get() = size.height
 
     /**
      * Only the deep sea is dark enough for light text. The shallow band and the sand both
      * take dark text, so content near the shoreline stays readable.
      */
-    internal fun isUnderwater(centerY: Float) = !centerY.isNaN() && centerY < heightPx * level.value - shallowBandPx
+    internal fun isUnderwater(centerY: Float) =
+        !centerY.isNaN() && centerY < heightPx * level.value - shallowsPx(heightPx * level.value, density)
 }
 
 val LocalTideState = staticCompositionLocalOf<TideState?> { null }
@@ -58,16 +63,17 @@ fun TideSurface(
     content: @Composable BoxScope.() -> Unit,
 ) {
     val animatedLevel = animateFloatAsState(level, tween(TIDE_CHANGE_MILLIS), label = "tide")
-    val shallowBandPx = with(LocalDensity.current) { SHALLOW_BAND_DP.dp.toPx() }
-    val state = remember(animatedLevel, shallowBandPx) { TideState(animatedLevel, shallowBandPx) }
+    val density = LocalDensity.current.density
+    val motion = rememberTideMotion()
+    val state = remember(animatedLevel, density, motion) { TideState(animatedLevel, density, motion) }
     Box(
         modifier =
             modifier.fillMaxSize().onGloballyPositioned {
                 state.coordinates = it
-                state.heightPx = it.size.height
+                state.size = it.size.toSize()
             },
     ) {
-        TideBackground(level = animatedLevel.value)
+        TideBackground(level = animatedLevel.value, motion = motion)
         CompositionLocalProvider(LocalTideState provides state) { content() }
     }
 }

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tab_alarm">Alarme</string>
+    <string name="tab_stopwatch">Chronomètre</string>
+    <string name="tab_timer">Minuteur</string>
+</resources>

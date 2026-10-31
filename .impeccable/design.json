@@ -1,0 +1,836 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-31T15:52:33+00:00",
+  "title": "Design System: Tide",
+  "extensions": {
+    "colorMeta": {
+      "day-sand": {
+        "role": "neutral",
+        "displayName": "Golden Sand",
+        "canonical": "oklch(89.9% 0.066 88.1)",
+        "tonalRamp": [
+          "#100A00",
+          "#2E240A",
+          "#4D4020",
+          "#705F37",
+          "#928157",
+          "#B3A480",
+          "#D5C8AB",
+          "#F8EED6"
+        ]
+      },
+      "day-wet-sand": {
+        "role": "neutral",
+        "displayName": "Wet Sand",
+        "canonical": "oklch(83.3% 0.084 83.1)",
+        "tonalRamp": [
+          "#120A00",
+          "#312201",
+          "#533E13",
+          "#775D28",
+          "#997E4A",
+          "#B9A276",
+          "#DAC7A2",
+          "#FCEDD0"
+        ]
+      },
+      "day-shallow": {
+        "role": "secondary",
+        "displayName": "Shore Shallows",
+        "canonical": "oklch(91.7% 0.061 133.2)",
+        "tonalRamp": [
+          "#060E03",
+          "#1D2915",
+          "#38482D",
+          "#556847",
+          "#758A67",
+          "#99AC8E",
+          "#BFCFB6",
+          "#E7F3DF"
+        ]
+      },
+      "day-shallow-far": {
+        "role": "secondary",
+        "displayName": "Far Shallows",
+        "canonical": "oklch(85.8% 0.085 180.7)",
+        "tonalRamp": [
+          "#000F0C",
+          "#022C26",
+          "#044D44",
+          "#1E7063",
+          "#459285",
+          "#75B3A7",
+          "#A3D5CB",
+          "#D1F8F0"
+        ]
+      },
+      "day-sea": {
+        "role": "secondary",
+        "displayName": "Open Lagoon",
+        "canonical": "oklch(76.7% 0.117 195.7)",
+        "tonalRamp": [
+          "#000E0E",
+          "#002C2C",
+          "#0B4C4C",
+          "#176F6F",
+          "#169495",
+          "#56B7B7",
+          "#8ED9D9",
+          "#C2FBFB"
+        ]
+      },
+      "day-deep-sea": {
+        "role": "secondary",
+        "displayName": "Deep Lagoon",
+        "canonical": "oklch(72.5% 0.112 209.2)",
+        "tonalRamp": [
+          "#000E11",
+          "#032B30",
+          "#064B54",
+          "#106E7A",
+          "#0393A4",
+          "#5BB4C3",
+          "#91D7E2",
+          "#CEF7FE"
+        ]
+      },
+      "day-foam": {
+        "role": "tertiary",
+        "displayName": "Foam",
+        "canonical": "oklch(100.0% 0.000 89.9) / 95%",
+        "tonalRamp": [
+          "#0B0B0B",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#A5A5A5",
+          "#C9C9C9",
+          "#EEEEEE"
+        ]
+      },
+      "day-glass": {
+        "role": "neutral",
+        "displayName": "Milk Glass",
+        "canonical": "oklch(100.0% 0.000 89.9) / 72%",
+        "tonalRamp": [
+          "#0B0B0B",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#A5A5A5",
+          "#C9C9C9",
+          "#EEEEEE"
+        ]
+      },
+      "day-glass-rim": {
+        "role": "neutral",
+        "displayName": "Milk Glass Rim",
+        "canonical": "oklch(100.0% 0.000 89.9) / 80%",
+        "tonalRamp": [
+          "#0B0B0B",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#A5A5A5",
+          "#C9C9C9",
+          "#EEEEEE"
+        ]
+      },
+      "day-glass-raised": {
+        "role": "neutral",
+        "displayName": "Raised Milk Glass",
+        "canonical": "oklch(100.0% 0.000 89.9) / 82%",
+        "tonalRamp": [
+          "#0B0B0B",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#A5A5A5",
+          "#C9C9C9",
+          "#EEEEEE"
+        ]
+      },
+      "day-glass-raised-rim": {
+        "role": "neutral",
+        "displayName": "Raised Milk Glass Rim",
+        "canonical": "oklch(100.0% 0.000 89.9) / 90%",
+        "tonalRamp": [
+          "#0B0B0B",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#A5A5A5",
+          "#C9C9C9",
+          "#EEEEEE"
+        ]
+      },
+      "day-shadow": {
+        "role": "neutral",
+        "displayName": "Teal Shadow",
+        "canonical": "oklch(28.4% 0.042 215.5) / 35%",
+        "tonalRamp": [
+          "#020D11",
+          "#15282D",
+          "#2D474D",
+          "#47676F",
+          "#688991",
+          "#8EABB2",
+          "#B6CED4",
+          "#E0F2F7"
+        ]
+      },
+      "day-ink": {
+        "role": "neutral",
+        "displayName": "Deep Ink",
+        "canonical": "oklch(28.4% 0.042 215.5)",
+        "tonalRamp": [
+          "#020D11",
+          "#15282D",
+          "#2D474D",
+          "#47676F",
+          "#688991",
+          "#8EABB2",
+          "#B6CED4",
+          "#E0F2F7"
+        ]
+      },
+      "day-ink-soft": {
+        "role": "neutral",
+        "displayName": "Soft Ink",
+        "canonical": "oklch(35.3% 0.041 212.6)",
+        "tonalRamp": [
+          "#020D10",
+          "#15292D",
+          "#2D474C",
+          "#48676E",
+          "#688990",
+          "#8FABB1",
+          "#B7CED3",
+          "#E0F2F7"
+        ]
+      },
+      "day-accent": {
+        "role": "primary",
+        "displayName": "Lagoon Teal",
+        "canonical": "oklch(47.8% 0.082 205.0)",
+        "tonalRamp": [
+          "#000E10",
+          "#012B2F",
+          "#024B52",
+          "#1B6D76",
+          "#449098",
+          "#74B1B8",
+          "#A2D4D9",
+          "#D0F7FB"
+        ]
+      },
+      "day-on-accent": {
+        "role": "neutral",
+        "displayName": "White on Teal",
+        "canonical": "oklch(100.0% 0.000 89.9)",
+        "tonalRamp": [
+          "#0B0B0B",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#A5A5A5",
+          "#C9C9C9",
+          "#EEEEEE"
+        ]
+      },
+      "day-container": {
+        "role": "primary",
+        "displayName": "Pale Lagoon Container",
+        "canonical": "oklch(91.3% 0.047 191.4)",
+        "tonalRamp": [
+          "#010E0E",
+          "#122A29",
+          "#294847",
+          "#436967",
+          "#638B89",
+          "#8BADAB",
+          "#B4D0CE",
+          "#DEF4F2"
+        ]
+      },
+      "day-navigation-bar": {
+        "role": "neutral",
+        "displayName": "Navigation Sand",
+        "canonical": "oklch(87.4% 0.071 86.5)",
+        "tonalRamp": [
+          "#110A00",
+          "#2F2307",
+          "#4F401D",
+          "#725F33",
+          "#948054",
+          "#B4A37D",
+          "#D6C8A8",
+          "#F9EED5"
+        ]
+      },
+      "night-sand": {
+        "role": "neutral",
+        "displayName": "Night Sand",
+        "canonical": "oklch(18.9% 0.010 248.4)",
+        "tonalRamp": [
+          "#0A0B0D",
+          "#232528",
+          "#3F4246",
+          "#5D6266",
+          "#7E8388",
+          "#A1A6AA",
+          "#C6CACD",
+          "#ECEFF2"
+        ]
+      },
+      "night-wet-sand": {
+        "role": "neutral",
+        "displayName": "Night Wet Sand",
+        "canonical": "oklch(16.6% 0.011 248.5)",
+        "tonalRamp": [
+          "#090B0D",
+          "#232528",
+          "#3F4246",
+          "#5D6267",
+          "#7E8388",
+          "#A1A6AA",
+          "#C6CACD",
+          "#ECEFF2"
+        ]
+      },
+      "night-shallow": {
+        "role": "secondary",
+        "displayName": "Breaking Blue",
+        "canonical": "oklch(47.9% 0.135 252.5)",
+        "tonalRamp": [
+          "#000B1E",
+          "#01254A",
+          "#0C4378",
+          "#2263A5",
+          "#4685CB",
+          "#74A9E5",
+          "#A5CDFC",
+          "#E3F0FF"
+        ]
+      },
+      "night-shallow-far": {
+        "role": "secondary",
+        "displayName": "Far Breaking Blue",
+        "canonical": "oklch(21.1% 0.041 245.1)",
+        "tonalRamp": [
+          "#050C13",
+          "#1A2631",
+          "#344452",
+          "#4F6476",
+          "#708598",
+          "#95A8B8",
+          "#BCCBDA",
+          "#E4F0FC"
+        ]
+      },
+      "night-sea": {
+        "role": "secondary",
+        "displayName": "Night Sea",
+        "canonical": "oklch(17.1% 0.029 241.2)",
+        "tonalRamp": [
+          "#060C11",
+          "#1D262D",
+          "#37444D",
+          "#54636F",
+          "#758591",
+          "#99A7B2",
+          "#BFCBD4",
+          "#E6F0F7"
+        ]
+      },
+      "night-deep-sea": {
+        "role": "secondary",
+        "displayName": "Night Deep Sea",
+        "canonical": "oklch(12.8% 0.018 234.1)",
+        "tonalRamp": [
+          "#080C0E",
+          "#20262A",
+          "#3B4349",
+          "#58636A",
+          "#79848B",
+          "#9DA7AD",
+          "#C2CBD0",
+          "#E9F0F4"
+        ]
+      },
+      "night-foam": {
+        "role": "tertiary",
+        "displayName": "Glowing Foam",
+        "canonical": "oklch(90.3% 0.074 216.5) / 95%",
+        "tonalRamp": [
+          "#000E12",
+          "#002A34",
+          "#144956",
+          "#2B6B7A",
+          "#4E8D9D",
+          "#7BAFBD",
+          "#A7D1DD",
+          "#D4F5FE"
+        ]
+      },
+      "night-glow": {
+        "role": "primary",
+        "displayName": "Bioluminescence",
+        "canonical": "oklch(81.9% 0.121 225.4)",
+        "tonalRamp": [
+          "#000D14",
+          "#042936",
+          "#0A495D",
+          "#156B87",
+          "#128FB5",
+          "#5DB1D2",
+          "#92D4EF",
+          "#DAF3FE"
+        ]
+      },
+      "night-glass": {
+        "role": "neutral",
+        "displayName": "Smoke Glass",
+        "canonical": "oklch(21.6% 0.028 245.2) / 60%",
+        "tonalRamp": [
+          "#070C11",
+          "#1E262D",
+          "#38434D",
+          "#556370",
+          "#768492",
+          "#9AA7B2",
+          "#C0CBD4",
+          "#E7F0F7"
+        ]
+      },
+      "night-glass-rim": {
+        "role": "neutral",
+        "displayName": "Smoke Glass Rim",
+        "canonical": "oklch(81.9% 0.121 225.4) / 20%",
+        "tonalRamp": [
+          "#000D14",
+          "#042936",
+          "#0A495D",
+          "#156B87",
+          "#128FB5",
+          "#5DB1D2",
+          "#92D4EF",
+          "#DAF3FE"
+        ]
+      },
+      "night-glass-raised": {
+        "role": "neutral",
+        "displayName": "Raised Smoke Glass",
+        "canonical": "oklch(30.6% 0.057 244.0) / 80%",
+        "tonalRamp": [
+          "#020C16",
+          "#152736",
+          "#2D4558",
+          "#47657E",
+          "#6786A0",
+          "#8EA9C0",
+          "#B6CCE0",
+          "#E2F1FE"
+        ]
+      },
+      "night-glass-raised-rim": {
+        "role": "neutral",
+        "displayName": "Raised Smoke Glass Rim",
+        "canonical": "oklch(81.9% 0.121 225.4) / 55%",
+        "tonalRamp": [
+          "#000D14",
+          "#042936",
+          "#0A495D",
+          "#156B87",
+          "#128FB5",
+          "#5DB1D2",
+          "#92D4EF",
+          "#DAF3FE"
+        ]
+      },
+      "night-shadow": {
+        "role": "neutral",
+        "displayName": "Night Shadow",
+        "canonical": "oklch(0.0% 0.000 0.0) / 60%",
+        "tonalRamp": [
+          "#0B0B0B",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#A5A5A5",
+          "#C9C9C9",
+          "#EEEEEE"
+        ]
+      },
+      "night-ink": {
+        "role": "neutral",
+        "displayName": "Moonlight",
+        "canonical": "oklch(93.7% 0.011 226.0)",
+        "tonalRamp": [
+          "#090C0D",
+          "#222628",
+          "#3D4346",
+          "#5B6366",
+          "#7C8487",
+          "#A0A6A9",
+          "#C5CACD",
+          "#EBEFF1"
+        ]
+      },
+      "night-ink-soft": {
+        "role": "neutral",
+        "displayName": "Night Haze",
+        "canonical": "oklch(73.1% 0.022 227.7)",
+        "tonalRamp": [
+          "#070C0F",
+          "#1E272B",
+          "#394449",
+          "#55646B",
+          "#76858C",
+          "#9AA7AE",
+          "#C0CBD0",
+          "#E7F0F4"
+        ]
+      },
+      "night-ink-glass-soft": {
+        "role": "neutral",
+        "displayName": "Night Haze on Glass",
+        "canonical": "oklch(75.6% 0.022 227.6)",
+        "tonalRamp": [
+          "#070C0F",
+          "#1E272A",
+          "#394449",
+          "#55646A",
+          "#76858C",
+          "#9AA7AE",
+          "#C0CBD0",
+          "#E7F0F4"
+        ]
+      },
+      "night-accent": {
+        "role": "primary",
+        "displayName": "Glow Cyan",
+        "canonical": "oklch(81.6% 0.120 227.4)",
+        "tonalRamp": [
+          "#000D14",
+          "#012938",
+          "#014960",
+          "#066B8B",
+          "#1C8FB6",
+          "#60B1D3",
+          "#94D4F0",
+          "#DBF3FF"
+        ]
+      },
+      "night-on-accent": {
+        "role": "neutral",
+        "displayName": "Navy on Glow",
+        "canonical": "oklch(20.0% 0.042 240.4)",
+        "tonalRamp": [
+          "#040C13",
+          "#192731",
+          "#324552",
+          "#4D6476",
+          "#6E8698",
+          "#93A8B8",
+          "#BACCD9",
+          "#E3F1FB"
+        ]
+      },
+      "night-dismiss-thumb": {
+        "role": "neutral",
+        "displayName": "Dismiss Navy",
+        "canonical": "oklch(25.8% 0.047 241.2)",
+        "tonalRamp": [
+          "#030C14",
+          "#182732",
+          "#304554",
+          "#4B6578",
+          "#6B869A",
+          "#91A9BA",
+          "#B9CCDB",
+          "#E2F1FD"
+        ]
+      },
+      "night-dismiss-thumb-rim": {
+        "role": "primary",
+        "displayName": "Dismiss Glow Rim",
+        "canonical": "oklch(81.9% 0.121 225.4) / 60%",
+        "tonalRamp": [
+          "#000D14",
+          "#042936",
+          "#0A495D",
+          "#156B87",
+          "#128FB5",
+          "#5DB1D2",
+          "#92D4EF",
+          "#DAF3FE"
+        ]
+      },
+      "night-container": {
+        "role": "primary",
+        "displayName": "Night Lagoon Container",
+        "canonical": "oklch(31.3% 0.061 242.7)",
+        "tonalRamp": [
+          "#020C17",
+          "#132736",
+          "#2B4559",
+          "#44657F",
+          "#6587A2",
+          "#8CA9C1",
+          "#B4CDE1",
+          "#E1F1FE"
+        ]
+      },
+      "night-navigation-bar": {
+        "role": "neutral",
+        "displayName": "Night Navigation",
+        "canonical": "oklch(18.0% 0.010 248.4)",
+        "tonalRamp": [
+          "#090B0D",
+          "#232528",
+          "#3F4246",
+          "#5D6267",
+          "#7E8388",
+          "#A1A6AA",
+          "#C6CACD",
+          "#ECEFF2"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display-hero": {
+        "displayName": "Display, hero",
+        "purpose": "Next alarm time on the alarm list (Material displayLarge at 96 sp)."
+      },
+      "display-ringing": {
+        "displayName": "Display, ringing",
+        "purpose": "Current time on the ringing screen (displayLarge at 112 sp)."
+      },
+      "display-small": {
+        "displayName": "Display Small",
+        "purpose": "Alarm times in list rows; placeholder titles."
+      },
+      "headline-medium": {
+        "displayName": "Headline Medium",
+        "purpose": "No-alarm hero message."
+      },
+      "headline-small": {
+        "displayName": "Headline Small",
+        "purpose": "Alarm label on the ringing screen."
+      },
+      "title-large": {
+        "displayName": "Title Large",
+        "purpose": "Label and countdown under the hero; Snooze."
+      },
+      "title-medium": {
+        "displayName": "Title Medium",
+        "purpose": "Ringing date; slide-to-dismiss hint."
+      },
+      "body-large": {
+        "displayName": "Body Large",
+        "purpose": "Empty-sheet message."
+      },
+      "body-medium": {
+        "displayName": "Body Medium",
+        "purpose": "Row details; snooze length."
+      },
+      "label-medium": {
+        "displayName": "Label Medium",
+        "purpose": "Navigation bar labels."
+      }
+    },
+    "shadows": [
+      {
+        "name": "glass-lift-day",
+        "value": "0 6px 20px rgba(11,47,55,0.35)",
+        "purpose": "Approximation of Compose shadow(elevation = 10.dp) with ambient and spot colour #0B2F37 at 35%, under every day GlassPane."
+      },
+      {
+        "name": "glass-lift-night",
+        "value": "0 6px 20px rgba(0,0,0,0.6)",
+        "purpose": "The same 10 dp glass shadow by night, black at 60%."
+      },
+      {
+        "name": "glass-blur",
+        "value": "backdrop-filter: blur(12px)",
+        "purpose": "GlassPane redraws the beach beneath itself and blurs it at a 12 dp radius."
+      }
+    ],
+    "motion": [
+      {
+        "name": "tide-change",
+        "value": "4000ms tween (FastOutSlowIn)",
+        "purpose": "The water moving to a new TideLevel."
+      },
+      {
+        "name": "tide-content-colour",
+        "value": "1200ms tween",
+        "purpose": "TideAware text cross-fading between sea and sand colours."
+      },
+      {
+        "name": "wave-lap",
+        "value": "7000ms FastOutSlowIn, infinite, reverse; 5 dp",
+        "purpose": "Waterline lapping on the sand."
+      },
+      {
+        "name": "wave-swell",
+        "value": "11000ms FastOutSlowIn, infinite, reverse; 3 dp",
+        "purpose": "Deep-water edge swell; jellyfish drift and pulse."
+      },
+      {
+        "name": "dismiss-settle",
+        "value": "spring() default",
+        "purpose": "Dismiss thumb springs back or completes after release."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "ANIMATOR_DURATION_SCALE == 0 stops waves",
+        "purpose": "Waves stand still when system animations are off."
+      }
+    ],
+    "tide": {
+      "low": 0.18,
+      "high": 0.85,
+      "horizon": "12h",
+      "shallowsMin": "44dp",
+      "shallowsShare": 0.25,
+      "purpose": "Shoreline position as a fraction of screen height from the top; rises linearly as the next event approaches."
+    }
+  },
+  "components": [
+    {
+      "name": "Glass Sheet with Alarm Rows",
+      "kind": "card",
+      "refersTo": "glass-sheet",
+      "description": "The one frosted sheet that holds every alarm row over the beach (day shown; night uses Smoke Glass and light text).",
+      "html": "<div class=\"ds-beach\"><div class=\"ds-glass-sheet\"><div class=\"ds-alarm-row\"><div><div class=\"ds-alarm-time ds-off\">05:10</div><div class=\"ds-alarm-details\">Once · Airport</div></div><span class=\"ds-switch\" role=\"switch\" aria-checked=\"false\" tabindex=\"0\"></span></div><hr class=\"ds-divider\"><div class=\"ds-alarm-row\"><div><div class=\"ds-alarm-time\">06:30</div><div class=\"ds-alarm-details\">Mon–Fri · Work</div></div><span class=\"ds-switch ds-on\" role=\"switch\" aria-checked=\"true\" tabindex=\"0\"></span></div></div></div>",
+      "css": ".ds-beach { padding: 24px 16px; background: linear-gradient(180deg, #35B9CC 0%, #3CCACB 45%, #8FE3D3 70%, #D4EDC4 88%, #F0DCAC 100%); } .ds-glass-sheet { position: relative; border-radius: 28px; background: linear-gradient(180deg, rgba(255,255,255,0.86), rgba(255,255,255,0.72)); border: 1px solid rgba(255,255,255,0.8); box-shadow: 0 6px 20px rgba(11,47,55,0.35); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: #0B2F37; font-family: Figtree, sans-serif; } .ds-alarm-row { display: flex; align-items: center; gap: 16px; padding: 14px 20px; justify-content: space-between; cursor: pointer; } .ds-alarm-row:focus-within { outline: 2px solid #006A73; outline-offset: -4px; border-radius: 20px; } .ds-alarm-time { font-size: 36px; line-height: 44px; font-weight: 300; font-feature-settings: 'tnum'; } .ds-alarm-time.ds-off { color: #1F4148; } .ds-alarm-details { margin-top: 2px; font-size: 14px; line-height: 20px; letter-spacing: 0.25px; color: #1F4148; } .ds-divider { margin: 0 20px; border: 0; border-top: 1px solid rgba(11,47,55,0.12); } .ds-switch { display: inline-block; width: 52px; height: 32px; border-radius: 9999px; border: 2px solid #1F4148; box-sizing: border-box; position: relative; flex: none; transition: background 0.2s; } .ds-switch::after { content: ''; position: absolute; top: 6px; left: 6px; width: 16px; height: 16px; border-radius: 50%; background: #1F4148; transition: all 0.2s; } .ds-switch.ds-on { background: #006A73; border-color: #006A73; } .ds-switch.ds-on::after { left: 22px; top: 2px; width: 24px; height: 24px; background: #FFFFFF; } .ds-switch:focus-visible { outline: 2px solid #006A73; outline-offset: 2px; }"
+    },
+    {
+      "name": "Snooze (Raised Glass Pill)",
+      "kind": "button",
+      "refersTo": "snooze-pane",
+      "description": "The one raised pane: the leading action on the ringing screen, 88 dp tall.",
+      "html": "<div class=\"ds-shallows\"><button class=\"ds-snooze\"><span class=\"ds-snooze-title\">Snooze</span><span class=\"ds-snooze-sub\">10 min</span></button></div>",
+      "css": ".ds-shallows { padding: 24px 32px; background: linear-gradient(180deg, #8FE3D3, #D4EDC4); } .ds-snooze { width: 100%; height: 88px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.9); background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,255,255,0.82)); box-shadow: 0 6px 20px rgba(11,47,55,0.35); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: #0B2F37; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; cursor: pointer; transition: background 0.3s; font-family: Figtree, sans-serif; } .ds-snooze:hover { background: rgba(255,255,255,0.96); } .ds-snooze:focus-visible { outline: 2px solid #006A73; outline-offset: 3px; } .ds-snooze:active { background: rgba(255,255,255,1); } .ds-snooze-title { font-size: 22px; line-height: 28px; } .ds-snooze-sub { font-size: 14px; line-height: 20px; letter-spacing: 0.25px; color: #1F4148; }"
+    },
+    {
+      "name": "Snooze, Night",
+      "kind": "button",
+      "refersTo": "snooze-pane-night",
+      "description": "The raised pane by night: smoky blue glass with a glowing rim over the breaking blue water.",
+      "html": "<div class=\"ds-night-shallows\"><button class=\"ds-snooze-night\"><span class=\"ds-sn-title\">Snooze</span><span class=\"ds-sn-sub\">10 min</span></button></div>",
+      "css": ".ds-night-shallows { padding: 24px 32px; background: linear-gradient(180deg, #061A2A, #135EA6); } .ds-snooze-night { width: 100%; height: 88px; border-radius: 9999px; border: 1px solid rgba(95,212,255,0.55); background: linear-gradient(180deg, rgba(18,50,74,0.94), rgba(18,50,74,0.8)); box-shadow: 0 6px 20px rgba(0,0,0,0.6); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: #E3ECF0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; cursor: pointer; font-family: Figtree, sans-serif; } .ds-snooze-night:hover { border-color: rgba(95,212,255,0.8); } .ds-snooze-night:focus-visible { outline: 2px solid #62D2FF; outline-offset: 3px; } .ds-sn-title { font-size: 22px; line-height: 28px; } .ds-sn-sub { font-size: 14px; line-height: 20px; color: #A2B3BB; }"
+    },
+    {
+      "name": "Slide to Dismiss",
+      "kind": "custom",
+      "refersTo": "dismiss-track",
+      "description": "Glass pill track on the sand with a 56 dp accent thumb; a deliberate slide past 80% dismisses.",
+      "html": "<div class=\"ds-sand\"><div class=\"ds-dismiss\" role=\"button\" tabindex=\"0\" aria-label=\"Dismiss\"><span class=\"ds-thumb\"><svg width=\"24\" height=\"24\" viewBox=\"0 -960 960 960\" fill=\"currentColor\"><path d=\"M647-440H160v-80h487L423-744l57-56 320 320-320 320-57-56 224-224Z\"/></svg></span><span class=\"ds-dismiss-hint\">Slide to dismiss</span></div></div>",
+      "css": ".ds-sand { padding: 24px 32px; background: #F0DCAC; } .ds-dismiss { position: relative; height: 64px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.8); background: linear-gradient(180deg, rgba(255,255,255,0.86), rgba(255,255,255,0.72)); box-shadow: 0 6px 20px rgba(11,47,55,0.35); display: flex; align-items: center; font-family: Figtree, sans-serif; } .ds-dismiss:focus-visible { outline: 2px solid #006A73; outline-offset: 3px; } .ds-thumb { position: absolute; left: 4px; top: 4px; width: 56px; height: 56px; border-radius: 50%; background: #006A73; color: #FFFFFF; display: flex; align-items: center; justify-content: center; transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); } .ds-dismiss:hover .ds-thumb { transform: translateX(12px); } .ds-dismiss-hint { flex: 1; padding-left: 56px; text-align: center; font-size: 16px; line-height: 24px; font-weight: 500; letter-spacing: 0.15px; color: #1F4148; }"
+    },
+    {
+      "name": "Add Alarm FAB",
+      "kind": "button",
+      "refersTo": "fab",
+      "description": "56 dp circle; accent on sand, inverts to ink with sea-coloured icon under deep water.",
+      "html": "<div class=\"ds-fab-row\"><button class=\"ds-fab\" aria-label=\"New alarm\"><svg width=\"24\" height=\"24\" viewBox=\"0 -960 960 960\" fill=\"currentColor\"><path d=\"M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z\"/></svg></button><button class=\"ds-fab ds-fab-underwater\" aria-label=\"New alarm\"><svg width=\"24\" height=\"24\" viewBox=\"0 -960 960 960\" fill=\"currentColor\"><path d=\"M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z\"/></svg></button></div>",
+      "css": ".ds-fab-row { display: flex; gap: 24px; padding: 24px; background: linear-gradient(90deg, #F0DCAC 50%, #3CCACB 50%); } .ds-fab { width: 56px; height: 56px; border-radius: 50%; border: none; background: #006A73; color: #FFFFFF; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 8px rgba(0,0,0,0.25); cursor: pointer; transition: box-shadow 0.2s; margin-left: auto; margin-right: auto; } .ds-fab:hover { box-shadow: 0 5px 12px rgba(0,0,0,0.3); } .ds-fab:focus-visible { outline: 2px solid #0B2F37; outline-offset: 3px; } .ds-fab-underwater { background: #0B2F37; color: #3CCACB; }"
+    },
+    {
+      "name": "Navigation Bar",
+      "kind": "nav",
+      "refersTo": "navigation-bar",
+      "description": "Material 3 navigation bar in Navigation Sand; selected destination gets the pale container pill and accent label.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-item ds-active\" href=\"#\"><span class=\"ds-nav-ind\"><svg width=\"24\" height=\"24\" viewBox=\"0 -960 960 960\" fill=\"currentColor\"><path d=\"M480-80q-75 0-140.5-28.5t-114-77q-48.5-48.5-77-114T120-440q0-75 28.5-140.5t77-114q48.5-48.5 114-77T480-800q75 0 140.5 28.5t114 77q48.5 48.5 77 114T840-440q0 75-28.5 140.5t-77 114q-48.5 48.5-114 77T480-80Zm112-192 56-56-128-128v-184h-80v216l152 152ZM224-866l56 56-170 170-56-56 170-170Zm512 0 170 170-56 56-170-170 56-56Z\"/></svg></span>Alarm</a><a class=\"ds-nav-item\" href=\"#\"><span class=\"ds-nav-ind\"><svg width=\"24\" height=\"24\" viewBox=\"0 -960 960 960\" fill=\"currentColor\"><path d=\"M360-840v-80h240v80H360Zm80 440h80v-240h-80v240Zm40 320q-74 0-139.5-28.5T226-186q-49-49-77.5-114.5T120-440q0-74 28.5-139.5T226-694q49-49 114.5-77.5T480-800q62 0 119 20t107 58l56-56 56 56-56 56q38 50 58 107t20 119q0 74-28.5 139.5T734-186q-49 49-114.5 77.5T480-80Z\"/></svg></span>Stopwatch</a></nav>",
+      "css": ".ds-nav { display: flex; justify-content: space-around; background: #EAD3A0; padding: 12px 0 16px; font-family: Figtree, sans-serif; } .ds-nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; color: #1F4148; font-size: 12px; line-height: 16px; font-weight: 500; letter-spacing: 0.5px; } .ds-nav-ind { width: 64px; height: 32px; border-radius: 9999px; display: flex; align-items: center; justify-content: center; transition: background 0.2s; } .ds-nav-item:hover .ds-nav-ind { background: rgba(11,47,55,0.08); } .ds-nav-item:focus-visible { outline: 2px solid #006A73; outline-offset: 2px; border-radius: 8px; } .ds-nav-item.ds-active { color: #006A73; } .ds-nav-item.ds-active .ds-nav-ind { background: #BFEDEA; color: #0B2F37; }"
+    },
+    {
+      "name": "Hero Time on the Water",
+      "kind": "custom",
+      "refersTo": "display-hero",
+      "description": "The next alarm at 96 sp Figtree Light with tabular figures, then label · countdown in Title Large; dark ink on bright day water.",
+      "html": "<div class=\"ds-hero\"><div class=\"ds-hero-time\">06:30</div><div class=\"ds-hero-sub\">Work · in 7 h 12 min</div></div>",
+      "css": ".ds-hero { padding: 48px 24px 32px; background: linear-gradient(180deg, #35B9CC, #3CCACB); color: #0B2F37; font-family: Figtree, sans-serif; } .ds-hero-time { font-size: 96px; line-height: 96px; font-weight: 300; letter-spacing: -0.25px; font-feature-settings: 'tnum'; } .ds-hero-sub { margin-top: 8px; font-size: 22px; line-height: 28px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Tide Is the Clock",
+    "overview": "Every screen is a lagoon seen from above: water at the top, a band of bright shallows, a lace of foam, then sand at the bottom. The shoreline is information, not decoration. Its height comes from `TideLevel`: low tide (0.18 of the screen height) when nothing is due within 12 hours, rising linearly to high tide (0.85) at the moment an alarm rings. A screen that shows no countdown sits at low tide. Working content floats on the beach as frosted glass that redraws and blurs the real beach behind it, so the shoreline drifts through the glass as time passes.\n\nThere is one beach world in two lights. By day the water is a bright, clear cyan, the shallows are mint over golden sand, the foam is thick and white, and all text is dark ink. By night the sand is near-black, the open sea is darker still, the breaking water glows electric blue in three lace lines, and two faint moon jellyfish drift in the deep water; all text is light. Density is low and the type is huge, because the screens are read half asleep and maybe without glasses. Motion is slow and continuous: the water laps and swells, and nothing snaps. Standard Material 3 controls (switch, FAB, snackbar, dialog, time picker, navigation bar) sit on top, recoloured entirely from the beach palette.",
+    "keyCharacteristics": [
+      "The water level always encodes time to the next event; never set it for looks.",
+      "One frosted glass sheet holds the working list; one raised glass pane marks the screen's single leading action.",
+      "Figtree Light numerals with tabular figures at 96 to 112 sp for hero times.",
+      "One text polarity per theme: dark ink by day, light by night.",
+      "Slow ambient motion (7 s lap, 11 s swell, 4 s tide change) that stops entirely when system animations are off."
+    ],
+    "rules": [
+      {
+        "name": "The Tide Tells Time Rule",
+        "body": "The shoreline's height comes only from `TideLevel` (`forTimeUntil` or `forProgress`). A screen with nothing to count toward sits at `TideLevel.LOW`; a ringing alarm sits at `TideLevel.HIGH`.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Polarity Rule",
+        "body": "By day every text colour is dark ink; by night every text colour is light. The day `onSea` equals `onSand`, so text never flips to white over bright water. Each text colour meets WCAG AA (4.5:1) on every ground it can meet.",
+        "section": "colors"
+      },
+      {
+        "name": "The Deep Water Rule",
+        "body": "Only the deep sea counts as \"underwater\" for `TideAware` content. The shallows and the sand take the sand colours, so text near the shoreline stays readable as the water moves past it. Colours cross-fade over 1.2 s.",
+        "section": "colors"
+      },
+      {
+        "name": "The No Wallpaper Rule",
+        "body": "Every Material colour role is set from the beach palette. No Material You dynamic colour, and no baseline purple anywhere, including dialogs and pickers.",
+        "section": "colors"
+      },
+      {
+        "name": "The Light Numerals Rule",
+        "body": "Every display style is a time: Figtree Light (300) with tabular figures (`tnum`). Display styles are not used for words, except the title on placeholder screens.",
+        "section": "typography"
+      },
+      {
+        "name": "The Sentence Case Rule",
+        "body": "Labels and secondary lines are sentence case at normal tracking. Secondary information is joined to its primary line with a middle dot (\"Mon–Fri · Work\"), not stacked as a separate label above it.",
+        "section": "typography"
+      },
+      {
+        "name": "The Glass Shows the Tide Rule",
+        "body": "A glass pane is never a flat fill. It redraws the beach under itself, blurs it at a 12 dp radius, then lays a translucent tint over it. The tint is a vertical gradient that is 14% more opaque at the top edge, where it catches the light. The pane has a 1 dp rim. The water must stay visible through it.",
+        "section": "elevation"
+      },
+      {
+        "name": "The One Raised Pane Rule",
+        "body": "A screen has at most one raised pane, and it is the action the screen leads with (snooze). Everything else on glass uses the standard pane.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** derive every water level from `TideLevel`, and use `TideLevel.LOW` when there is nothing to count toward.",
+      "**Do** put all items of a list on one shared glass sheet, separated by 12% hairlines inset 20 dp.",
+      "**Do** put text that sits directly on the beach inside `TideAware`, so it takes sea or sand colours from where the water actually is.",
+      "**Do** set times in Figtree Light with tabular figures; hero times are 96 sp on lists and 112 sp when ringing.",
+      "**Do** give the screen's one leading action the raised glass pane, and give every pressable or slidable action a pill or circle shape.",
+      "**Do** keep motion slow and continuous (seconds, not milliseconds) and stop the waves when system animations are off.",
+      "**Do** keep night decoration (jellyfish, glow) faint and away from text and actions."
+    ],
+    "donts": [
+      "**Don't** use Material You dynamic or wallpaper colours, or leave any Material role at its baseline value.",
+      "**Don't** put white or light text on the day water; day text is always dark ink.",
+      "**Don't** give list rows their own cards or panes; one sheet holds them all.",
+      "**Don't** fill glass with an opaque colour, or drop the blur, so that the tide no longer shows through.",
+      "**Don't** use hard edges, offset shadows or outlines on the water, foam or jellyfish; every shoreline is a soft wave line.",
+      "**Don't** use startling visuals while an alarm rings: no red, no flashing, no fast motion."
+    ]
+  }
+}
