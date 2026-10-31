@@ -33,6 +33,11 @@ class TimerActions
             return repository.save(Timer(label = label.trim(), setMillis = setMillis, createdAt = now()).start(now()))
         }
 
+        suspend fun rename(
+            id: Long,
+            label: String,
+        ) = repository.update(id) { it.copy(label = label.trim().take(MAX_LABEL)) }
+
         suspend fun startOrPause(id: Long) = repository.update(id) { if (it.isRunning) it.pause(now()) else it.start(now()) }
 
         suspend fun addMinute(id: Long) {
@@ -49,4 +54,8 @@ class TimerActions
         }
 
         private fun isRinging(id: Long) = (ringing.status.value as? RingingStatus.TimerRinging)?.timer?.id == id
+
+        private companion object {
+            const val MAX_LABEL = 40
+        }
     }

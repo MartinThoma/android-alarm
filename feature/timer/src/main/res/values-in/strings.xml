@@ -22,4 +22,5 @@
     <string name="feature_timer_seconds">Detik</string>
     <string name="feature_timer_increase">Tambah</string>
     <string name="feature_timer_decrease">Kurangi</string>
+    <string name="feature_timer_rename">Ganti nama timer</string>
 </resources>

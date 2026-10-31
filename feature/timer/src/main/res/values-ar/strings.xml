@@ -22,4 +22,5 @@
     <string name="feature_timer_seconds">ثوانٍ</string>
     <string name="feature_timer_increase">زيادة</string>
     <string name="feature_timer_decrease">إنقاص</string>
+    <string name="feature_timer_rename">إعادة تسمية المؤقت</string>
 </resources>

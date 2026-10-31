@@ -36,6 +36,11 @@ internal class TimerViewModel
             viewModelScope.launch { actions.create(setMillis, label) }
         }
 
+        fun rename(
+            timer: Timer,
+            label: String,
+        ) = launch { actions.rename(timer.id, label) }
+
         fun startOrPause(timer: Timer) = launch { actions.startOrPause(timer.id) }
 
         fun addMinute(timer: Timer) = launch { actions.addMinute(timer.id) }

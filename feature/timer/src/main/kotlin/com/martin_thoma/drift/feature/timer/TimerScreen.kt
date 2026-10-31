@@ -19,11 +19,16 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
@@ -39,13 +44,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalConfiguration
@@ -53,6 +65,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -78,6 +94,8 @@ import java.time.ZoneId
 data object TimerRoute : NavKey
 
 private val RING_SIZE = 296.dp
+private val RENAME_WIDTH = 200.dp
+private const val MAX_LABEL_LENGTH = 40
 
 @Serializable
 data class TimerDetailRoute(
@@ -111,6 +129,7 @@ fun TimerScreen(
             onStartOrPause = viewModel::startOrPause,
             onAddMinute = viewModel::addMinute,
             onReset = viewModel::reset,
+            onRename = viewModel::rename,
             leading = { DeleteButton { viewModel.delete(current.single()) } },
             trailing = { NewTimerButton(onNewTimer) },
             modifier = modifier,
@@ -150,6 +169,7 @@ fun TimerDetailScreen(
         onStartOrPause = viewModel::startOrPause,
         onAddMinute = viewModel::addMinute,
         onReset = viewModel::reset,
+        onRename = viewModel::rename,
         leading = {
             IconButton(onClick = onBack) {
                 Icon(
@@ -210,6 +230,7 @@ internal fun SingleTimerContent(
     onStartOrPause: (Timer) -> Unit,
     onAddMinute: (Timer) -> Unit,
     onReset: (Timer) -> Unit,
+    onRename: (Timer, String) -> Unit,
     leading: @Composable () -> Unit,
     trailing: @Composable () -> Unit,
     modifier: Modifier = Modifier,
@@ -229,7 +250,7 @@ internal fun SingleTimerContent(
                 Spacer(Modifier.weight(1f))
                 trailing()
             }
-            TimerPage(timer, now, onStartOrPause, onAddMinute, onReset)
+            TimerPage(timer, now, onStartOrPause, onAddMinute, onReset, onRename)
         }
     }
 }
@@ -413,12 +434,13 @@ private fun TimerPage(
     onStartOrPause: (Timer) -> Unit,
     onAddMinute: (Timer) -> Unit,
     onReset: (Timer) -> Unit,
+    onRename: (Timer, String) -> Unit,
 ) {
     val colors = LocalTideColors.current
     val expired = timer.hasExpired(now)
     Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
         Spacer(Modifier.weight(0.6f))
-        TimerRing(timer, now)
+        TimerRing(timer, now, onRename)
         Spacer(Modifier.height(40.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(28.dp), verticalAlignment = Alignment.CenterVertically) {
             GlassPane(modifier = Modifier.size(72.dp), shape = CircleShape, onClick = { onAddMinute(timer) }) {
@@ -468,7 +490,9 @@ private fun TimerPage(
 private fun TimerRing(
     timer: Timer,
     now: Long,
+    onRename: (Timer, String) -> Unit,
 ) {
+    var renaming by rememberSaveable { mutableStateOf(false) }
     val colors = LocalTideColors.current
     val locale = LocalConfiguration.current.locales[0]
     val timeFormatter = rememberTimeFormatter()
@@ -499,13 +523,37 @@ private fun TimerRing(
             modifier = Modifier.align(Alignment.Center).padding(horizontal = 36.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text(
-                timer.label.ifEmpty { stringResource(R.string.feature_timer_title) },
-                style = MaterialTheme.typography.titleMedium,
-                color = colors.onGlassVariant,
-                maxLines = 1,
-                textAlign = TextAlign.Center,
-            )
+            // The name, with a pencil: tap it to rename the timer in place (Martin, 2026-10-31).
+            if (renaming) {
+                RenameField(timer.label) {
+                    renaming = false
+                    onRename(timer, it)
+                }
+            } else {
+                Row(
+                    modifier =
+                        Modifier
+                            .clip(RoundedCornerShape(12.dp))
+                            .clickable(onClickLabel = stringResource(R.string.feature_timer_rename)) { renaming = true }
+                            .padding(horizontal = 8.dp, vertical = 4.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                ) {
+                    Text(
+                        timer.label.ifEmpty { stringResource(R.string.feature_timer_title) },
+                        style = MaterialTheme.typography.titleMedium,
+                        color = colors.onGlassVariant,
+                        maxLines = 1,
+                        textAlign = TextAlign.Center,
+                    )
+                    Icon(
+                        painterResource(TideIcons.Edit),
+                        contentDescription = null,
+                        tint = colors.onGlassVariant,
+                        modifier = Modifier.size(16.dp),
+                    )
+                }
+            }
             val time = if (expired) "+" + formatDuration(-remaining, locale) else formatDuration(remaining + 999, locale)
             Text(
                 text = time,
@@ -547,6 +595,52 @@ private fun TimerRing(
             }
         }
     }
+}
+
+/** The timer's name as a text field; the keyboard's done key or tapping elsewhere keeps it. */
+@Composable
+private fun RenameField(
+    current: String,
+    onDone: (String) -> Unit,
+) {
+    val colors = LocalTideColors.current
+    var text by rememberSaveable(stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(TextFieldValue(current, TextRange(0, current.length)))
+    }
+    val focus = remember { FocusRequester() }
+    var focused by remember { mutableStateOf(false) }
+    var done by remember { mutableStateOf(false) }
+    val finish = {
+        if (!done) {
+            done = true
+            onDone(text.text)
+        }
+    }
+    val description = stringResource(R.string.feature_timer_rename)
+    BasicTextField(
+        value = text,
+        onValueChange = { if (it.text.length <= MAX_LABEL_LENGTH) text = it },
+        singleLine = true,
+        textStyle = MaterialTheme.typography.titleMedium.copy(color = colors.onGlass, textAlign = TextAlign.Center),
+        cursorBrush = SolidColor(colors.accent),
+        keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences, imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions(onDone = { finish() }),
+        modifier =
+            Modifier
+                .width(RENAME_WIDTH)
+                .focusRequester(focus)
+                .onFocusChanged {
+                    if (focused && !it.isFocused) finish()
+                    focused = it.isFocused
+                }.semantics { contentDescription = description },
+        decorationBox = { field ->
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Box(Modifier.padding(vertical = 4.dp)) { field() }
+                Box(Modifier.fillMaxWidth().height(2.dp).background(colors.accent, RoundedCornerShape(1.dp)))
+            }
+        },
+    )
+    LaunchedEffect(Unit) { focus.requestFocus() }
 }
 
 @Composable

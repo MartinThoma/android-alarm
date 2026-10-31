@@ -122,9 +122,14 @@ class TimerTest {
             compose.waitUntil(5_000) { compose.onAllNodesWithText("06:33").fetchSemanticsNodes().isNotEmpty() }
             compose.onRoot().captureRoboImage("../docs/screenshots/timer.png")
 
-            // 2b. A second timer from the recent ones: now they are listed, like the alarms.
+            // 2b. A second timer: the only shortcut is the tea timer just used, no made-up defaults.
             compose.onNodeWithContentDescription("New timer").performClick()
-            compose.onNodeWithText("3 min").performClick()
+            compose.waitUntil(5_000) { compose.onAllNodesWithText("Tea · 10 min").fetchSemanticsNodes().isNotEmpty() }
+            assertEquals(0, compose.onAllNodesWithText("3 min").fetchSemanticsNodes().size)
+            compose.onNode(hasScrollToIndexAction() and hasAnyAncestor(hasContentDescription("Minutes"))).performScrollToIndex(3)
+            compose.waitUntil(5_000) { compose.onAllNodes(hasContentDescription("Minutes: 3")).fetchSemanticsNodes().isNotEmpty() }
+            compose.onNodeWithContentDescription("Start").performClick()
+            // Now they are listed, like the alarms.
             awaitUntil { runBlocking { repository.getAll() }.size == 2 }
             compose.waitUntil(5_000) { compose.onAllNodesWithText("Timer · Rings at 4:06 PM").fetchSemanticsNodes().isNotEmpty() }
             compose.onRoot().captureRoboImage("../docs/screenshots/timers.png")

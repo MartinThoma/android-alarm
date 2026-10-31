@@ -22,4 +22,5 @@
     <string name="feature_timer_seconds">Secondes</string>
     <string name="feature_timer_increase">Augmenter</string>
     <string name="feature_timer_decrease">Diminuer</string>
+    <string name="feature_timer_rename">Renommer le minuteur</string>
 </resources>

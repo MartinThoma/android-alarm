@@ -1,6 +1,7 @@
 package com.martin_thoma.drift.feature.timer
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -44,6 +45,7 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
@@ -74,6 +76,7 @@ import com.martin_thoma.drift.core.designsystem.TideSurface
 import com.martin_thoma.drift.core.designsystem.formatDuration
 import com.martin_thoma.drift.core.designsystem.keepOnOpenWater
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import java.util.Locale
 import kotlin.math.abs
@@ -83,14 +86,17 @@ data object NewTimerRoute : NavKey
 
 /** The three parts of a duration; the wheel sets the one selected at the top. */
 private enum class Field(
-    val max: Int,
     val label: Int,
-    val millis: Long,
+    /** Seconds in one step of this field's wheel. */
+    val seconds: Int,
 ) {
-    HOURS(23, R.string.feature_timer_hours, 3_600_000),
-    MINUTES(59, R.string.feature_timer_minutes_unit, 60_000),
-    SECONDS(59, R.string.feature_timer_seconds, 1_000),
+    HOURS(R.string.feature_timer_hours, 3_600),
+    MINUTES(R.string.feature_timer_minutes_unit, 60),
+    SECONDS(R.string.feature_timer_seconds, 1),
 }
+
+/** The longest timer: 23:59:59. */
+private const val MAX_SECONDS = 24 * 3_600 - 1
 
 private val WHEEL_ITEM = 52.dp
 private const val WHEEL_VISIBLE = 5
@@ -125,31 +131,21 @@ internal fun NewTimerContent(
     onBack: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
-    var hours by rememberSaveable { mutableIntStateOf(0) }
-    var minutes by rememberSaveable { mutableIntStateOf(0) }
-    var seconds by rememberSaveable { mutableIntStateOf(0) }
+    // The whole duration in seconds; hours, minutes and seconds at the top are derived from it.
+    var total by rememberSaveable { mutableIntStateOf(0) }
     var unit by rememberSaveable { mutableStateOf(Field.MINUTES) }
     var label by rememberSaveable { mutableStateOf("") }
     val colors = LocalTideColors.current
     val locale = LocalConfiguration.current.locales[0]
-    val millis = hours * Field.HOURS.millis + minutes * Field.MINUTES.millis + seconds * Field.SECONDS.millis
+    val millis = total * 1_000L
     var level by remember { mutableFloatStateOf(TideLevel.LOW) }
 
     fun valueOf(u: Field) =
         when (u) {
-            Field.HOURS -> hours
-            Field.MINUTES -> minutes
-            Field.SECONDS -> seconds
+            Field.HOURS -> total / 3_600
+            Field.MINUTES -> total / 60 % 60
+            Field.SECONDS -> total % 60
         }
-
-    fun set(
-        u: Field,
-        value: Int,
-    ) = when (u) {
-        Field.HOURS -> hours = value
-        Field.MINUTES -> minutes = value
-        Field.SECONDS -> seconds = value
-    }
 
     TideSurface(level = level, modifier = modifier) {
         Column(
@@ -189,7 +185,14 @@ internal fun NewTimerContent(
             Spacer(Modifier.weight(1f))
             // The wheel starts afresh for each unit, at that unit's value.
             key(unit) {
-                NumberWheel(value = valueOf(unit), unit = unit, locale = locale, onValue = { set(unit, it) })
+                // Each step of the wheel is one of the selected unit; turning past 59 carries into the
+                // next unit up, like a counter, and the wheel stops at zero (Martin, 2026-10-31).
+                NumberWheel(
+                    steps = total / unit.seconds,
+                    field = unit,
+                    locale = locale,
+                    onSteps = { steps -> total = (steps * unit.seconds + total % unit.seconds).coerceIn(0, MAX_SECONDS) },
+                )
             }
             Spacer(Modifier.weight(1f))
             OutlinedTextField(
@@ -261,18 +264,20 @@ private fun Segment(
 }
 
 /**
- * A wheel of numbers that snaps to the one in the middle. TalkBack users get "increase" and
- * "decrease" actions instead of turning it.
+ * A wheel of numbers that keeps rolling when flung and snaps to the one in the middle. It counts
+ * whole steps of [field] in the duration: the minutes wheel shows 58, 59, 00, 01 while the hours go
+ * up by one. TalkBack users get "increase" and "decrease" actions instead of turning it.
  */
 @Composable
 private fun NumberWheel(
-    value: Int,
-    unit: Field,
+    steps: Int,
+    field: Field,
     locale: Locale,
-    onValue: (Int) -> Unit,
+    onSteps: (Int) -> Unit,
 ) {
     val colors = LocalTideColors.current
-    val state = rememberLazyListState(initialFirstVisibleItemIndex = value)
+    val count = MAX_SECONDS / field.seconds + 1
+    val state = rememberLazyListState(initialFirstVisibleItemIndex = steps)
     // The item in the middle: the list is padded by two items above and below.
     val centre by remember {
         derivedStateOf {
@@ -280,19 +285,26 @@ private fun NumberWheel(
                 state.layoutInfo.visibleItemsInfo
                     .firstOrNull()
                     ?.size ?: 1
-            (state.firstVisibleItemIndex + if (state.firstVisibleItemScrollOffset > itemPx / 2) 1 else 0).coerceIn(0, unit.max)
+            (state.firstVisibleItemIndex + if (state.firstVisibleItemScrollOffset > itemPx / 2) 1 else 0).coerceIn(0, count - 1)
         }
     }
+    var reported by remember { mutableIntStateOf(steps) }
     LaunchedEffect(state) {
-        snapshotFlow { centre }.distinctUntilChanged().collect(onValue)
+        snapshotFlow { centre }.distinctUntilChanged().collect {
+            reported = it
+            onSteps(it)
+        }
     }
-    // A value set another way (TalkBack's actions) turns the wheel, too.
-    LaunchedEffect(value) {
-        if (value != centre) state.animateScrollToItem(value)
+    // Only a change from elsewhere (TalkBack) turns the wheel; following its own turning would stop a fling.
+    LaunchedEffect(steps) {
+        if (steps != reported && !state.isScrollInProgress) state.animateScrollToItem(steps)
     }
-    val name = stringResource(unit.label)
+    val scope = rememberCoroutineScope()
+    val name = stringResource(field.label)
     val increase = stringResource(R.string.feature_timer_increase)
     val decrease = stringResource(R.string.feature_timer_decrease)
+
+    fun labelOf(index: Int) = String.format(locale, "%02d", if (field == Field.HOURS) index else index % 60)
     Box(
         modifier =
             Modifier
@@ -300,15 +312,15 @@ private fun NumberWheel(
                 .height(WHEEL_ITEM * WHEEL_VISIBLE)
                 .semantics {
                     contentDescription = name
-                    stateDescription = centre.toString()
+                    stateDescription = labelOf(centre)
                     customActions =
                         listOf(
                             CustomAccessibilityAction(increase) {
-                                onValue((centre + 1).coerceAtMost(unit.max))
+                                onSteps((centre + 1).coerceAtMost(count - 1))
                                 true
                             },
                             CustomAccessibilityAction(decrease) {
-                                onValue((centre - 1).coerceAtLeast(0))
+                                onSteps((centre - 1).coerceAtLeast(0))
                                 true
                             },
                         )
@@ -324,11 +336,18 @@ private fun NumberWheel(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxSize(),
         ) {
-            items(unit.max + 1) { number ->
-                val distance = abs(number - centre)
-                Box(Modifier.height(WHEEL_ITEM).fillMaxWidth(), contentAlignment = Alignment.Center) {
+            items(count) { index ->
+                val distance = abs(index - centre)
+                // Tapping a number turns the wheel to it.
+                Box(
+                    Modifier
+                        .height(WHEEL_ITEM)
+                        .fillMaxWidth()
+                        .clickable(interactionSource = null, indication = null) { scope.launch { state.animateScrollToItem(index) } },
+                    contentAlignment = Alignment.Center,
+                ) {
                     Text(
-                        String.format(locale, "%02d", number),
+                        labelOf(index),
                         style = MaterialTheme.typography.headlineLarge.copy(fontSize = if (distance == 0) 34.sp else 26.sp),
                         color = if (distance == 0) colors.onGlass else colors.onSand,
                         modifier = Modifier.alpha(if (distance == 0) 1f else (0.55f - 0.2f * (distance - 1)).coerceAtLeast(0.15f)),
@@ -346,6 +365,7 @@ private fun RecentChips(
     locale: Locale,
     onStart: (RecentTimer) -> Unit,
 ) {
+    if (recents.isEmpty()) return
     LazyRow(contentPadding = PaddingValues(horizontal = 24.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         items(recents) { recent ->
             val wholeMinutes = recent.setMillis % 60_000 == 0L && recent.setMillis < 3_600_000

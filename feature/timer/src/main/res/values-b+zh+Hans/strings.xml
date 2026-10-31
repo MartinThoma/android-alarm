@@ -22,4 +22,5 @@
     <string name="feature_timer_seconds">秒</string>
     <string name="feature_timer_increase">增加</string>
     <string name="feature_timer_decrease">减少</string>
+    <string name="feature_timer_rename">重命名计时器</string>
 </resources>
