@@ -51,6 +51,55 @@ def brown(n: int, rng: random.Random) -> list[float]:
     return out
 
 
+def pink(n: int, rng: random.Random) -> list[float]:
+    """Pink noise (Paul Kellet's filter): equal energy per octave, like surf and wind."""
+    b0 = b1 = b2 = b3 = b4 = b5 = b6 = 0.0
+    out = []
+    for _ in range(n):
+        w = rng.uniform(-1, 1)
+        b0 = 0.99886 * b0 + w * 0.0555179
+        b1 = 0.99332 * b1 + w * 0.0750759
+        b2 = 0.96900 * b2 + w * 0.1538520
+        b3 = 0.86650 * b3 + w * 0.3104856
+        b4 = 0.55000 * b4 + w * 0.5329522
+        b5 = -0.7616 * b5 - w * 0.0168980
+        out.append((b0 + b1 + b2 + b3 + b4 + b5 + b6 + w * 0.5362) * 0.11)
+        b6 = w * 0.115926
+    return out
+
+
+def sweep_lowpass(x: list[float], cutoff) -> list[float]:
+    """A two-pole low-pass whose cutoff follows cutoff(seconds): a wave opening up as it breaks."""
+    y1 = y2 = 0.0
+    out = []
+    for i, v in enumerate(x):
+        a = 1 - math.exp(-2 * math.pi * cutoff(i / RATE) / RATE)
+        y1 += a * (v - y1)
+        y2 += a * (y1 - y2)
+        out.append(y2)
+    return out
+
+
+def bandpass(x: list[float], low: float, high: float) -> list[float]:
+    return lowpass(lowpass(highpass(highpass(x, low), low), high), high)
+
+
+def saturate(x: list[float], drive: float) -> list[float]:
+    """Soft clipping. Its overtones let a phone's small speaker hint at bass it cannot play."""
+    return [math.tanh(drive * v) / math.tanh(drive) for v in x]
+
+
+def compress(x: list[float], level: float = 0.6) -> list[float]:
+    """Lifts the body of a sound and rounds off its few sharp peaks, so it carries without spikes deciding the volume."""
+    loud = sorted(abs(v) for v in x)[int(len(x) * 0.995)] or 1.0
+    return [math.tanh(level * v / loud) for v in x]
+
+
+def normalise(x: list[float]) -> list[float]:
+    peak = max(abs(v) for v in x) or 1.0
+    return [v / peak for v in x]
+
+
 def mix(target: list[float], source: list[float], at: int = 0, gain: float = 1.0) -> None:
     for i, v in enumerate(source):
         if 0 <= at + i < len(target):
@@ -124,20 +173,55 @@ def chime() -> list[float]:
     return out
 
 
+def breaker(rng: random.Random, size: float, seconds: float) -> list[float]:
+    """One wave on a sandy beach: it rises, breaks with a roar, then washes out as fizzing foam and draws back."""
+    n = int(seconds * RATE)
+    crash = 1.6  # seconds from the first swell to the break
+    # The body of the wave: pink noise that opens up as it breaks and closes again as it runs out.
+    body = sweep_lowpass(
+        pink(n, rng),
+        lambda t: 350 + 900 * t / crash if t < crash else 700 + 5200 * min(1.0, (t - crash) / 0.35) * math.exp(-(t - crash) / 1.1),
+    )
+
+    def body_level(t: float) -> float:
+        if t < crash:
+            return 0.15 + 0.35 * (t / crash) ** 2
+        rise = math.sin(0.5 * math.pi * min(1.0, (t - crash) / 0.35))
+        return 0.5 * math.exp(-(t - crash) / 3.5) + 0.9 * rise * math.exp(-(t - crash) / 0.9)
+
+    out = [size * body_level(i / RATE) * v for i, v in enumerate(body)]
+    # Foam running up the sand: bright hiss, slowly fading.
+    foam = bandpass(white(n, rng), 1800, 7000)
+    for i in range(int(crash * RATE), n):
+        t = i / RATE - crash
+        out[i] += size * 0.35 * min(1.0, t / 0.4) * math.exp(-t / 2.2) * foam[i]
+    # Bubbles bursting in the foam: thousands of tiny clicks, thinning out.
+    t = crash + 0.2
+    while t < seconds - 0.1:
+        density = 450 * math.exp(-(t - crash) / 1.8) + 25
+        freq, tau = rng.uniform(2500, 8000), rng.uniform(0.0015, 0.005)
+        amp = size * rng.uniform(0.02, 0.12) * math.exp(-(t - crash) / 3.0)
+        mix(out, [amp * math.exp(-k / RATE / tau) * math.sin(2 * math.pi * freq * k / RATE) for k in range(int(tau * 5 * RATE))], int(t * RATE))
+        t += rng.expovariate(density)
+    # The backwash: the water drawing back down the beach, darker and darker.
+    back_start = crash + 3.0
+    back = sweep_lowpass(white(n, rng), lambda t: max(500.0, 4000 - 1200 * max(0.0, t - back_start)))
+    for i in range(int(back_start * RATE), n):
+        t = i / RATE - back_start
+        out[i] += size * 0.12 * math.sin(math.pi * min(1.0, t / (seconds - back_start))) * back[i]
+    return out
+
+
 def sea(rng: random.Random) -> list[float]:
-    """Waves rolling in every nine seconds: a rising rumble, the break, the hiss as they wash out."""
-    seconds, period = 18.0, 9.0
-    n = int((seconds + 2) * RATE)
-    rumble = lowpass(lowpass(brown(n, rng), 400), 400)
-    foam = lowpass(highpass(white(n, rng), 700), 4500)
-    out = []
-    for i in range(n):
-        wave_index, phase = divmod(i / RATE / period, 1.0)
-        size = 1.0 if int(wave_index) % 2 == 0 else 0.8
-        swell = 0.25 + 0.75 * math.sin(math.pi * min(phase / 0.55, 1.0)) ** 2 if phase < 0.55 else 0.25 + 0.75 * math.exp(-(phase - 0.55) * 6)
-        hiss = 0.08 + (0.9 * min(1.0, (phase - 0.5) / 0.04) * math.exp(-(phase - 0.5) * 5) if phase > 0.5 else 0.12 * phase)
-        out.append(size * (0.9 * swell * rumble[i] + 0.55 * hiss * foam[i]))
-    return loop_seamlessly(out, 2.0)
+    """Waves breaking on a sandy beach, at uneven intervals, over the steady murmur of the surf further out."""
+    seconds = 34.0
+    n = int(seconds * RATE)
+    murmur = sweep_lowpass(pink(n, rng), lambda t: 700 + 200 * math.sin(2 * math.pi * t / 13))
+    out = [0.08 * v for v in murmur]
+    # (start, size, length): a big wave, a smaller one, a middle one, a small one.
+    for start, size, length in [(0.0, 1.0, 10.5), (9.0, 0.7, 9.0), (17.0, 0.9, 10.0), (25.5, 0.6, 8.5)]:
+        mix(out, breaker(rng, size, length), int(start * RATE))
+    return loop_seamlessly(compress(out), 2.5)
 
 
 def rain_bed(n: int, rng: random.Random, level: float) -> list[float]:
@@ -157,23 +241,48 @@ def rain(rng: random.Random) -> list[float]:
     return loop_seamlessly(rain_bed(int(22 * RATE), rng, 0.5), 2.0)
 
 
+def rumble(rng: random.Random, seconds: float, rolls: int) -> list[float]:
+    """Thunder rolling: a deep growl, swelling several times as the sound arrives from along the bolt."""
+    n = int(seconds * RATE)
+    growl = saturate(normalise(bandpass(brown(n, rng), 40, 420)), 2.5)
+    # The growl again, an octave higher and rougher, so a phone's speaker carries it.
+    rasp = normalise(bandpass(white(n, rng), 150, 900))
+    swells = [(rng.uniform(0.05, 0.6) * seconds, rng.uniform(0.5, 1.0), rng.uniform(0.6, 1.8)) for _ in range(rolls)]
+    swells.append((0.0, 1.0, 0.8))
+
+    def level(t: float) -> float:
+        roll = sum(h * math.exp(-(((t - at) / width) ** 2)) for at, h, width in swells)
+        return min(1.0, t / 0.15) * math.exp(-t / (seconds / 3)) * (0.35 + roll)
+
+    return [level(i / RATE) * (0.8 * g + 0.35 * r) for i, (g, r) in enumerate(zip(growl, rasp))]
+
+
+def crack(rng: random.Random) -> list[float]:
+    """A strike close by: the air tearing in a rapid burst of snaps, then a boom."""
+    n = int(1.2 * RATE)
+    out = [0.0] * n
+    t = 0.0
+    while t < 0.35:
+        snap = bandpass(white(int(rng.uniform(0.004, 0.02) * RATE), rng), 600, 6000)
+        amp = rng.uniform(0.4, 1.0) * (1 - t / 0.5)
+        mix(out, [amp * v * math.exp(-k / RATE / 0.006) for k, v in enumerate(snap)], int(t * RATE))
+        t += rng.uniform(0.008, 0.04)
+    boom = lowpass(lowpass(white(n, rng), 700), 700)
+    mix(out, [3.0 * v * min(1.0, k / RATE / 0.02) * math.exp(-k / RATE / 0.35) for k, v in enumerate(boom)], int(0.08 * RATE))
+    return out
+
+
 def thunder(rng: random.Random) -> list[float]:
-    """Rain with distant thunder rolling in twice."""
-    n = int(32 * RATE)
-    out = rain_bed(n, rng, 0.3)
-    for start, size in [(3.0, 1.0), (17.5, 0.75)]:
-        length = int(9 * RATE)
-        crack = lowpass(highpass(white(int(0.5 * RATE), rng), 900), 2500)
-        mix(out, [v * math.exp(-k / RATE / 0.12) for k, v in enumerate(crack)], int(start * RATE), 0.35 * size)
-        rumble = lowpass(lowpass(brown(length, rng), 140), 140)
-        rolls = lowpass(white(length, rng), 3)  # slow random swells of the rumble
-        rolls_peak = max(abs(v) for v in rolls)
-        shaped = [
-            rumble[k] * min(1.0, k / RATE / 0.4) * math.exp(-k / RATE / 2.8) * (0.55 + 0.45 * rolls[k] / rolls_peak)
-            for k in range(length)
-        ]
-        mix(out, shaped, int((start + 0.15) * RATE), 3.2 * size)
-    return loop_seamlessly(out, 2.0)
+    """A thunderstorm: soft rain, a distant roll, a strike close by, and one more roll moving away."""
+    seconds = 38.0
+    n = int(seconds * RATE)
+    out = rain_bed(n, rng, 0.12)
+    # (start, loudness, length of the roll, swells, close enough to crack)
+    for start, loud, length, rolls, close in [(1.0, 0.55, 9.0, 3, False), (12.5, 1.0, 12.0, 5, True), (26.0, 0.7, 9.5, 4, False)]:
+        if close:
+            mix(out, crack(rng), int(start * RATE), 0.9 * loud)
+        mix(out, rumble(rng, length, rolls), int((start + (0.25 if close else 0.0)) * RATE), loud)
+    return loop_seamlessly(compress(out, 0.7), 2.0)
 
 
 def crickets(rng: random.Random) -> list[float]:
@@ -265,13 +374,28 @@ def fur_elise() -> list[float]:
     return loop_seamlessly(out, 0.6)
 
 
+def skip(rng: random.Random, draws: int) -> None:
+    for _ in range(draws):
+        rng.random()
+
+
 def main() -> None:
-    rng = random.Random(20261031)
+    def rng(name: str) -> random.Random:
+        # Each sound draws its own random numbers, so remaking one leaves the others as they are.
+        return random.Random(f"20261031-{name}")
+
     write("chime", chime(), quality=5)
-    write("sound_sea", sea(rng))
-    write("sound_rain", rain(rng))
-    write("sound_thunder", thunder(rng))
-    write("sound_crickets", crickets(rng))
+    write("sound_sea", sea(rng("sea")))
+    write("sound_thunder", thunder(rng("thunder")))
+    # Rain and crickets keep the random numbers of their first version, which Martin approved by ear
+    # (2026-10-31; the crickets with other numbers sounded noticeably worse). Those numbers came
+    # after the first sea, and for the crickets after the first thunderstorm too, so skip their share.
+    first = random.Random(20261031)
+    skip(first, 2 * int(20 * RATE))  # the first sea: brown and white noise
+    write("sound_rain", rain(first))
+    rain_bed(int(32 * RATE), first, 0.3)  # the first thunderstorm: its rain, then two claps
+    skip(first, 2 * (int(0.5 * RATE) + 2 * int(9 * RATE)))
+    write("sound_crickets", crickets(first))
     write("sound_alarm_clock", alarm_clock())
     write("sound_canon_in_d", canon_in_d())
     write("sound_fur_elise", fur_elise())

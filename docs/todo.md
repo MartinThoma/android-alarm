@@ -29,7 +29,7 @@ Things decided but not yet done. Requirements live in [requirements.md](requirem
 - [x] "No sound" per alarm, with a warning when it also does not vibrate; per-alarm screen brightness and a soft light pulse (off, slow, medium, fast; at most twice a second, WCAG 2.3.1) on the ringing screen (2026-10-31).
 - [ ] A slowly brightening screen before the alarm rings (sunrise), as a further light option.
 - [x] Listened to the bundled sounds on the phone (Martin, 2026-10-31): Canon in D, Für Elise and the alarm clock sound good; crickets and rain are fine.
-- [ ] Redo the sea and the thunderstorm (`scripts/make_alarm_sounds.py`): both sound bad, and the thunderstorm sounds just like rain (Martin, 2026-10-31).
+- [x] Redid the sea (waves that rise, break, fizz and draw back) and the thunderstorm (a rumble a phone's speaker can play, a close strike); Martin: both better (2026-10-31). Rain and crickets keep their first random numbers: the crickets with other numbers sounded noticeably worse.
 
 - [x] German translation reviewed by Martin (2026-10-31).
 - [ ] Translations: native speakers review French, Spanish, Portuguese, Russian, Indonesian, Chinese and Arabic before the first release.
