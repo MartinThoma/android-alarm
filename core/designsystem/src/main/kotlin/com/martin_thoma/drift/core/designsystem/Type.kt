@@ -23,11 +23,14 @@ val Figtree =
         figtree(FontWeight.SemiBold),
     )
 
-/** Tabular figures keep digits from jumping while a time counts. */
-private fun TextStyle.figtree(numerals: Boolean = false) = copy(fontFamily = Figtree, fontFeatureSettings = if (numerals) "tnum" else null)
+/**
+ * Every style uses tabular figures: all digits are equally wide, so a counting time never
+ * jitters, whatever style it is set in (hundredths, lap times, countdowns).
+ */
+private fun TextStyle.figtree() = copy(fontFamily = Figtree, fontFeatureSettings = "tnum")
 
-/** Display styles are for times: light weight, tabular figures. */
-private fun TextStyle.time() = figtree(numerals = true).copy(fontWeight = FontWeight.Light)
+/** Display styles are for times: light weight. */
+private fun TextStyle.time() = figtree().copy(fontWeight = FontWeight.Light)
 
 internal val TideTypography =
     Typography().run {

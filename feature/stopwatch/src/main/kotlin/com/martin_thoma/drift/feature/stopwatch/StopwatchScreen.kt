@@ -3,6 +3,7 @@ package com.martin_thoma.drift.feature.stopwatch
 import androidx.compose.animation.core.withInfiniteAnimationFrameMillis
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -40,6 +41,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalConfiguration
@@ -72,7 +74,8 @@ import kotlin.math.sin
 @Serializable
 data object StopwatchRoute : NavKey
 
-private val DIAL_SIZE = 300.dp
+private val DIAL_SIZE = 312.dp
+private val GLASS_SIZE = 248.dp
 
 @Composable
 fun StopwatchScreen(modifier: Modifier = Modifier) {
@@ -127,8 +130,9 @@ internal fun StopwatchContent(
 }
 
 /**
- * A stopwatch dial on a pane of glass: sixty ticks, a glowing point that sweeps round once a
- * minute and leaves a faint arc behind it, and a small mark for every lap. The time sits inside.
+ * A stopwatch dial: the time on a disc of glass, and around it, out on the water, sixty ticks
+ * that glow like the shore. A point of light sweeps round once a minute and leaves a faint arc;
+ * every lap leaves a small mark.
  */
 @Composable
 private fun Dial(
@@ -139,10 +143,12 @@ private fun Dial(
 ) {
     val colors = LocalTideColors.current
     val laps = watch.laps()
-    GlassPane(modifier = modifier.size(DIAL_SIZE), shape = CircleShape) {
-        Canvas(Modifier.matchParentSize().padding(12.dp)) {
-            val radius = size.minDimension / 2
-            val track = radius - 18.dp.toPx()
+    // White foam by day, the bioluminescent glow by night.
+    val light = if (colors.glow == Color.Transparent) colors.foam else colors.glow
+    Box(modifier.size(DIAL_SIZE), contentAlignment = Alignment.Center) {
+        Canvas(Modifier.matchParentSize()) {
+            val outer = size.minDimension / 2 - 4.dp.toPx()
+            val track = outer - 16.dp.toPx()
 
             fun point(
                 fraction: Float,
@@ -153,21 +159,23 @@ private fun Dial(
             }
             for (tick in 0 until 60) {
                 val major = tick % 5 == 0
-                val length = (if (major) 9.dp else 5.dp).toPx()
+                val start = point(tick / 60f, outer - (if (major) 12.dp else 6.dp).toPx())
+                val end = point(tick / 60f, outer)
+                // A soft halo under each tick, like the light along the shore.
+                drawLine(light.copy(alpha = 0.18f), start, end, strokeWidth = 6.dp.toPx(), cap = StrokeCap.Round)
                 drawLine(
-                    color = colors.onGlass.copy(alpha = if (major) 0.45f else 0.22f),
-                    start = point(tick / 60f, radius - length),
-                    end = point(tick / 60f, radius),
-                    strokeWidth = (if (major) 1.6.dp else 1.dp).toPx(),
+                    light.copy(alpha = if (major) 0.95f else 0.6f),
+                    start,
+                    end,
+                    strokeWidth = (if (major) 2.dp else 1.2.dp).toPx(),
                     cap = StrokeCap.Round,
                 )
             }
             val minute = (elapsed % 60_000) / 60_000f
             val arcTopLeft = center - Offset(track, track)
             val arcSize = Size(track * 2, track * 2)
-            drawArc(colors.onGlass.copy(alpha = 0.06f), 0f, 360f, false, arcTopLeft, arcSize, style = Stroke(2.dp.toPx()))
             drawArc(
-                colors.accent.copy(alpha = 0.35f),
+                light.copy(alpha = 0.45f),
                 -90f,
                 360f * minute,
                 false,
@@ -176,21 +184,23 @@ private fun Dial(
                 style = Stroke(2.dp.toPx(), cap = StrokeCap.Round),
             )
             // Laps: where in its minute each one ended.
-            laps.forEach { lap -> drawCircle(colors.onGlassVariant, 2.5.dp.toPx(), point((lap.total % 60_000) / 60_000f, track)) }
+            laps.forEach { lap -> drawCircle(light.copy(alpha = 0.8f), 2.5.dp.toPx(), point((lap.total % 60_000) / 60_000f, track)) }
             if (!watch.isReset) {
                 val head = point(minute, track)
-                drawCircle(colors.accent.copy(alpha = 0.22f), 10.dp.toPx(), head)
-                drawCircle(colors.accent, 5.dp.toPx(), head)
+                drawCircle(light.copy(alpha = 0.25f), 11.dp.toPx(), head)
+                drawCircle(light, 5.dp.toPx(), head)
             }
         }
-        Column(Modifier.align(Alignment.Center), horizontalAlignment = Alignment.CenterHorizontally) {
-            ElapsedTime(elapsed, locale)
-            if (laps.isNotEmpty()) {
-                Text(
-                    stringResource(R.string.feature_stopwatch_lap_number, laps.size + 1),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = colors.onGlassVariant,
-                )
+        GlassPane(modifier = Modifier.size(GLASS_SIZE), shape = CircleShape) {
+            Column(Modifier.align(Alignment.Center), horizontalAlignment = Alignment.CenterHorizontally) {
+                ElapsedTime(elapsed, locale)
+                if (laps.isNotEmpty()) {
+                    Text(
+                        stringResource(R.string.feature_stopwatch_lap_number, laps.size + 1),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = colors.onGlassVariant,
+                    )
+                }
             }
         }
     }
@@ -205,7 +215,7 @@ private fun ElapsedTime(
     val whole = formatDuration(elapsed, locale)
     val fraction = formatDuration(elapsed, locale, hundredths = true).removePrefix(whole)
     // With hours the time is longer; it stays on one line inside the dial.
-    val size = if (whole.length > 5) 44.sp else 60.sp
+    val size = if (whole.length > 5) 38.sp else 52.sp
     Row(verticalAlignment = Alignment.Bottom) {
         Text(
             whole,

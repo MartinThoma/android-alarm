@@ -5,6 +5,7 @@ object TideIcons {
     val Add = R.drawable.ic_add
     val ArrowBack = R.drawable.ic_arrow_back
     val Backspace = R.drawable.ic_backspace
+    val Check = R.drawable.ic_check
     val ArrowForward = R.drawable.ic_arrow_forward
     val Delete = R.drawable.ic_delete
     val Flag = R.drawable.ic_flag

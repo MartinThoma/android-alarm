@@ -40,4 +40,5 @@
     <string name="feature_alarm_snooze_longer">Дольше</string>
     <string name="feature_alarm_change_time">Изменить время</string>
     <string name="feature_alarm_set_confirmation">Будильник установлен · зазвонит %1$s</string>
+    <string name="feature_alarm_done">Готово</string>
 </resources>

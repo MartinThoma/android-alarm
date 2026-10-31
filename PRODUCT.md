@@ -36,7 +36,7 @@ The screen is a beach seen from above, and the tide is a clock: the water rises 
 
 ## Brand Commitments
 
-- Name: Drift (Martin, 2026-10-31), renamed from Tide: people searching "tide alarm" find tide tables and other apps. Suggested store name "Drift: Alarm & Timer", since "drift" alone is a common word. App ID `com.martin_thoma.drift`.
+- Name: Drift (Martin, 2026-10-31), renamed from Tide: people searching "tide alarm" find tide tables and other apps. Store name "Drift: Alarm & Timer" (Martin, 2026-10-31), since "drift" alone is a common word. App ID `com.martin_thoma.drift`.
 - Concept (Martin, 2026-10-31): a beach seen from above with rising water. The design language keeps the name Tide.
 - It must always feel relaxing and calm: no alarming visuals, slow gentle motion.
 - One beach world with a day and a night variant; no Material You wallpaper colours (decided 2026-10-31).

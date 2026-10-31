@@ -93,6 +93,12 @@ class AlarmEditorTest {
             assertEquals(true, edited.enabled)
             assertFalse(edited.vibrate)
 
+            // The check mark confirms and goes back to the list, where the changes show.
+            compose.onNodeWithContentDescription("Done").performClick()
+            await { compose.onAllNodesWithText("Mon–Fri · Work").fetchSemanticsNodes().isNotEmpty() }
+            compose.onNode(hasText("Mon–Fri · Work") and hasClickAction()).performClick()
+            await { compose.onAllNodesWithText("Edit alarm").fetchSemanticsNodes().isNotEmpty() }
+
             // Deleting is a visible button, not only a swipe.
             compose.onNodeWithContentDescription("Delete").performClick()
             await { alarm() == null }

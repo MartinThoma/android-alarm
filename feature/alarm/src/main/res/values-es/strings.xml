@@ -40,4 +40,5 @@
     <string name="feature_alarm_snooze_longer">Posponer más</string>
     <string name="feature_alarm_change_time">Cambiar hora</string>
     <string name="feature_alarm_set_confirmation">Alarma puesta · suena %1$s</string>
+    <string name="feature_alarm_done">Listo</string>
 </resources>

@@ -40,4 +40,5 @@
     <string name="feature_alarm_snooze_longer">延长稍后提醒</string>
     <string name="feature_alarm_change_time">更改时间</string>
     <string name="feature_alarm_set_confirmation">闹钟已设置 · %1$s响铃</string>
+    <string name="feature_alarm_done">完成</string>
 </resources>

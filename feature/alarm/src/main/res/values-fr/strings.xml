@@ -40,4 +40,5 @@
     <string name="feature_alarm_snooze_longer">Répétition plus longue</string>
     <string name="feature_alarm_change_time">Modifier l’heure</string>
     <string name="feature_alarm_set_confirmation">Alarme réglée · sonne %1$s</string>
+    <string name="feature_alarm_done">Terminé</string>
 </resources>

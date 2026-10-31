@@ -145,15 +145,16 @@ internal fun AlarmEditorContent(
             topBar = {
                 TopAppBar(
                     title = { Text(stringResource(R.string.feature_alarm_edit_title)) },
+                    // Delete on the left, done on the right, as in Android's edit screens. Changes are
+                    // saved as they are made; the check mark confirms and closes (Martin, on the S25).
                     navigationIcon = {
-                        IconButton(onClick = onBack) {
-                            Icon(painterResource(TideIcons.ArrowBack), contentDescription = stringResource(R.string.feature_alarm_back))
-                        }
-                    },
-                    // Deleting is never only a swipe (requirements section 8).
-                    actions = {
                         IconButton(onClick = onDelete) {
                             Icon(painterResource(TideIcons.Delete), contentDescription = stringResource(R.string.feature_alarm_delete))
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = onBack) {
+                            Icon(painterResource(TideIcons.Check), contentDescription = stringResource(R.string.feature_alarm_done))
                         }
                     },
                     colors =
