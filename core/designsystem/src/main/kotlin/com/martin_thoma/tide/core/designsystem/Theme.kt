@@ -2,30 +2,21 @@ package com.martin_thoma.tide.core.designsystem
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.CompositionLocalProvider
 
-/**
- * Placeholder theme until the design phase delivers Tide's own tokens
- * (docs/requirements.md, section 7). Dynamic colour is always available on API 35+.
- */
+/** Theme of direction "D · Tide" (docs/requirements.md, section 7.1). */
 @Composable
 fun TideTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = true,
     content: @Composable () -> Unit,
 ) {
-    val context = LocalContext.current
-    val colorScheme =
-        when {
-            dynamicColor && darkTheme -> dynamicDarkColorScheme(context)
-            dynamicColor -> dynamicLightColorScheme(context)
-            darkTheme -> darkColorScheme()
-            else -> lightColorScheme()
-        }
-    MaterialTheme(colorScheme = colorScheme, content = content)
+    val tideColors = if (darkTheme) NightTideColors else DayTideColors
+    CompositionLocalProvider(LocalTideColors provides tideColors) {
+        MaterialTheme(
+            colorScheme = tideColors.toColorScheme(darkTheme),
+            typography = TideTypography,
+            content = content,
+        )
+    }
 }

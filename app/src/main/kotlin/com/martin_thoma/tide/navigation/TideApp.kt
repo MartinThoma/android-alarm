@@ -1,6 +1,7 @@
 package com.martin_thoma.tide.navigation
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
@@ -16,6 +17,8 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import com.martin_thoma.tide.core.designsystem.TideBackground
+import com.martin_thoma.tide.core.designsystem.TideLevel
 import com.martin_thoma.tide.feature.alarm.AlarmRoute
 import com.martin_thoma.tide.feature.alarm.AlarmScreen
 import com.martin_thoma.tide.feature.stopwatch.StopwatchRoute
@@ -52,20 +55,24 @@ fun TideApp() {
             }
         },
     ) {
-        NavDisplay(
-            backStack = backStack,
-            onBack = { backStack.removeLastOrNull() },
-            entryDecorators =
-                listOf(
-                    rememberSaveableStateHolderNavEntryDecorator(),
-                    rememberViewModelStoreNavEntryDecorator(),
-                ),
-            entryProvider =
-                entryProvider {
-                    entry<AlarmRoute> { AlarmScreen() }
-                    entry<StopwatchRoute> { StopwatchScreen() }
-                    entry<TimerRoute> { TimerScreen() }
-                },
-        )
+        Box {
+            // Low tide until alarms and timers exist to set the level.
+            TideBackground(level = TideLevel.LOW)
+            NavDisplay(
+                backStack = backStack,
+                onBack = { backStack.removeLastOrNull() },
+                entryDecorators =
+                    listOf(
+                        rememberSaveableStateHolderNavEntryDecorator(),
+                        rememberViewModelStoreNavEntryDecorator(),
+                    ),
+                entryProvider =
+                    entryProvider {
+                        entry<AlarmRoute> { AlarmScreen() }
+                        entry<StopwatchRoute> { StopwatchScreen() }
+                        entry<TimerRoute> { TimerScreen() }
+                    },
+            )
+        }
     }
 }

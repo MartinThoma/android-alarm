@@ -24,5 +24,5 @@ fun StopwatchScreen(modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 private fun StopwatchScreenPreview() {
-    TideTheme(dynamicColor = false) { StopwatchScreen() }
+    TideTheme(darkTheme = false) { StopwatchScreen() }
 }

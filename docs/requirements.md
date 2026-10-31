@@ -1,6 +1,6 @@
 # Requirements Analysis: FOSS Android Clock App (Alarm · Stopwatch · Timer)
 
-*Version 0.1, draft, 2026-10-30. Working title: "Tide" (placeholder, see open questions).*
+*Version 0.2, draft, 2026-10-31. App name: "Tide".*
 
 ## 1. Purpose and vision
 
@@ -71,7 +71,7 @@ Priority: **M** = must (v1), **S** = should (v1 if feasible), **C** = could (lat
 - **A. Set the stream volume while ringing:** when the alarm fires, the app sets `STREAM_ALARM` to the alarm's level and restores the previous level afterwards. The level is absolute and predictable ("this alarm is 40%").
 - **B. Relative gain:** the player volume is scaled on top of the current system alarm volume. It never touches system settings, but "40%" means "40% of whatever the system alarm volume is", and it can never go louder than the system level.
 
-**Recommendation: A**, because it matches what Martin asked for (choose the volume individually) and is what users expect. Restore must be robust: the original level is persisted and restored even if the app is killed mid-ring. We will also show a warning in the editor if the system alarm volume is muted.
+**Decision (2026-10-31): A.** The user must be in control when setting the alarm: the level chosen in the editor is exactly the level that rings, whatever the system alarm volume is at that moment. The editor preview plays at that same level (AL-06). Restore must be robust: the original level is persisted and restored even if the app is killed mid-ring. We will also show a warning in the editor if the system alarm volume is muted.
 
 ### 4.2 Stopwatch
 
@@ -175,7 +175,11 @@ This is the part that makes or breaks an alarm app.
 
 ### 7.1 Direction
 
-Original identity, inspired by the *feel* of Timely (calm, tactile, delightful), not its appearance. Proposed direction for discussion:
+Original identity, inspired by the *feel* of Timely (calm, tactile, delightful), not its appearance.
+
+**Concept (Martin, 2026-10-31): the design fits the name.** The background is a beach seen from above. The water rises as the next alarm gets closer: low tide hours before, high tide shortly before it rings. A running timer works the same way (the tide comes in as it runs out). It must always look relaxing and calm: muted colours, slow gentle wave motion, no alarming visuals. Mock-ups: direction "D · Tide" on the [visual directions canvas](https://claude.ai/artifact/5AhdYg9rRrHc1WCLFZvEH1). D is the design for v1; a more beautiful design follows after v1 (see [todo.md](todo.md)).
+
+Earlier proposal, still to reconcile with the concept:
 
 - **Material 3 with Material 3 Expressive** components and motion (springs, shape morphing), on top of a custom brand theme.
 - **Colour:** two modes the user can pick in settings:
@@ -286,15 +290,15 @@ Rules: feature modules depend only on `core` modules, never on each other; `:cor
 
 ## 13. Open questions for Martin
 
-1. **Distribution:** F-Droid, GitHub Releases, Google Play, or all of them? (Affects permission choices and whether we need Play policy declarations.)
-2. **Licence:** GPL-3.0 (keeps forks open) or Apache-2.0 (more permissive)?
-3. **Per-alarm volume:** OK with approach A (the app sets the system alarm volume while ringing and restores it), or should it never touch the system volume (approach B)?
+1. **Distribution:** F-Droid, GitHub Releases, Google Play, or all of them? (Affects permission choices and whether we need Play policy declarations.) *Partly answered: Play is wanted, but without paying for a developer account; releases should be as automated as possible.*
+2. **Licence:** GPL-3.0 (keeps forks open) or Apache-2.0 (more permissive)? *Answered: GPL-3.0.*
+3. **Per-alarm volume:** OK with approach A (the app sets the system alarm volume while ringing and restores it), or should it never touch the system volume (approach B)? *Answered: A (section 4.1).*
 4. **Timely features you miss most:** which ones matter to you? E.g. the smart-rise/gradual wake-up, gesture controls, themes, sync, the stopwatch look? This helps prioritise without copying.
 5. **Design direction:** do you prefer Material You (wallpaper colours), our own curated palettes, or both? Any apps whose look you like today?
 6. **Timer:** do you need multiple parallel timers, and per-timer sounds, or is one timer enough for v1?
 7. **Dismiss challenges** (math, shake) wanted, or never?
 8. **Language(s):** English only, or also German / others from the start?
 9. **World clock or widgets:** wanted at all, or keep the app strictly three parts?
-10. **App name:** any ideas? (Must not resemble "Timely".)
-11. **Code hosting:** GitHub (we can set up the repo and CI there) or Codeberg?
+10. **App name:** any ideas? (Must not resemble "Timely".) *Answered: Tide; application ID `com.martin_thoma.tide`.*
+11. **Code hosting:** GitHub (we can set up the repo and CI there) or Codeberg? *Answered: GitHub.*
 12. **minSdk:** is 35 fine (recommended, lowest version your S25 ever ran), or should we go to 36 since your phone is on Android 16 already?

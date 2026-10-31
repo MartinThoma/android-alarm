@@ -18,4 +18,4 @@ Requires JDK 21 and the Android SDK (`ANDROID_HOME` or `local.properties` with `
 
 ## Licence
 
-[GPL-3.0-or-later](LICENSE)
+[GPL-3.0-or-later](LICENSE). Bundled assets keep their own licences: the Figtree font is under the [SIL Open Font License 1.1](core/designsystem/FIGTREE-OFL.txt), the Material Symbols icons under Apache-2.0.

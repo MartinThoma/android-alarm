@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Keep in sync with DayTideColors / NightTideColors in :core:designsystem. -->
+    <color name="tide_sand">#EDE4D6</color>
+    <color name="ic_launcher_sand">#EDE4D6</color>
+</resources>

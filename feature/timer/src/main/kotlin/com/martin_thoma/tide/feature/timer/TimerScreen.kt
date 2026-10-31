@@ -24,5 +24,5 @@ fun TimerScreen(modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 private fun TimerScreenPreview() {
-    TideTheme(dynamicColor = false) { TimerScreen() }
+    TideTheme(darkTheme = false) { TimerScreen() }
 }

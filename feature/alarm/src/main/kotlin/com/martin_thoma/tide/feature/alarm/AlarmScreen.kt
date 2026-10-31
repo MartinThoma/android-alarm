@@ -24,5 +24,5 @@ fun AlarmScreen(modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 private fun AlarmScreenPreview() {
-    TideTheme(dynamicColor = false) { AlarmScreen() }
+    TideTheme(darkTheme = false) { AlarmScreen() }
 }

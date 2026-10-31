@@ -34,7 +34,7 @@ fun PlaceholderScreen(
         verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(text = title, style = MaterialTheme.typography.displaySmall)
+        Text(text = title, style = MaterialTheme.typography.displaySmall, color = MaterialTheme.colorScheme.onSurface)
         Text(
             text = message,
             style = MaterialTheme.typography.bodyLarge,
@@ -47,7 +47,7 @@ fun PlaceholderScreen(
 @Preview(showBackground = true)
 @Composable
 private fun PlaceholderScreenPreview() {
-    TideTheme(dynamicColor = false) {
+    TideTheme(darkTheme = false) {
         PlaceholderScreen(title = "Alarm", message = "No alarms yet. Tap + to add one.")
     }
 }
