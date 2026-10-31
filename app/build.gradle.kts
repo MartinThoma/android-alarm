@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.tide.android.compose)
     alias(libs.plugins.tide.hilt)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.roborazzi)
 }
 
 android {
@@ -27,6 +28,14 @@ android {
         generateLocaleConfig = true
     }
 
+    testOptions {
+        unitTests.isIncludeAndroidResources = true
+        unitTests.all {
+            // Robolectric reads FileDescriptor internals, which Java 17+ hides by default.
+            it.jvmArgs("--add-exports", "java.base/jdk.internal.access=ALL-UNNAMED")
+        }
+    }
+
     // F-Droid rejects the encrypted dependency metadata block in the APK (requirements NF-05).
     dependenciesInfo {
         includeInApk = false
@@ -48,4 +57,15 @@ dependencies {
     implementation(libs.androidx.navigation3.runtime)
     implementation(libs.androidx.navigation3.ui)
     implementation(libs.kotlinx.serialization.core)
+
+    // Robolectric app tests and README screenshots (./gradlew :app:recordRoborazziDebug)
+    testImplementation(project(":core:database"))
+    testImplementation(platform(libs.androidx.compose.bom))
+    testImplementation(libs.androidx.compose.ui.test.junit4)
+    testImplementation(libs.hilt.android.testing)
+    testImplementation(libs.junit4)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.roborazzi)
+    testImplementation(libs.room.runtime)
+    kspTest(libs.hilt.compiler)
 }

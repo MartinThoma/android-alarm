@@ -23,6 +23,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.dp
 
 private const val TIDE_CHANGE_MILLIS = 4_000
 private const val CONTENT_COLOR_MILLIS = 1_200
@@ -31,11 +33,16 @@ private const val CONTENT_COLOR_MILLIS = 1_200
 @Stable
 class TideState internal constructor(
     internal val level: State<Float>,
+    private val shallowBandPx: Float,
 ) {
     internal var coordinates: LayoutCoordinates? = null
     internal var heightPx by mutableIntStateOf(0)
 
-    internal fun isUnderwater(centerY: Float) = !centerY.isNaN() && centerY < heightPx * level.value
+    /**
+     * Only the deep sea is dark enough for light text. The shallow band and the sand both
+     * take dark text, so content near the shoreline stays readable.
+     */
+    internal fun isUnderwater(centerY: Float) = !centerY.isNaN() && centerY < heightPx * level.value - shallowBandPx
 }
 
 val LocalTideState = staticCompositionLocalOf<TideState?> { null }
@@ -51,7 +58,8 @@ fun TideSurface(
     content: @Composable BoxScope.() -> Unit,
 ) {
     val animatedLevel = animateFloatAsState(level, tween(TIDE_CHANGE_MILLIS), label = "tide")
-    val state = remember(animatedLevel) { TideState(animatedLevel) }
+    val shallowBandPx = with(LocalDensity.current) { SHALLOW_BAND_DP.dp.toPx() }
+    val state = remember(animatedLevel, shallowBandPx) { TideState(animatedLevel, shallowBandPx) }
     Box(
         modifier =
             modifier.fillMaxSize().onGloballyPositioned {

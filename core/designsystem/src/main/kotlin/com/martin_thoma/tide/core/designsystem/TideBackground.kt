@@ -27,6 +27,9 @@ private const val LAP_MILLIS = 7_000
 private const val SWELL_MILLIS = 11_000
 private const val WAVE_SEGMENTS = 64
 
+/** The deep sea ends this far above the shoreline; between them lies the light shallow band. */
+internal const val SHALLOW_BAND_DP = 30f
+
 /**
  * A beach seen from above: sea at the top, sand below. [level] is the shoreline's
  * position as a fraction of the height (see [TideLevel]). The water laps slowly,
@@ -64,7 +67,7 @@ fun TideBackground(
             color = colors.foam,
             style = Stroke(width = 2f * density, cap = StrokeCap.Round),
         )
-        drawWater(colors.sea, y0 - 30f * density + swellOffset, amplitude = 5f, wavelength = 260f, phase = 2.1f)
+        drawWater(colors.sea, y0 - SHALLOW_BAND_DP * density + swellOffset, amplitude = 5f, wavelength = 260f, phase = 2.1f)
     }
 }
 
