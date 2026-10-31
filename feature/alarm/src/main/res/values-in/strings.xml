@@ -28,4 +28,15 @@
     <string name="feature_alarm_sound_playing">Sedang diputar</string>
     <string name="feature_alarm_sound_too_large">File ini lebih dari 30 MB. Pilih yang lebih pendek.</string>
     <string name="feature_alarm_sound_not_playable">File ini tidak dapat diputar. Pilih file MP3, WAV, atau OGG.</string>
+    <string name="feature_alarm_edit_title">Edit alarm</string>
+    <string name="feature_alarm_repeat">Ulangi</string>
+    <string name="feature_alarm_label">Label</string>
+    <string name="feature_alarm_sound">Suara</string>
+    <string name="feature_alarm_volume">Volume</string>
+    <string name="feature_alarm_vibrate">Getar</string>
+    <string name="feature_alarm_snooze">Tunda</string>
+    <string name="feature_alarm_snooze_minutes">%1$d mnt</string>
+    <string name="feature_alarm_snooze_shorter">Tunda lebih singkat</string>
+    <string name="feature_alarm_snooze_longer">Tunda lebih lama</string>
+    <string name="feature_alarm_change_time">Ubah waktu</string>
 </resources>

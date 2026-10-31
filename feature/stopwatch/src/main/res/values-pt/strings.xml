@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="feature_stopwatch_title">Cronômetro</string>
-    <string name="feature_stopwatch_placeholder">Em breve.</string>
+    <string name="feature_stopwatch_start">Iniciar</string>
+    <string name="feature_stopwatch_pause">Pausar</string>
+    <string name="feature_stopwatch_resume">Retomar</string>
+    <string name="feature_stopwatch_lap">Volta</string>
+    <string name="feature_stopwatch_reset">Zerar</string>
+    <string name="feature_stopwatch_lap_number">Volta %1$d</string>
+    <string name="feature_stopwatch_fastest">A mais rápida</string>
+    <string name="feature_stopwatch_slowest">A mais lenta</string>
+    <string name="feature_stopwatch_paused">Pausado · %1$s</string>
 </resources>

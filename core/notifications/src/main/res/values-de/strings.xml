@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="core_notifications_channel_ringing">Klingelnde Wecker</string>
+    <string name="core_notifications_channel_ringing_description">Zeigt einen Wecker, während er klingelt, auch auf dem Sperrbildschirm.</string>
+    <string name="core_notifications_channel_upcoming">Anstehende Wecker</string>
+    <string name="core_notifications_channel_upcoming_description">Schlummernde Wecker, bis sie wieder klingeln.</string>
+    <string name="core_notifications_channel_missed">Verpasste Wecker</string>
+    <string name="core_notifications_channel_missed_description">Wecker, die geklingelt haben, bis sie von selbst aufhörten.</string>
+    <string name="core_notifications_channel_running">Stoppuhr und Timer</string>
+    <string name="core_notifications_channel_running_description">Zeigt eine laufende Stoppuhr oder einen laufenden Timer.</string>
+</resources>

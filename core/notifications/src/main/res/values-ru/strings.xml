@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="core_notifications_channel_ringing">Звонящие будильники</string>
+    <string name="core_notifications_channel_ringing_description">Показывает будильник, пока он звонит, в том числе на экране блокировки.</string>
+    <string name="core_notifications_channel_upcoming">Предстоящие будильники</string>
+    <string name="core_notifications_channel_upcoming_description">Отложенные будильники, пока они не зазвонят снова.</string>
+    <string name="core_notifications_channel_missed">Пропущенные будильники</string>
+    <string name="core_notifications_channel_missed_description">Будильники, которые звонили, пока не выключились сами.</string>
+    <string name="core_notifications_channel_running">Секундомер и таймеры</string>
+    <string name="core_notifications_channel_running_description">Показывает запущенный секундомер или таймер.</string>
+</resources>

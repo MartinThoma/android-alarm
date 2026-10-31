@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="core_notifications_channel_ringing">Alarmes qui sonnent</string>
+    <string name="core_notifications_channel_ringing_description">Affiche une alarme pendant qu’elle sonne, aussi sur l’écran de verrouillage.</string>
+    <string name="core_notifications_channel_upcoming">Alarmes à venir</string>
+    <string name="core_notifications_channel_upcoming_description">Alarmes en répétition, jusqu’à ce qu’elles sonnent à nouveau.</string>
+    <string name="core_notifications_channel_missed">Alarmes manquées</string>
+    <string name="core_notifications_channel_missed_description">Alarmes qui ont sonné jusqu’à leur arrêt automatique.</string>
+    <string name="core_notifications_channel_running">Chronomètre et minuteurs</string>
+    <string name="core_notifications_channel_running_description">Affiche un chronomètre ou un minuteur en cours.</string>
+</resources>

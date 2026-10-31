@@ -11,6 +11,11 @@
             android:directBootAware="true"
             android:exported="false" />
 
+        <receiver
+            android:name=".TimerExpiredReceiver"
+            android:directBootAware="true"
+            android:exported="false" />
+
         <!-- Only the system can send these protected broadcasts. -->
         <receiver
             android:name=".RescheduleReceiver"

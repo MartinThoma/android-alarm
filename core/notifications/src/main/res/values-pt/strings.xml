@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="core_notifications_channel_ringing">Alarmes tocando</string>
+    <string name="core_notifications_channel_ringing_description">Mostra um alarme enquanto ele toca, também na tela de bloqueio.</string>
+    <string name="core_notifications_channel_upcoming">Próximos alarmes</string>
+    <string name="core_notifications_channel_upcoming_description">Alarmes adiados, até tocarem de novo.</string>
+    <string name="core_notifications_channel_missed">Alarmes perdidos</string>
+    <string name="core_notifications_channel_missed_description">Alarmes que tocaram até parar sozinhos.</string>
+    <string name="core_notifications_channel_running">Cronômetro e timers</string>
+    <string name="core_notifications_channel_running_description">Mostra um cronômetro ou timer em andamento.</string>
+</resources>

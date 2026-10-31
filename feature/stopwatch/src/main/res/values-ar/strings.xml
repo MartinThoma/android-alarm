@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="feature_stopwatch_title">ساعة الإيقاف</string>
-    <string name="feature_stopwatch_placeholder">قريبًا.</string>
+    <string name="feature_stopwatch_start">بدء</string>
+    <string name="feature_stopwatch_pause">إيقاف مؤقت</string>
+    <string name="feature_stopwatch_resume">استئناف</string>
+    <string name="feature_stopwatch_lap">لفة</string>
+    <string name="feature_stopwatch_reset">إعادة ضبط</string>
+    <string name="feature_stopwatch_lap_number">اللفة %1$d</string>
+    <string name="feature_stopwatch_fastest">الأسرع</string>
+    <string name="feature_stopwatch_slowest">الأبطأ</string>
+    <string name="feature_stopwatch_paused">متوقف مؤقتًا · %1$s</string>
 </resources>

@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="feature_stopwatch_title">Stoppuhr</string>
-    <string name="feature_stopwatch_placeholder">Kommt bald.</string>
+    <string name="feature_stopwatch_start">Starten</string>
+    <string name="feature_stopwatch_pause">Pause</string>
+    <string name="feature_stopwatch_resume">Fortsetzen</string>
+    <string name="feature_stopwatch_lap">Runde</string>
+    <string name="feature_stopwatch_reset">Zurücksetzen</string>
+    <string name="feature_stopwatch_lap_number">Runde %1$d</string>
+    <string name="feature_stopwatch_fastest">Schnellste</string>
+    <string name="feature_stopwatch_slowest">Langsamste</string>
+    <string name="feature_stopwatch_paused">Pausiert · %1$s</string>
 </resources>

@@ -13,7 +13,7 @@ The screen is a beach seen from above: the closer your next alarm, the higher th
 
 Requires Android 15 (API 35) or newer. See [docs/requirements.md](docs/requirements.md).
 
-> **Work in progress.** Alarms ring, snooze and dismiss, but have not been tested on a real phone yet. There is no alarm editor yet.
+> **Work in progress.** Alarm, stopwatch and timer work, but have not been tested on a real phone yet. There is no release yet.
 
 In English, German, French, Spanish, Portuguese, Russian, Indonesian, Chinese (simplified) and Arabic; each can also be chosen as the app's own language in Android's settings.
 
@@ -22,6 +22,10 @@ In English, German, French, Spanish, Portuguese, Russian, Indonesian, Chinese (s
 | Evening, 7 h before the alarm | Morning, 25 min before | Ringing | Ringing at night |
 |:---:|:---:|:---:|:---:|
 | <img src="docs/screenshots/alarms-night.png" alt="Alarm list at night: dark sea with glowing blue waves at low tide, alarms on a frosted glass sheet" width="200"> | <img src="docs/screenshots/alarms-day.png" alt="Alarm list by day: bright turquoise water at high tide over golden sand" width="200"> | <img src="docs/screenshots/ringing.png" alt="Ringing alarm at high tide, with snooze and slide to dismiss" width="200"> | <img src="docs/screenshots/ringing-night.png" alt="Ringing alarm at night with bioluminescent waves and moon jellyfish" width="200"> |
+
+| Alarm editor | Sounds | Stopwatch | Timer |
+|:---:|:---:|:---:|:---:|
+| <img src="docs/screenshots/alarm-editor.png" alt="Alarm editor with weekdays, label, sound, volume, vibration and snooze length" width="200"> | <img src="docs/screenshots/sounds.png" alt="Alarm sounds grouped as nature, noisy and classics, each group with a small picture" width="200"> | <img src="docs/screenshots/stopwatch.png" alt="Stopwatch with laps, the fastest and slowest marked" width="200"> | <img src="docs/screenshots/timer.png" alt="A running tea timer; the tide comes in as it runs out" width="200"> |
 
 The screenshots come from the app itself, rendered by its Robolectric tests. Update them with `./gradlew :app:recordRoborazziDebug`.
 

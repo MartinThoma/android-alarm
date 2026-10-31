@@ -28,4 +28,15 @@
     <string name="feature_alarm_sound_playing">正在播放</string>
     <string name="feature_alarm_sound_too_large">此文件超过 30 MB。请选择较短的文件。</string>
     <string name="feature_alarm_sound_not_playable">无法播放此文件。请选择 MP3、WAV 或 OGG 文件。</string>
+    <string name="feature_alarm_edit_title">编辑闹钟</string>
+    <string name="feature_alarm_repeat">重复</string>
+    <string name="feature_alarm_label">标签</string>
+    <string name="feature_alarm_sound">铃声</string>
+    <string name="feature_alarm_volume">音量</string>
+    <string name="feature_alarm_vibrate">振动</string>
+    <string name="feature_alarm_snooze">稍后提醒</string>
+    <string name="feature_alarm_snooze_minutes">%1$d 分钟</string>
+    <string name="feature_alarm_snooze_shorter">缩短稍后提醒</string>
+    <string name="feature_alarm_snooze_longer">延长稍后提醒</string>
+    <string name="feature_alarm_change_time">更改时间</string>
 </resources>

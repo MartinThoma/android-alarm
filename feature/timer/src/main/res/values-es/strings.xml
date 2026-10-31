@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="feature_timer_title">Temporizador</string>
-    <string name="feature_timer_placeholder">Próximamente.</string>
+    <string name="feature_timer_start">Iniciar</string>
+    <string name="feature_timer_pause">Pausar</string>
+    <string name="feature_timer_resume">Reanudar</string>
+    <string name="feature_timer_reset">Restablecer</string>
+    <string name="feature_timer_add_minute">+1 min</string>
+    <string name="feature_timer_delete">Eliminar temporizador</string>
+    <string name="feature_timer_new">Nuevo temporizador</string>
+    <string name="feature_timer_label">Etiqueta (opcional)</string>
+    <string name="feature_timer_paused">En pausa · %1$s</string>
+    <string name="feature_timer_of">de %1$s</string>
+    <string name="feature_timer_stop">Detener</string>
+    <string name="feature_timer_times_up">Se acabó el tiempo</string>
+    <string name="feature_timer_backspace">Borrar dígito</string>
+    <string name="feature_timer_back">Atrás</string>
 </resources>

@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.martin_thoma.tide.core.database.AlarmDao
 import com.martin_thoma.tide.core.database.DatabaseModule
 import com.martin_thoma.tide.core.database.TideDatabase
+import com.martin_thoma.tide.core.database.TimerDao
 import com.martin_thoma.tide.core.domain.TimeSource
 import com.martin_thoma.tide.core.scheduling.ApplicationScope
 import com.martin_thoma.tide.core.scheduling.SchedulingModule
@@ -36,6 +37,9 @@ object InMemoryDatabaseModule {
 
     @Provides
     fun alarmDao(database: TideDatabase): AlarmDao = database.alarmDao()
+
+    @Provides
+    fun timerDao(database: TideDatabase): TimerDao = database.timerDao()
 }
 
 @Module

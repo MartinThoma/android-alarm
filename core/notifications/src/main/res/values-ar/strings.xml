@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="core_notifications_channel_ringing">المنبهات التي ترن</string>
+    <string name="core_notifications_channel_ringing_description">يعرض المنبه أثناء رنينه، حتى على شاشة القفل.</string>
+    <string name="core_notifications_channel_upcoming">المنبهات القادمة</string>
+    <string name="core_notifications_channel_upcoming_description">المنبهات المؤجلة حتى ترن مرة أخرى.</string>
+    <string name="core_notifications_channel_missed">المنبهات الفائتة</string>
+    <string name="core_notifications_channel_missed_description">منبهات رنّت حتى توقفت تلقائيًا.</string>
+    <string name="core_notifications_channel_running">ساعة الإيقاف والمؤقتات</string>
+    <string name="core_notifications_channel_running_description">يعرض ساعة إيقاف أو مؤقتًا قيد التشغيل.</string>
+</resources>

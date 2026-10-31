@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="feature_stopwatch_title">Stopwatch</string>
-    <string name="feature_stopwatch_placeholder">Coming soon.</string>
+    <string name="feature_stopwatch_start">Start</string>
+    <string name="feature_stopwatch_pause">Pause</string>
+    <string name="feature_stopwatch_resume">Resume</string>
+    <string name="feature_stopwatch_lap">Lap</string>
+    <string name="feature_stopwatch_reset">Reset</string>
+    <string name="feature_stopwatch_lap_number">Lap %1$d</string>
+    <string name="feature_stopwatch_fastest">Fastest</string>
+    <string name="feature_stopwatch_slowest">Slowest</string>
+    <string name="feature_stopwatch_paused">Paused · %1$s</string>
 </resources>

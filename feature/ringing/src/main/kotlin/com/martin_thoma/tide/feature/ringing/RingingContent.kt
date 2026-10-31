@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
@@ -38,6 +39,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
@@ -50,6 +52,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.martin_thoma.tide.core.designsystem.GlassPane
@@ -59,6 +62,7 @@ import com.martin_thoma.tide.core.designsystem.TideIcons
 import com.martin_thoma.tide.core.designsystem.TideLevel
 import com.martin_thoma.tide.core.designsystem.TideSurface
 import com.martin_thoma.tide.core.designsystem.TideTheme
+import com.martin_thoma.tide.core.designsystem.formatDuration
 import com.martin_thoma.tide.core.designsystem.rememberDateFormatter
 import com.martin_thoma.tide.core.designsystem.rememberTimeFormatter
 import com.martin_thoma.tide.core.designsystem.tideVariantColor
@@ -86,66 +90,143 @@ internal fun RingingContent(
     now: ZonedDateTime,
     onSnooze: () -> Unit,
     onDismiss: () -> Unit,
+    onAddMinute: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     TideSurface(level = TideLevel.HIGH, modifier = modifier) {
-        // While the alarm loads (a few milliseconds), only the sea shows.
-        val alarm = (status as? RingingStatus.Ringing)?.alarm ?: return@TideSurface
-        val timeFormatter = rememberTimeFormatter()
-        val dateFormatter = rememberDateFormatter("EEEEdMMMM")
+        // While the alarm or timer loads (a few milliseconds), only the sea shows.
+        when (status) {
+            is RingingStatus.Ringing -> AlarmRinging(status, now, onSnooze, onDismiss)
+            is RingingStatus.TimerRinging -> TimerRinging(status, now, onAddMinute, onDismiss)
+            else -> Unit
+        }
+    }
+}
 
-        // Placed by the waterline: snooze on the water, clear of the foam; the dismiss slider on the sand.
-        BoxWithConstraints(Modifier.fillMaxSize()) {
-            val shoreline = maxHeight * TideLevel.HIGH
-            val snoozeBottom = shoreline - SHALLOW_WATER - 24.dp
-            Column(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .height(snoozeBottom - SNOOZE_HEIGHT)
-                        .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal))
-                        .padding(horizontal = 32.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-            ) {
-                TideAware { underwater ->
-                    Text(dateFormatter.format(now), style = MaterialTheme.typography.titleMedium, color = tideVariantColor(underwater))
-                }
-                TideAware {
-                    Text(
-                        text = timeFormatter.format(now),
-                        style = MaterialTheme.typography.displayLarge.copy(fontSize = 112.sp, lineHeight = 120.sp),
-                    )
-                }
-                TideAware {
-                    Text(
-                        text = alarm.label.ifEmpty { stringResource(R.string.feature_ringing_alarm) },
-                        style = MaterialTheme.typography.headlineSmall,
-                        textAlign = TextAlign.Center,
-                    )
-                }
+@Composable
+private fun AlarmRinging(
+    status: RingingStatus.Ringing,
+    now: ZonedDateTime,
+    onSnooze: () -> Unit,
+    onDismiss: () -> Unit,
+) {
+    val timeFormatter = rememberTimeFormatter()
+    val dateFormatter = rememberDateFormatter("EEEEdMMMM")
+    RingingLayout(
+        headline = {
+            TideAware { underwater ->
+                Text(dateFormatter.format(now), style = MaterialTheme.typography.titleMedium, color = tideVariantColor(underwater))
             }
-            SnoozeButton(
-                minutes = alarm.snoozeMinutes,
-                onClick = onSnooze,
-                modifier =
-                    Modifier
-                        .offset(y = snoozeBottom - SNOOZE_HEIGHT)
-                        .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal))
-                        .padding(horizontal = 32.dp),
-            )
-            Box(
-                modifier =
-                    Modifier
-                        .offset(y = shoreline)
-                        .fillMaxWidth()
-                        .height(maxHeight - shoreline)
-                        .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom + WindowInsetsSides.Horizontal))
-                        .padding(horizontal = 32.dp),
-                contentAlignment = Alignment.Center,
-            ) {
-                SlideToDismiss(onDismiss = onDismiss)
+            BigText(timeFormatter.format(now))
+            Label(status.alarm.label.ifEmpty { stringResource(R.string.feature_ringing_alarm) })
+        },
+        upper = { modifier -> SnoozeButton(minutes = status.alarm.snoozeMinutes, onClick = onSnooze, modifier = modifier) },
+        lower = { SlideToDismiss(onDismiss = onDismiss) },
+    )
+}
+
+/** A timer has run out: its overtime counts up; "+1 min" on the water, Stop on the sand. */
+@Composable
+private fun TimerRinging(
+    status: RingingStatus.TimerRinging,
+    now: ZonedDateTime,
+    onAddMinute: () -> Unit,
+    onStop: () -> Unit,
+) {
+    val locale = LocalConfiguration.current.locales[0]
+    val overtime = (now.toInstant().toEpochMilli() - (status.timer.endsAt ?: 0)).coerceAtLeast(0)
+    RingingLayout(
+        headline = {
+            TideAware { underwater ->
+                Text(
+                    stringResource(R.string.feature_ringing_times_up),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = tideVariantColor(underwater),
+                )
             }
+            // One character more than a time of day, so a little smaller.
+            BigText("+" + formatDuration(overtime, locale), fontSize = 88.sp)
+            Label(status.timer.label.ifEmpty { stringResource(R.string.feature_ringing_timer) })
+        },
+        upper = { modifier ->
+            GlassPane(modifier = modifier.fillMaxWidth().height(SNOOZE_HEIGHT), shape = CircleShape, onClick = onAddMinute) {
+                Text(
+                    stringResource(R.string.feature_ringing_add_minute),
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.align(Alignment.Center),
+                )
+            }
+        },
+        lower = {
+            GlassPane(modifier = Modifier.fillMaxWidth().height(64.dp), shape = CircleShape, raised = true, onClick = onStop) {
+                Text(
+                    stringResource(R.string.feature_ringing_stop),
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.align(Alignment.Center),
+                )
+            }
+        },
+    )
+}
+
+@Composable
+private fun BigText(
+    text: String,
+    fontSize: TextUnit = 112.sp,
+) {
+    TideAware {
+        Text(
+            text,
+            style = MaterialTheme.typography.displayLarge.copy(fontSize = fontSize, lineHeight = fontSize * 1.08f),
+            maxLines = 1,
+            softWrap = false,
+        )
+    }
+}
+
+@Composable
+private fun Label(text: String) {
+    TideAware { Text(text, style = MaterialTheme.typography.headlineSmall, textAlign = TextAlign.Center) }
+}
+
+/** Placed by the waterline: [upper] on the water, clear of the foam; [lower] on the sand. */
+@Composable
+private fun RingingLayout(
+    headline: @Composable ColumnScope.() -> Unit,
+    upper: @Composable (Modifier) -> Unit,
+    lower: @Composable () -> Unit,
+) {
+    BoxWithConstraints(Modifier.fillMaxSize()) {
+        val shoreline = maxHeight * TideLevel.HIGH
+        val upperBottom = shoreline - SHALLOW_WATER - 24.dp
+        Column(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(upperBottom - SNOOZE_HEIGHT)
+                    .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal))
+                    .padding(horizontal = 32.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            content = headline,
+        )
+        upper(
+            Modifier
+                .offset(y = upperBottom - SNOOZE_HEIGHT)
+                .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal))
+                .padding(horizontal = 32.dp),
+        )
+        Box(
+            modifier =
+                Modifier
+                    .offset(y = shoreline)
+                    .fillMaxWidth()
+                    .height(maxHeight - shoreline)
+                    .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom + WindowInsetsSides.Horizontal))
+                    .padding(horizontal = 32.dp),
+            contentAlignment = Alignment.Center,
+        ) {
+            lower()
         }
     }
 }
@@ -248,6 +329,7 @@ private fun RingingPreview() {
             now = now,
             onSnooze = {},
             onDismiss = {},
+            onAddMinute = {},
         )
     }
 }

@@ -28,4 +28,15 @@
     <string name="feature_alarm_sound_playing">Wird abgespielt</string>
     <string name="feature_alarm_sound_too_large">Diese Datei ist größer als 30 MB. Wähle eine kürzere.</string>
     <string name="feature_alarm_sound_not_playable">Diese Datei lässt sich nicht abspielen. Wähle eine MP3-, WAV- oder OGG-Datei.</string>
+    <string name="feature_alarm_edit_title">Wecker bearbeiten</string>
+    <string name="feature_alarm_repeat">Wiederholen</string>
+    <string name="feature_alarm_label">Name</string>
+    <string name="feature_alarm_sound">Weckton</string>
+    <string name="feature_alarm_volume">Lautstärke</string>
+    <string name="feature_alarm_vibrate">Vibration</string>
+    <string name="feature_alarm_snooze">Schlummern</string>
+    <string name="feature_alarm_snooze_minutes">%1$d Min.</string>
+    <string name="feature_alarm_snooze_shorter">Kürzer schlummern</string>
+    <string name="feature_alarm_snooze_longer">Länger schlummern</string>
+    <string name="feature_alarm_change_time">Uhrzeit ändern</string>
 </resources>

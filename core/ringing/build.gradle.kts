@@ -13,6 +13,7 @@ android {
 dependencies {
     api(project(":core:data"))
     api(project(":core:domain"))
+    implementation(project(":core:notifications"))
     implementation(libs.androidx.core.ktx)
 
     testImplementation(libs.androidx.test.core)

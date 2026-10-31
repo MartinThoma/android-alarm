@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="core_notifications_channel_ringing">正在响铃的闹钟</string>
+    <string name="core_notifications_channel_ringing_description">在闹钟响铃时显示，锁屏上也会显示。</string>
+    <string name="core_notifications_channel_upcoming">即将响铃的闹钟</string>
+    <string name="core_notifications_channel_upcoming_description">已推迟的闹钟，直到再次响铃。</string>
+    <string name="core_notifications_channel_missed">错过的闹钟</string>
+    <string name="core_notifications_channel_missed_description">一直响到自动停止的闹钟。</string>
+    <string name="core_notifications_channel_running">秒表和计时器</string>
+    <string name="core_notifications_channel_running_description">显示正在运行的秒表或计时器。</string>
+</resources>

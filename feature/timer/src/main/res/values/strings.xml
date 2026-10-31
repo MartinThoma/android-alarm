@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="feature_timer_title">Timer</string>
-    <string name="feature_timer_placeholder">Coming soon.</string>
+    <string name="feature_timer_start">Start</string>
+    <string name="feature_timer_pause">Pause</string>
+    <string name="feature_timer_resume">Resume</string>
+    <string name="feature_timer_reset">Reset</string>
+    <string name="feature_timer_add_minute">+1 min</string>
+    <string name="feature_timer_delete">Delete timer</string>
+    <string name="feature_timer_new">New timer</string>
+    <string name="feature_timer_label">Label (optional)</string>
+    <string name="feature_timer_paused">Paused · %1$s</string>
+    <string name="feature_timer_of">of %1$s</string>
+    <string name="feature_timer_stop">Stop</string>
+    <string name="feature_timer_times_up">Time’s up</string>
+    <string name="feature_timer_backspace">Delete digit</string>
+    <string name="feature_timer_back">Back</string>
 </resources>

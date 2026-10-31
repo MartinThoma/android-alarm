@@ -5,4 +5,8 @@
     <string name="feature_ringing_snooze_minutes">%1$d 分钟</string>
     <string name="feature_ringing_slide_to_dismiss">滑动以关闭</string>
     <string name="feature_ringing_dismiss">关闭</string>
+    <string name="feature_ringing_timer">计时器</string>
+    <string name="feature_ringing_times_up">时间到</string>
+    <string name="feature_ringing_add_minute">+1 分钟</string>
+    <string name="feature_ringing_stop">停止</string>
 </resources>

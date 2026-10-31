@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="feature_timer_title">Timer</string>
-    <string name="feature_timer_placeholder">Segera hadir.</string>
+    <string name="feature_timer_start">Mulai</string>
+    <string name="feature_timer_pause">Jeda</string>
+    <string name="feature_timer_resume">Lanjutkan</string>
+    <string name="feature_timer_reset">Atur ulang</string>
+    <string name="feature_timer_add_minute">+1 mnt</string>
+    <string name="feature_timer_delete">Hapus timer</string>
+    <string name="feature_timer_new">Timer baru</string>
+    <string name="feature_timer_label">Label (opsional)</string>
+    <string name="feature_timer_paused">Dijeda · %1$s</string>
+    <string name="feature_timer_of">dari %1$s</string>
+    <string name="feature_timer_stop">Hentikan</string>
+    <string name="feature_timer_times_up">Waktu habis</string>
+    <string name="feature_timer_backspace">Hapus digit</string>
+    <string name="feature_timer_back">Kembali</string>
 </resources>

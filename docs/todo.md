@@ -19,8 +19,10 @@ Things decided but not yet done. Requirements live in [requirements.md](requirem
 - [ ] Martin: enable Intel VT-x in the laptop's BIOS, so the Android emulator can run for end-to-end tests.
 - [ ] Google Play: decide whether the one-time $25 account fee and the closed test (12 testers, 14 days) are worth it. The release workflow then needs only an upload step.
 - [x] Bright turquoise beach by day, bioluminescent beach with moon jellyfish by night, alarms on one frosted glass sheet (2026-10-31, from Martin's reference photos).
-- [ ] Alarm editor: a visible Delete button, so swiping is not the only way to delete (requirements section 8).
-- [ ] Sound picker: a volume slider next to the sounds (requirements AL-05), and the phone's own alarm tones and ringtones as a further group (AL-04).
+- [x] Alarm editor (weekdays, label, sound, volume with preview, vibration, snooze length, visible Delete), stopwatch and timer (2026-10-31).
+- [ ] Stopwatch: share or copy the laps (SW-06), keep the screen on (SW-07). Timer: presets and recent durations (TM-04), sound per timer (TM-05).
+- [ ] Lint sometimes crashes inside its Kotlin analysis (a transient error, gone on the next run). Watch whether CI hits it; if it does, find the trigger or update AGP.
+- [ ] Sound picker: the phone's own alarm tones and ringtones as a further group (AL-04).
 - [ ] "No sound" as an option (Martin): the alarm then wakes by vibration and/or by slowly brightening the screen. Both also as extra modes next to a sound, chosen per alarm. Reliability first: warn if an alarm has neither sound nor vibration.
 - [ ] Listen to all bundled sounds on the phone and tune them (`scripts/make_alarm_sounds.py`): sea, rain, thunderstorm, crickets, alarm clock, Canon in D, Für Elise.
 

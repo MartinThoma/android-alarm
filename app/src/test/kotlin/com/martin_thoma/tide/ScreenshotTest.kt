@@ -135,6 +135,7 @@ class ScreenshotTest {
         ActivityScenario.launch(MainActivity::class.java).use {
             awaitText("Mon–Fri · Work")
             compose.onNode(hasText("Mon–Fri · Work") and hasClickAction()).performClick()
+            compose.onNode(hasText("Sound") and hasClickAction()).performClick()
             awaitText("Alarm sound")
             awaitText("Canon in D · Pachelbel")
             compose.onRoot().captureRoboImage("../docs/screenshots/sounds.png")
@@ -149,6 +150,7 @@ class ScreenshotTest {
         ActivityScenario.launch(MainActivity::class.java).use {
             awaitText("Mon–Fri · Work")
             compose.onNode(hasText("Mon–Fri · Work") and hasClickAction()).performClick()
+            compose.onNode(hasText("Sound") and hasClickAction()).performClick()
             awaitText("Canon in D · Pachelbel")
             compose.onRoot().captureRoboImage("../docs/screenshots/sounds-night.png")
         }
@@ -193,6 +195,7 @@ class ScreenshotTest {
             awaitText("Mo.–Fr. · Work")
             compose.onRoot().captureRoboImage("../docs/screenshots/de/alarms.png")
             compose.onNode(hasText("Mo.–Fr. · Work") and hasClickAction()).performClick()
+            compose.onNode(hasText("Weckton") and hasClickAction()).performClick()
             awaitText("Grillenzirpen")
             compose.onRoot().captureRoboImage("../docs/screenshots/de/sounds.png")
         }
@@ -221,6 +224,7 @@ class ScreenshotTest {
             awaitTextContaining("بعد")
             compose.onRoot().captureRoboImage("../docs/screenshots/ar/alarms.png")
             compose.onAllNodes(hasText("Work", substring = true) and hasClickAction())[0].performClick()
+            compose.onNode(hasText("الصوت") and hasClickAction()).performClick()
             awaitText("صوت المنبه")
             compose.onRoot().captureRoboImage("../docs/screenshots/ar/sounds.png")
         }

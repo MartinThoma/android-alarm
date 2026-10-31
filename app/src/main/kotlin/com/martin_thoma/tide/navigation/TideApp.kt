@@ -5,6 +5,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -16,18 +17,32 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import com.martin_thoma.tide.feature.alarm.AlarmEditorRoute
+import com.martin_thoma.tide.feature.alarm.AlarmEditorScreen
 import com.martin_thoma.tide.feature.alarm.AlarmRoute
 import com.martin_thoma.tide.feature.alarm.AlarmScreen
 import com.martin_thoma.tide.feature.alarm.AlarmSoundRoute
 import com.martin_thoma.tide.feature.alarm.AlarmSoundScreen
 import com.martin_thoma.tide.feature.stopwatch.StopwatchRoute
 import com.martin_thoma.tide.feature.stopwatch.StopwatchScreen
+import com.martin_thoma.tide.feature.timer.NewTimerRoute
+import com.martin_thoma.tide.feature.timer.NewTimerScreen
 import com.martin_thoma.tide.feature.timer.TimerRoute
 import com.martin_thoma.tide.feature.timer.TimerScreen
 
 @Composable
-fun TideApp() {
+fun TideApp(
+    requestedTab: TopLevelDestination? = null,
+    onTabShown: () -> Unit = {},
+) {
     var currentTab by rememberSaveable { mutableStateOf(TopLevelDestination.ALARM) }
+    // A notification can open a tab, e.g. the running stopwatch.
+    LaunchedEffect(requestedTab) {
+        if (requestedTab != null) {
+            currentTab = requestedTab
+            onTabShown()
+        }
+    }
     val backStacks = TopLevelDestination.entries.associateWith { rememberNavBackStack(it.route) }
     val backStack = backStacks.getValue(currentTab)
 
@@ -64,10 +79,18 @@ fun TideApp() {
                 ),
             entryProvider =
                 entryProvider {
-                    entry<AlarmRoute> { AlarmScreen(onOpenAlarm = { backStack.add(AlarmSoundRoute(it)) }) }
+                    entry<AlarmRoute> { AlarmScreen(onOpenAlarm = { backStack.add(AlarmEditorRoute(it)) }) }
+                    entry<AlarmEditorRoute> { key ->
+                        AlarmEditorScreen(
+                            alarmId = key.alarmId,
+                            onBack = { backStack.removeLastOrNull() },
+                            onChooseSound = { backStack.add(AlarmSoundRoute(key.alarmId)) },
+                        )
+                    }
                     entry<AlarmSoundRoute> { key -> AlarmSoundScreen(alarmId = key.alarmId, onBack = { backStack.removeLastOrNull() }) }
                     entry<StopwatchRoute> { StopwatchScreen() }
-                    entry<TimerRoute> { TimerScreen() }
+                    entry<TimerRoute> { TimerScreen(onNewTimer = { backStack.add(NewTimerRoute) }) }
+                    entry<NewTimerRoute> { NewTimerScreen(onDone = { backStack.removeLastOrNull() }) }
                 },
         )
     }

@@ -222,7 +222,7 @@ internal fun AlarmListContent(
     }
 
     if (showNewAlarm) {
-        NewAlarmDialog(
+        AlarmTimeDialog(
             is24Hour = is24Hour,
             onDismiss = { showNewAlarm = false },
             onConfirm = { time ->
@@ -310,7 +310,7 @@ private fun AlarmRow(
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .clickable(onClickLabel = stringResource(R.string.feature_alarm_choose_sound)) { onOpen(alarm) }
+                    .clickable(onClickLabel = stringResource(R.string.feature_alarm_edit_title)) { onOpen(alarm) }
                     // Swiping is not the only way: TalkBack offers Delete as an action. The editor will show it, too.
                     .semantics {
                         customActions =
@@ -358,12 +358,13 @@ private fun NewAlarmButton(onClick: () -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun NewAlarmDialog(
+internal fun AlarmTimeDialog(
     is24Hour: Boolean,
     onDismiss: () -> Unit,
     onConfirm: (LocalTime) -> Unit,
+    initial: LocalTime = LocalTime.of(7, 0),
 ) {
-    val pickerState = rememberTimePickerState(initialHour = 7, initialMinute = 0, is24Hour = is24Hour)
+    val pickerState = rememberTimePickerState(initialHour = initial.hour, initialMinute = initial.minute, is24Hour = is24Hour)
     AlertDialog(
         onDismissRequest = onDismiss,
         confirmButton = {

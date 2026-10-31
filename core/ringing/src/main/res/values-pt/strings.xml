@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="core_ringing_channel_ringing">Alarmes tocando</string>
-    <string name="core_ringing_channel_ringing_description">Mostra um alarme enquanto ele toca, também na tela de bloqueio.</string>
-    <string name="core_ringing_channel_upcoming">Próximos alarmes</string>
-    <string name="core_ringing_channel_upcoming_description">Alarmes adiados, até tocarem de novo.</string>
-    <string name="core_ringing_channel_missed">Alarmes perdidos</string>
-    <string name="core_ringing_channel_missed_description">Alarmes que tocaram até parar sozinhos.</string>
     <string name="core_ringing_alarm">Alarme</string>
     <string name="core_ringing_snooze">Adiar</string>
     <string name="core_ringing_dismiss">Parar</string>
@@ -20,4 +14,8 @@
     <string name="core_ringing_sound_alarm_clock">Despertador</string>
     <string name="core_ringing_sound_canon_in_d">Cânone em Ré · Pachelbel</string>
     <string name="core_ringing_sound_fur_elise">Para Elisa · Beethoven</string>
+    <string name="core_ringing_timer">Timer</string>
+    <string name="core_ringing_times_up">Tempo esgotado</string>
+    <string name="core_ringing_add_minute">+1 min</string>
+    <string name="core_ringing_stop">Parar</string>
 </resources>

@@ -5,4 +5,8 @@
     <string name="feature_ringing_snooze_minutes">%1$d min</string>
     <string name="feature_ringing_slide_to_dismiss">Deslize para parar</string>
     <string name="feature_ringing_dismiss">Parar</string>
+    <string name="feature_ringing_timer">Timer</string>
+    <string name="feature_ringing_times_up">Tempo esgotado</string>
+    <string name="feature_ringing_add_minute">+1 min</string>
+    <string name="feature_ringing_stop">Parar</string>
 </resources>

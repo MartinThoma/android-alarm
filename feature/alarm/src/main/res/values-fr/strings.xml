@@ -28,4 +28,15 @@
     <string name="feature_alarm_sound_playing">Lecture en cours</string>
     <string name="feature_alarm_sound_too_large">Ce fichier dépasse 30 Mo. Choisissez-en un plus court.</string>
     <string name="feature_alarm_sound_not_playable">Ce fichier ne peut pas être lu. Choisissez un fichier MP3, WAV ou OGG.</string>
+    <string name="feature_alarm_edit_title">Modifier l’alarme</string>
+    <string name="feature_alarm_repeat">Jours</string>
+    <string name="feature_alarm_label">Libellé</string>
+    <string name="feature_alarm_sound">Sonnerie</string>
+    <string name="feature_alarm_volume">Volume</string>
+    <string name="feature_alarm_vibrate">Vibreur</string>
+    <string name="feature_alarm_snooze">Répétition</string>
+    <string name="feature_alarm_snooze_minutes">%1$d min</string>
+    <string name="feature_alarm_snooze_shorter">Répétition plus courte</string>
+    <string name="feature_alarm_snooze_longer">Répétition plus longue</string>
+    <string name="feature_alarm_change_time">Modifier l’heure</string>
 </resources>

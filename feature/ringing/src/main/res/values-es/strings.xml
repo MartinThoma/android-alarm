@@ -5,4 +5,8 @@
     <string name="feature_ringing_snooze_minutes">%1$d min</string>
     <string name="feature_ringing_slide_to_dismiss">Desliza para detener</string>
     <string name="feature_ringing_dismiss">Detener</string>
+    <string name="feature_ringing_timer">Temporizador</string>
+    <string name="feature_ringing_times_up">Se acabó el tiempo</string>
+    <string name="feature_ringing_add_minute">+1 min</string>
+    <string name="feature_ringing_stop">Detener</string>
 </resources>

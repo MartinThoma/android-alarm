@@ -5,4 +5,8 @@
     <string name="feature_ringing_snooze_minutes">%1$d мин</string>
     <string name="feature_ringing_slide_to_dismiss">Проведите, чтобы выключить</string>
     <string name="feature_ringing_dismiss">Выключить</string>
+    <string name="feature_ringing_timer">Таймер</string>
+    <string name="feature_ringing_times_up">Время вышло</string>
+    <string name="feature_ringing_add_minute">+1 мин</string>
+    <string name="feature_ringing_stop">Стоп</string>
 </resources>

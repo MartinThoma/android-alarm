@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="feature_stopwatch_title">Stopwatch</string>
-    <string name="feature_stopwatch_placeholder">Segera hadir.</string>
+    <string name="feature_stopwatch_start">Mulai</string>
+    <string name="feature_stopwatch_pause">Jeda</string>
+    <string name="feature_stopwatch_resume">Lanjutkan</string>
+    <string name="feature_stopwatch_lap">Putaran</string>
+    <string name="feature_stopwatch_reset">Atur ulang</string>
+    <string name="feature_stopwatch_lap_number">Putaran %1$d</string>
+    <string name="feature_stopwatch_fastest">Tercepat</string>
+    <string name="feature_stopwatch_slowest">Terlambat</string>
+    <string name="feature_stopwatch_paused">Dijeda · %1$s</string>
 </resources>

@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="core_ringing_channel_ringing">Klingelnde Wecker</string>
-    <string name="core_ringing_channel_ringing_description">Zeigt einen Wecker, während er klingelt, auch auf dem Sperrbildschirm.</string>
-    <string name="core_ringing_channel_upcoming">Anstehende Wecker</string>
-    <string name="core_ringing_channel_upcoming_description">Schlummernde Wecker, bis sie wieder klingeln.</string>
-    <string name="core_ringing_channel_missed">Verpasste Wecker</string>
-    <string name="core_ringing_channel_missed_description">Wecker, die geklingelt haben, bis sie von selbst aufhörten.</string>
     <string name="core_ringing_alarm">Wecker</string>
     <string name="core_ringing_snooze">Schlummern</string>
     <string name="core_ringing_dismiss">Beenden</string>
@@ -20,4 +14,8 @@
     <string name="core_ringing_sound_alarm_clock">Klassischer Wecker</string>
     <string name="core_ringing_sound_canon_in_d">Kanon in D · Pachelbel</string>
     <string name="core_ringing_sound_fur_elise">Für Elise · Beethoven</string>
+    <string name="core_ringing_timer">Timer</string>
+    <string name="core_ringing_times_up">Zeit ist um</string>
+    <string name="core_ringing_add_minute">+1 Min.</string>
+    <string name="core_ringing_stop">Stopp</string>
 </resources>

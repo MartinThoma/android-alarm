@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="feature_stopwatch_title">秒表</string>
-    <string name="feature_stopwatch_placeholder">即将推出。</string>
+    <string name="feature_stopwatch_start">开始</string>
+    <string name="feature_stopwatch_pause">暂停</string>
+    <string name="feature_stopwatch_resume">继续</string>
+    <string name="feature_stopwatch_lap">计次</string>
+    <string name="feature_stopwatch_reset">重置</string>
+    <string name="feature_stopwatch_lap_number">第 %1$d 圈</string>
+    <string name="feature_stopwatch_fastest">最快</string>
+    <string name="feature_stopwatch_slowest">最慢</string>
+    <string name="feature_stopwatch_paused">已暂停 · %1$s</string>
 </resources>

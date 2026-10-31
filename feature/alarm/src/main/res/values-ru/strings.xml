@@ -28,4 +28,15 @@
     <string name="feature_alarm_sound_playing">Воспроизводится</string>
     <string name="feature_alarm_sound_too_large">Файл больше 30 МБ. Выберите файл покороче.</string>
     <string name="feature_alarm_sound_not_playable">Этот файл нельзя воспроизвести. Выберите файл MP3, WAV или OGG.</string>
+    <string name="feature_alarm_edit_title">Изменить будильник</string>
+    <string name="feature_alarm_repeat">Повтор</string>
+    <string name="feature_alarm_label">Название</string>
+    <string name="feature_alarm_sound">Звук</string>
+    <string name="feature_alarm_volume">Громкость</string>
+    <string name="feature_alarm_vibrate">Вибрация</string>
+    <string name="feature_alarm_snooze">Отложить на</string>
+    <string name="feature_alarm_snooze_minutes">%1$d мин</string>
+    <string name="feature_alarm_snooze_shorter">Короче</string>
+    <string name="feature_alarm_snooze_longer">Дольше</string>
+    <string name="feature_alarm_change_time">Изменить время</string>
 </resources>

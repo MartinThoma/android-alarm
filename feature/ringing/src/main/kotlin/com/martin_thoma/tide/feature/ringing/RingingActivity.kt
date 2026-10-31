@@ -50,11 +50,18 @@ class RingingActivity : ComponentActivity() {
                 val status by ringingState.status.collectAsStateWithLifecycle()
                 val now by produceState(timeSource.now()) {
                     while (true) {
-                        delay(ChronoUnit.MILLIS.between(value, value.truncatedTo(ChronoUnit.MINUTES).plusMinutes(1)))
+                        // Every second: a timer's overtime counts in seconds.
+                        delay(ChronoUnit.MILLIS.between(value, value.truncatedTo(ChronoUnit.SECONDS).plusSeconds(1)))
                         value = timeSource.now()
                     }
                 }
-                RingingContent(status = status, now = now, onSnooze = controls::snooze, onDismiss = controls::dismiss)
+                RingingContent(
+                    status = status,
+                    now = now,
+                    onSnooze = controls::snooze,
+                    onDismiss = controls::dismiss,
+                    onAddMinute = controls::addMinute,
+                )
             }
         }
     }

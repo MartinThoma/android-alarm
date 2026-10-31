@@ -8,7 +8,10 @@ import android.os.IBinder
 import android.os.PowerManager
 import android.util.Log
 import com.martin_thoma.tide.core.data.AlarmRepository
+import com.martin_thoma.tide.core.data.TimerRepository
 import com.martin_thoma.tide.core.domain.TimeSource
+import com.martin_thoma.tide.core.model.Alarm
+import com.martin_thoma.tide.core.model.Timer
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -18,6 +21,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.Duration
+import java.time.Instant
 import java.time.temporal.ChronoUnit
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.minutes
@@ -32,6 +36,8 @@ internal const val TAG = "TideRinging"
 @AndroidEntryPoint
 class RingingService : Service() {
     @Inject lateinit var repository: AlarmRepository
+
+    @Inject lateinit var timers: TimerRepository
 
     @Inject lateinit var state: RingingState
 
@@ -63,17 +69,24 @@ class RingingService : Service() {
     ): Int {
         when (intent?.action) {
             ACTION_RING -> ring(intent.getLongExtra(EXTRA_ALARM_ID, -1), startId)
+
+            ACTION_RING_TIMER -> ringTimer(intent.getLongExtra(EXTRA_TIMER_ID, -1), startId)
+
             ACTION_SNOOZE -> snooze(startId)
-            else -> stop(startId)
+
+            ACTION_ADD_MINUTE -> changeTimer(startId) { it.addMinute(now()) }
+
+            // Stopping a timer resets it to its set duration.
+            else -> changeTimer(startId) { it.reset() }
         }
         return START_NOT_STICKY
     }
 
-    private fun ring(
-        alarmId: Long,
-        startId: Int,
-    ) {
-        // A new alarm replaces the one ringing; the saved user volume stays saved.
+    private fun now() = timeSource.now().toInstant().toEpochMilli()
+
+    /** Starts the foreground service at once; whatever rang before stops. Returns when the ring began. */
+    private fun begin(): Instant {
+        // A new ring replaces the one ringing; the saved user volume stays saved.
         ringing?.cancel()
         player.stop()
         vibrator.stop()
@@ -83,7 +96,14 @@ class RingingService : Service() {
         val since = timeSource.now().toInstant()
         // Must come first: the system stops a foreground service that is slow to call this.
         startForeground(NOTIFICATION_ID, notifications.ringing(null, since), ServiceInfo.FOREGROUND_SERVICE_TYPE_SYSTEM_EXEMPTED)
+        return since
+    }
 
+    private fun ring(
+        alarmId: Long,
+        startId: Int,
+    ) {
+        val since = begin()
         ringing =
             scope.launch {
                 val alarm = repository.get(alarmId)
@@ -103,6 +123,48 @@ class RingingService : Service() {
                 notifications.showMissed(alarm, since)
                 stop(startId)
             }
+    }
+
+    private fun ringTimer(
+        timerId: Long,
+        startId: Int,
+    ) {
+        val since = begin()
+        ringing =
+            scope.launch {
+                val timer = timers.get(timerId)
+                if (timer == null) {
+                    Log.w(TAG, "Timer $timerId was deleted as it ran out")
+                    stop(startId)
+                    return@launch
+                }
+                volume.apply(Alarm.DEFAULT_VOLUME_PERCENT)
+                player.play(null)
+                vibrator.start()
+                state.update(RingingStatus.TimerRinging(timer, since))
+                notifications.update(notifications.timerRinging(timer))
+
+                // The timer stays run out; the app shows its overtime until someone stops it.
+                delay(AUTO_SILENCE)
+                stop(startId)
+            }
+    }
+
+    /** Ends the ring; a ringing timer is changed by [change] (reset, or one more minute). */
+    private fun changeTimer(
+        startId: Int,
+        change: (Timer) -> Timer,
+    ) {
+        val timer = (state.status.value as? RingingStatus.TimerRinging)?.timer
+        silence()
+        if (timer == null) {
+            stopSelf(startId)
+            return
+        }
+        scope.launch {
+            timers.update(timer.id, change)
+            stopSelf(startId)
+        }
     }
 
     private fun snooze(startId: Int) {
@@ -154,7 +216,10 @@ class RingingService : Service() {
         const val ACTION_RING = "com.martin_thoma.tide.action.RING"
         const val ACTION_SNOOZE = "com.martin_thoma.tide.action.SNOOZE"
         const val ACTION_DISMISS = "com.martin_thoma.tide.action.DISMISS"
+        const val ACTION_RING_TIMER = "com.martin_thoma.tide.action.RING_TIMER"
+        const val ACTION_ADD_MINUTE = "com.martin_thoma.tide.action.ADD_MINUTE"
         private const val EXTRA_ALARM_ID = "com.martin_thoma.tide.extra.ALARM_ID"
+        private const val EXTRA_TIMER_ID = "com.martin_thoma.tide.extra.TIMER_ID"
 
         internal const val NOTIFICATION_ID = 1
 
@@ -168,6 +233,14 @@ class RingingService : Service() {
             alarmId: Long,
         ) {
             context.startForegroundService(intent(context, ACTION_RING).putExtra(EXTRA_ALARM_ID, alarmId))
+        }
+
+        /** Starts ringing the timer [timerId], which has run out. */
+        fun ringTimer(
+            context: Context,
+            timerId: Long,
+        ) {
+            context.startForegroundService(intent(context, ACTION_RING_TIMER).putExtra(EXTRA_TIMER_ID, timerId))
         }
 
         internal fun intent(

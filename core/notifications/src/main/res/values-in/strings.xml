@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="core_notifications_channel_ringing">Alarm berbunyi</string>
+    <string name="core_notifications_channel_ringing_description">Menampilkan alarm saat berbunyi, juga di layar kunci.</string>
+    <string name="core_notifications_channel_upcoming">Alarm mendatang</string>
+    <string name="core_notifications_channel_upcoming_description">Alarm yang ditunda, hingga berbunyi lagi.</string>
+    <string name="core_notifications_channel_missed">Alarm terlewat</string>
+    <string name="core_notifications_channel_missed_description">Alarm yang berbunyi hingga berhenti sendiri.</string>
+    <string name="core_notifications_channel_running">Stopwatch dan timer</string>
+    <string name="core_notifications_channel_running_description">Menampilkan stopwatch atau timer yang sedang berjalan.</string>
+</resources>

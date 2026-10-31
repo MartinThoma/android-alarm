@@ -28,4 +28,15 @@
     <string name="feature_alarm_sound_playing">قيد التشغيل</string>
     <string name="feature_alarm_sound_too_large">حجم هذا الملف أكبر من 30 ميغابايت. اختر ملفًا أقصر.</string>
     <string name="feature_alarm_sound_not_playable">لا يمكن تشغيل هذا الملف. اختر ملف MP3 أو WAV أو OGG.</string>
+    <string name="feature_alarm_edit_title">تعديل المنبه</string>
+    <string name="feature_alarm_repeat">تكرار</string>
+    <string name="feature_alarm_label">التسمية</string>
+    <string name="feature_alarm_sound">الصوت</string>
+    <string name="feature_alarm_volume">مستوى الصوت</string>
+    <string name="feature_alarm_vibrate">الاهتزاز</string>
+    <string name="feature_alarm_snooze">الغفوة</string>
+    <string name="feature_alarm_snooze_minutes">%1$d د</string>
+    <string name="feature_alarm_snooze_shorter">غفوة أقصر</string>
+    <string name="feature_alarm_snooze_longer">غفوة أطول</string>
+    <string name="feature_alarm_change_time">تغيير الوقت</string>
 </resources>

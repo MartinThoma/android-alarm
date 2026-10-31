@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="feature_timer_title">Таймер</string>
-    <string name="feature_timer_placeholder">Скоро.</string>
+    <string name="feature_timer_start">Старт</string>
+    <string name="feature_timer_pause">Пауза</string>
+    <string name="feature_timer_resume">Продолжить</string>
+    <string name="feature_timer_reset">Сбросить</string>
+    <string name="feature_timer_add_minute">+1 мин</string>
+    <string name="feature_timer_delete">Удалить таймер</string>
+    <string name="feature_timer_new">Новый таймер</string>
+    <string name="feature_timer_label">Название (необязательно)</string>
+    <string name="feature_timer_paused">На паузе · %1$s</string>
+    <string name="feature_timer_of">из %1$s</string>
+    <string name="feature_timer_stop">Стоп</string>
+    <string name="feature_timer_times_up">Время вышло</string>
+    <string name="feature_timer_backspace">Удалить цифру</string>
+    <string name="feature_timer_back">Назад</string>
 </resources>

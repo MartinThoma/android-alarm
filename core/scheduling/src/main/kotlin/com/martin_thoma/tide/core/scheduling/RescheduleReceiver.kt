@@ -9,10 +9,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-/** Rebuilds all system alarms after boot, app update and time or time-zone changes. */
+/** Rebuilds all system alarms (alarms and timers) after boot, app update and time or time-zone changes. */
 @AndroidEntryPoint
 class RescheduleReceiver : BroadcastReceiver() {
     @Inject lateinit var scheduler: AlarmScheduler
+
+    @Inject lateinit var timerScheduler: TimerScheduler
 
     @Inject @ApplicationScope
     lateinit var scope: CoroutineScope
@@ -26,6 +28,7 @@ class RescheduleReceiver : BroadcastReceiver() {
         scope.launch {
             try {
                 scheduler.rescheduleAll()
+                timerScheduler.rescheduleAll()
             } finally {
                 pending.finish()
             }

@@ -28,4 +28,15 @@
     <string name="feature_alarm_sound_playing">Tocando</string>
     <string name="feature_alarm_sound_too_large">Este arquivo tem mais de 30 MB. Escolha um mais curto.</string>
     <string name="feature_alarm_sound_not_playable">Não é possível reproduzir este arquivo. Escolha um arquivo MP3, WAV ou OGG.</string>
+    <string name="feature_alarm_edit_title">Editar alarme</string>
+    <string name="feature_alarm_repeat">Repetir</string>
+    <string name="feature_alarm_label">Nome</string>
+    <string name="feature_alarm_sound">Som</string>
+    <string name="feature_alarm_volume">Volume</string>
+    <string name="feature_alarm_vibrate">Vibrar</string>
+    <string name="feature_alarm_snooze">Adiar</string>
+    <string name="feature_alarm_snooze_minutes">%1$d min</string>
+    <string name="feature_alarm_snooze_shorter">Adiar menos</string>
+    <string name="feature_alarm_snooze_longer">Adiar mais</string>
+    <string name="feature_alarm_change_time">Alterar horário</string>
 </resources>

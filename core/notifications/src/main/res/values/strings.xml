@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="core_notifications_channel_ringing">Ringing alarms</string>
+    <string name="core_notifications_channel_ringing_description">Shows an alarm while it rings, also on the lock screen.</string>
+    <string name="core_notifications_channel_upcoming">Upcoming alarms</string>
+    <string name="core_notifications_channel_upcoming_description">Snoozed alarms, until they ring again.</string>
+    <string name="core_notifications_channel_missed">Missed alarms</string>
+    <string name="core_notifications_channel_missed_description">Alarms that rang until they stopped by themselves.</string>
+    <string name="core_notifications_channel_running">Stopwatch and timers</string>
+    <string name="core_notifications_channel_running_description">Shows a running stopwatch or timer.</string>
+</resources>

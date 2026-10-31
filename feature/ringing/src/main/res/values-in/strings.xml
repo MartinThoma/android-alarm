@@ -5,4 +5,8 @@
     <string name="feature_ringing_snooze_minutes">%1$d mnt</string>
     <string name="feature_ringing_slide_to_dismiss">Geser untuk mematikan</string>
     <string name="feature_ringing_dismiss">Matikan</string>
+    <string name="feature_ringing_timer">Timer</string>
+    <string name="feature_ringing_times_up">Waktu habis</string>
+    <string name="feature_ringing_add_minute">+1 mnt</string>
+    <string name="feature_ringing_stop">Hentikan</string>
 </resources>

@@ -14,6 +14,11 @@ class RingingControls
             context.startService(RingingService.intent(context, RingingService.ACTION_SNOOZE))
         }
 
+        /** For a ringing timer: one more minute. */
+        fun addMinute() {
+            context.startService(RingingService.intent(context, RingingService.ACTION_ADD_MINUTE))
+        }
+
         fun dismiss() {
             context.startService(RingingService.intent(context, RingingService.ACTION_DISMISS))
         }

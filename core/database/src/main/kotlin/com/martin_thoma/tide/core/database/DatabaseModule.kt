@@ -27,4 +27,7 @@ object DatabaseModule {
 
     @Provides
     fun alarmDao(database: TideDatabase): AlarmDao = database.alarmDao()
+
+    @Provides
+    fun timerDao(database: TideDatabase): TimerDao = database.timerDao()
 }

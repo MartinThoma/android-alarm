@@ -1,6 +1,7 @@
 package com.martin_thoma.tide.core.ringing
 
 import com.martin_thoma.tide.core.model.Alarm
+import com.martin_thoma.tide.core.model.Timer
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,6 +18,12 @@ sealed interface RingingStatus {
 
     data class Ringing(
         val alarm: Alarm,
+        val since: Instant,
+    ) : RingingStatus
+
+    /** A timer has run out (requirements TM-06). */
+    data class TimerRinging(
+        val timer: Timer,
         val since: Instant,
     ) : RingingStatus
 }
