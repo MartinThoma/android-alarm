@@ -1,0 +1,30 @@
+<p>Drift ist Wecker, Timer und Stoppuhr mit einer ruhigen Idee: Der Bildschirm ist ein Strand von oben, und je näher dein nächster Wecker, desto höher steht die Flut. Tagsüber ist das Wasser hell türkis; nachts leuchten die Wellen wie biolumineszentes Meer, und Ohrenquallen treiben vorbei.</p>
+
+<p><b>Wecker</b></p>
+<ul>
+<li>Einmalig oder an gewählten Wochentagen, mit Namen</li>
+<li>Eigene Lautstärke für jeden Wecker, mit Hörprobe in genau dieser Lautstärke</li>
+<li>Vibration und Schlummerdauer für jeden Wecker</li>
+<li>Lautlose Wecker, die mit Licht wecken: ein hellerer Bildschirm und ein sanftes Pulsieren (höchstens zweimal pro Sekunde)</li>
+<li>Klingelt pünktlich, auch nach einem Neustart und bevor du das Telefon entsperrst</li>
+</ul>
+
+<p><b>Klänge</b></p>
+<ul>
+<li>Meer, Regen, Gewitter, Grillen, ein klassischer Wecker, Kanon in D und Für Elise, alle eigens für diese App gemacht</li>
+<li>Die Weckertöne und Klingeltöne des Telefons</li>
+<li>Eigene MP3-, WAV- oder OGG-Dateien</li>
+</ul>
+
+<p><b>Timer und Stoppuhr</b></p>
+<ul>
+<li>Timer mit einem Rad stellen; mehrere gleichzeitig; umbenennen</li>
+<li>Zuletzt benutzte Timer als Abkürzungen</li>
+<li>Stoppuhr mit Runden, die schnellste und langsamste markiert</li>
+</ul>
+
+<p><b>Privat von Grund auf</b>: kein Internetzugriff, keine Werbung, kein Tracking.</p>
+
+<p>Auf Englisch, Deutsch, Französisch, Spanisch, Portugiesisch, Russisch, Indonesisch, Chinesisch (vereinfacht) und Arabisch. Funktioniert mit TalkBack und großer Schrift.</p>
+
+<p>Freie Software unter der GPL-3.0-or-later.</p>

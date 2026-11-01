@@ -26,6 +26,14 @@ android {
     androidResources {
         // Per-app language setting (requirements NF-07); locales come from res/values-*.
         generateLocaleConfig = true
+        // Only the app's nine languages: the libraries bring texts in some 85 more.
+        // zh-rCN: the libraries keep their Simplified Chinese there, the app in b+zh+Hans.
+        localeFilters += listOf("en", "de", "fr", "es", "pt", "ru", "in", "zh", "zh-rCN", "ar")
+    }
+
+    packaging {
+        // Kotlin's reflection data and the libraries' version stamps: nothing reads them at run time.
+        resources.excludes += listOf("kotlin/**.kotlin_builtins", "META-INF/*.version")
     }
 
     // Robolectric tests need the app's resources.

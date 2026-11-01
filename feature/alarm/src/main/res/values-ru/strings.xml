@@ -54,4 +54,5 @@
     <string name="feature_alarm_sound_phone_ringtones">Рингтоны</string>
     <string name="feature_alarm_sound_show_ringtones">Показать рингтоны (%1$d)</string>
     <string name="feature_alarm_sound_phone_unknown">Звук телефона</string>
+    <string name="feature_alarm_switch">Будильник на %1$s</string>
 </resources>

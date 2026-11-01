@@ -1,0 +1,30 @@
+<p>Drift is an alarm clock, timer and stopwatch with a calm idea: the screen is a beach seen from above, and the closer your next alarm, the higher the tide. By day the water is bright turquoise; at night the waves glow like bioluminescent sea, with moon jellyfish drifting by.</p>
+
+<p><b>Alarms</b></p>
+<ul>
+<li>One-time or repeating on chosen weekdays, with a label</li>
+<li>Its own volume per alarm, with a sample at exactly that volume</li>
+<li>Vibration and snooze length per alarm</li>
+<li>Silent alarms that wake you with light: a brighter screen and a soft pulse (at most twice a second)</li>
+<li>Rings on time, also after a restart and before you unlock the phone</li>
+</ul>
+
+<p><b>Sounds</b></p>
+<ul>
+<li>Sea, rain, thunderstorm, crickets, a classic alarm clock, Canon in D and Für Elise, all made for this app</li>
+<li>The phone's own alarm tones and ringtones</li>
+<li>Your own MP3, WAV or OGG files</li>
+</ul>
+
+<p><b>Timer and stopwatch</b></p>
+<ul>
+<li>Set a timer with a wheel; run several at once; rename them</li>
+<li>Recently used timers as shortcuts</li>
+<li>Stopwatch with laps, the fastest and slowest marked</li>
+</ul>
+
+<p><b>Private by design</b>: no internet access, no ads, no tracking.</p>
+
+<p>In English, German, French, Spanish, Portuguese, Russian, Indonesian, Chinese (simplified) and Arabic. Works with TalkBack and large text.</p>
+
+<p>Free software under the GPL-3.0-or-later.</p>

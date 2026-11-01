@@ -58,6 +58,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.semantics
@@ -246,7 +247,8 @@ private fun Segment(
                 .background(if (selected) colors.glass else colors.glass.copy(alpha = 0f))
                 .selectable(selected = selected, role = Role.Tab, onClick = onSelect)
                 .padding(horizontal = 6.dp)
-                .semantics { contentDescription = "$name: $value" },
+                // One short name instead of "Hours: 0, 00, Hours".
+                .clearAndSetSemantics { contentDescription = "$name: $value" },
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(

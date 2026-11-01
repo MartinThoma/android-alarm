@@ -63,7 +63,9 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
@@ -75,6 +77,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavKey
+import com.martin_thoma.drift.core.designsystem.FittedText
 import com.martin_thoma.drift.core.designsystem.GlassPane
 import com.martin_thoma.drift.core.designsystem.LocalTideColors
 import com.martin_thoma.drift.core.designsystem.SwipeToDelete
@@ -318,7 +321,7 @@ internal fun TimerListContent(
                                         )
                                     }
                                     SwipeToDelete(onDelete = { onDelete(timer) }) {
-                                        TimerRow(timer, now, onOpen, onStartOrPause, onReset)
+                                        TimerRow(timer, now, onOpen, onStartOrPause, onReset, onDelete)
                                     }
                                 }
                             }
@@ -338,13 +341,28 @@ private fun TimerRow(
     onOpen: (Timer) -> Unit,
     onStartOrPause: (Timer) -> Unit,
     onReset: (Timer) -> Unit,
+    onDelete: (Timer) -> Unit,
 ) {
     val colors = LocalTideColors.current
     val locale = LocalConfiguration.current.locales[0]
     val expired = timer.hasExpired(now)
     val remaining = timer.remaining(now)
+    val deleteLabel = stringResource(R.string.feature_timer_delete)
     Row(
-        modifier = Modifier.fillMaxWidth().clickable { onOpen(timer) }.padding(start = 20.dp, end = 12.dp, top = 14.dp, bottom = 14.dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .clickable { onOpen(timer) }
+                // Swiping is not the only way: TalkBack offers Delete as an action.
+                .semantics {
+                    customActions =
+                        listOf(
+                            CustomAccessibilityAction(deleteLabel) {
+                                onDelete(timer)
+                                true
+                            },
+                        )
+                }.padding(start = 20.dp, end = 12.dp, top = 14.dp, bottom = 14.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
@@ -389,7 +407,9 @@ private fun TimerRow(
                     timer.isIdle -> TideIcons.Play to R.string.feature_timer_start
                     else -> TideIcons.Play to R.string.feature_timer_resume
                 }
-            Icon(painterResource(icon), contentDescription = stringResource(label))
+            // Named after its timer, so TalkBack can tell the buttons in the list apart.
+            val name = timer.label.ifEmpty { formatDuration(timer.setMillis, locale) }
+            Icon(painterResource(icon), contentDescription = stringResource(label) + ", " + name)
         }
     }
 }
@@ -444,10 +464,10 @@ private fun TimerPage(
         Spacer(Modifier.height(40.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(28.dp), verticalAlignment = Alignment.CenterVertically) {
             GlassPane(modifier = Modifier.size(72.dp), shape = CircleShape, onClick = { onAddMinute(timer) }) {
-                Text(
+                FittedText(
                     stringResource(R.string.feature_timer_add_minute),
                     style = MaterialTheme.typography.labelLarge,
-                    modifier = Modifier.align(Alignment.Center),
+                    modifier = Modifier.align(Alignment.Center).padding(horizontal = 10.dp),
                 )
             }
             FilledIconButton(

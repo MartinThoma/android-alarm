@@ -54,4 +54,5 @@
     <string name="feature_alarm_sound_phone_ringtones">Tonos de llamada</string>
     <string name="feature_alarm_sound_show_ringtones">Mostrar tonos de llamada (%1$d)</string>
     <string name="feature_alarm_sound_phone_unknown">Sonido del teléfono</string>
+    <string name="feature_alarm_switch">Alarma a las %1$s</string>
 </resources>

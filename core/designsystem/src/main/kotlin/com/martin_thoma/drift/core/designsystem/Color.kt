@@ -102,7 +102,8 @@ val NightTideColors =
         onSand = Color(0xFFE3ECF0),
         onSandVariant = Color(0xFF9AABB3),
         onSea = Color(0xFFE3ECF0),
-        onSeaVariant = Color(0xFF9AABB3),
+        // Bright enough for 4.5:1 over the glowing shallows, where the hero's last line sits (ContrastTest).
+        onSeaVariant = Color(0xFFCCD9DF),
         onGlass = Color(0xFFE3ECF0),
         onGlassVariant = Color(0xFFA2B3BB),
         accent = Color(0xFF62D2FF),

@@ -11,4 +11,6 @@ dependencies {
     implementation(project(":core:domain"))
     implementation(project(":core:ringing"))
     implementation(libs.androidx.activity.compose)
+
+    testImplementation(libs.kotlinx.coroutines.test)
 }

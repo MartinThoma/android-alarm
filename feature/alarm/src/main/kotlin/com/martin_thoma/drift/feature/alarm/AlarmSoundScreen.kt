@@ -88,9 +88,10 @@ fun AlarmSoundScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val tooLarge = stringResource(R.string.feature_alarm_sound_too_large)
     val notPlayable = stringResource(R.string.feature_alarm_sound_not_playable)
-    LaunchedEffect(viewModel) {
-        viewModel.importProblems.collect { problem ->
+    state.importProblem?.let { problem ->
+        LaunchedEffect(problem) {
             snackbarHostState.showSnackbar(if (problem == ImportResult.TooLarge) tooLarge else notPlayable)
+            viewModel.importProblemShown()
         }
     }
     AlarmSoundContent(

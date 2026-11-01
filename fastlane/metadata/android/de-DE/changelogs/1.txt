@@ -1,0 +1,1 @@
+Erste Version: Wecker mit eigenem Klang, eigener Lautstärke, Vibration, Schlummern und Licht; ein Timer, der mit einem Rad gestellt wird; eine Stoppuhr mit Runden. Eigene Klänge der App, Töne des Telefons oder eigene Dateien. Neun Sprachen.

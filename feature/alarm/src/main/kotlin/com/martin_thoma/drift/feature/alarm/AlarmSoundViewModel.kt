@@ -17,15 +17,12 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -35,6 +32,8 @@ internal data class AlarmSoundUiState(
     val phoneSounds: List<PhoneSound> = emptyList(),
     /** The sound playing as a preview, or `null`. */
     val previewing: String? = null,
+    /** Why the file the user just picked was not added, until the message has been shown. */
+    val importProblem: ImportResult? = null,
 ) {
     /** The alarm's sound; the default sound has its own uri here, so it can be compared. */
     val selected: String? get() = alarm?.let { it.soundUri ?: AlarmSounds.Default.uri }
@@ -57,18 +56,22 @@ internal class AlarmSoundViewModel
 
         private val previewing = MutableStateFlow<String?>(null)
         private var previewEnd: Job? = null
-        private val importResults = Channel<ImportResult>(Channel.BUFFERED)
-
-        /** Results of adding a file that are not a success: shown once as a message. */
-        val importProblems: Flow<ImportResult> = importResults.receiveAsFlow()
+        private val importProblem = MutableStateFlow<ImportResult?>(null)
 
         val uiState: StateFlow<AlarmSoundUiState> =
-            combine(repository.alarms, customSounds.sounds, phoneSounds.sounds, previewing) { alarms, custom, phone, playing ->
+            combine(
+                repository.alarms,
+                customSounds.sounds,
+                phoneSounds.sounds,
+                previewing,
+                importProblem,
+            ) { alarms, custom, phone, playing, problem ->
                 AlarmSoundUiState(
                     alarm = alarms.find { it.id == alarmId },
                     customSounds = custom,
                     phoneSounds = phone,
                     previewing = playing,
+                    importProblem = problem,
                 )
             }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS), AlarmSoundUiState())
 
@@ -90,9 +93,14 @@ internal class AlarmSoundViewModel
             viewModelScope.launch {
                 when (val result = customSounds.add(source)) {
                     is ImportResult.Added -> select(result.sound.uri)
-                    else -> importResults.send(result)
+                    else -> importProblem.value = result
                 }
             }
+        }
+
+        /** The message about [AlarmSoundUiState.importProblem] has been shown. */
+        fun importProblemShown() {
+            importProblem.value = null
         }
 
         /** Deletes the user's sound; an alarm that used it rings with the default sound again. */

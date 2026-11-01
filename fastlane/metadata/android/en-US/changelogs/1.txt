@@ -1,0 +1,1 @@
+First release: alarms with their own sound, volume, vibration, snooze and light; a timer set with a wheel; a stopwatch with laps. Sounds made for the app, the phone's own tones, or your own files. Nine languages.

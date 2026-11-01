@@ -80,6 +80,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
@@ -370,7 +371,14 @@ private fun AlarmRow(
                     color = colors.onGlassVariant,
                 )
             }
-            Switch(checked = alarm.enabled, onCheckedChange = { onToggle(alarm, it) }, colors = glassSwitchColors())
+            // Named after its alarm, so TalkBack says which alarm it turns on or off.
+            val switchName = stringResource(R.string.feature_alarm_switch, timeFormatter.format(alarm.time))
+            Switch(
+                checked = alarm.enabled,
+                onCheckedChange = { onToggle(alarm, it) },
+                colors = glassSwitchColors(),
+                modifier = Modifier.semantics { contentDescription = switchName },
+            )
         }
     }
 }

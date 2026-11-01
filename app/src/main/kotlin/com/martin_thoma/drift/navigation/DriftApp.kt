@@ -17,6 +17,7 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import com.martin_thoma.drift.core.designsystem.FittedText
 import com.martin_thoma.drift.feature.alarm.AlarmEditorRoute
 import com.martin_thoma.drift.feature.alarm.AlarmEditorScreen
 import com.martin_thoma.drift.feature.alarm.AlarmRoute
@@ -66,7 +67,7 @@ fun DriftApp(
                             contentDescription = null,
                         )
                     },
-                    label = { Text(stringResource(destination.label)) },
+                    label = { FittedText(stringResource(destination.label)) },
                 )
             }
         },

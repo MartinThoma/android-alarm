@@ -348,6 +348,7 @@ private fun VolumeRow(
             },
             valueRange = 0f..100f,
             enabled = enabled,
+            modifier = Modifier.sliderSemantics(stringResource(R.string.feature_alarm_volume)),
             colors =
                 SliderDefaults.colors(
                     thumbColor = colors.accent,
@@ -395,6 +396,7 @@ private fun BrightnessRows(
             onValueChange = { value = it },
             onValueChangeFinished = { onBrightness(value.toInt()) },
             valueRange = 1f..100f,
+            modifier = Modifier.sliderSemantics(stringResource(R.string.feature_alarm_brightness)),
             colors =
                 SliderDefaults.colors(
                     thumbColor = colors.accent,
@@ -530,3 +532,6 @@ private fun SettingRow(
 private fun PaneDivider() {
     HorizontalDivider(modifier = Modifier.padding(horizontal = 20.dp), color = LocalContentColor.current.copy(alpha = 0.12f))
 }
+
+/** A slider named for TalkBack. */
+private fun Modifier.sliderSemantics(name: String): Modifier = semantics { contentDescription = name }

@@ -54,4 +54,5 @@
     <string name="feature_alarm_sound_phone_ringtones">نغمات الرنين</string>
     <string name="feature_alarm_sound_show_ringtones">عرض نغمات الرنين (%1$d)</string>
     <string name="feature_alarm_sound_phone_unknown">صوت الهاتف</string>
+    <string name="feature_alarm_switch">منبّه الساعة %1$s</string>
 </resources>

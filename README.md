@@ -13,7 +13,7 @@ The screen is a beach seen from above: the closer your next alarm, the higher th
 
 Requires Android 15 (API 35) or newer. See [docs/requirements.md](docs/requirements.md).
 
-> **Work in progress.** Alarm, stopwatch and timer work, but have not been tested on a real phone yet. There is no release yet.
+> **Work in progress.** Alarm, stopwatch and timer work and are tested on a Samsung Galaxy S25 (Android 17). There is no release yet; it is being prepared for F-Droid ([docs/fdroid.md](docs/fdroid.md)).
 
 In English, German, French, Spanish, Portuguese, Russian, Indonesian, Chinese (simplified) and Arabic; each can also be chosen as the app's own language in Android's settings.
 
@@ -38,8 +38,11 @@ Requires JDK 21 and the Android SDK (`ANDROID_HOME` or `local.properties` with `
 ./gradlew installDebug       # install on a connected device
 ./gradlew spotlessApply      # format
 ./gradlew lint testDebugUnitTest
-./gradlew :app:recordRoborazziDebug   # update the README screenshots
+./gradlew :app:recordRoborazziDebug   # update the README screenshots and the store icon
+scripts/update_store_listing.sh       # copy the screenshots into the F-Droid listing
 ```
+
+How the app follows Android's architecture, size and accessibility guidelines: [docs/guidelines.md](docs/guidelines.md).
 
 ## Licence
 

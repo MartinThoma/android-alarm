@@ -56,4 +56,5 @@
     <string name="feature_alarm_sound_phone_ringtones">Ringtones</string>
     <string name="feature_alarm_sound_show_ringtones">Show ringtones (%1$d)</string>
     <string name="feature_alarm_sound_phone_unknown">Phone sound</string>
+    <string name="feature_alarm_switch">Alarm at %1$s</string>
 </resources>

@@ -54,4 +54,5 @@
     <string name="feature_alarm_sound_phone_ringtones">Nada dering</string>
     <string name="feature_alarm_sound_show_ringtones">Tampilkan nada dering (%1$d)</string>
     <string name="feature_alarm_sound_phone_unknown">Suara ponsel</string>
+    <string name="feature_alarm_switch">Alarm pukul %1$s</string>
 </resources>

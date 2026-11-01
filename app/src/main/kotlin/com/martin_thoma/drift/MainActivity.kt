@@ -8,9 +8,9 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.martin_thoma.drift.core.designsystem.TideTheme
 import com.martin_thoma.drift.core.notifications.OpenApp
 import com.martin_thoma.drift.core.ringing.PhoneSounds
@@ -33,7 +33,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) requestTab(intent)
         setContent {
-            val phoneTones by phoneSounds.sounds.collectAsState()
+            val phoneTones by phoneSounds.sounds.collectAsStateWithLifecycle()
             TideTheme {
                 CompositionLocalProvider(LocalPhoneSounds provides phoneTones) {
                     DriftApp(requestedTab = requestedTab.value, onTabShown = { requestedTab.value = null })

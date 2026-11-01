@@ -8,13 +8,15 @@ Things decided but not yet done. Requirements live in [requirements.md](requirem
 - [ ] Test ringing on the S25: locked screen, Do Not Disturb, before the first unlock after a reboot, the per-alarm volume and its restore, snooze, auto-silence after 10 minutes.
 - [ ] Health check (step 4): notifications, full-screen intent permission, exact alarms, battery optimisation.
 - [ ] Martin creates the release signing key and stores it in GitHub's encrypted secrets, with a safe offline backup. Losing it means no existing install can be updated.
-- [ ] Release workflow: a `v*` tag builds a signed APK and app bundle, derives `versionCode` from the tag and publishes a GitHub Release with the changelog.
-- [ ] Store metadata in `fastlane/metadata/android/` (read by F-Droid, IzzyOnDroid and Google Play).
-- [ ] Submit to IzzyOnDroid and F-Droid; aim for reproducible builds so F-Droid ships our signature.
+- [ ] Release workflow: a `v*` tag builds a signed APK and app bundle and publishes a GitHub Release with the changelog. `versionCode` and `versionName` stay literal in `app/build.gradle.kts` (bumped in a commit before the tag): F-Droid reads them with a regex and never runs Gradle.
+- [x] Store metadata in `fastlane/metadata/android/` (en-US and de-DE; read by F-Droid, IzzyOnDroid and Google Play), the icon rendered by `StoreIconTest`, screenshots copied by `scripts/update_store_listing.sh` (2026-11-01).
+- [ ] Submit to IzzyOnDroid and F-Droid: steps in [fdroid.md](fdroid.md), draft metadata in [fdroid/](fdroid/).
 - [ ] README: add release, F-Droid and IzzyOnDroid badges once the app is published there.
 - [ ] Check the status of Google's Android developer verification and what it means for distribution outside Google Play.
 
 ## Later
+
+- [ ] Baseline and startup profiles with a Macrobenchmark module (architecture recommendations, "strongly recommended"); needs the S25 or an emulator to generate. See [guidelines.md](guidelines.md).
 
 - [ ] Martin: enable Intel VT-x in the laptop's BIOS, so the Android emulator can run for end-to-end tests.
 - [ ] Google Play: decide whether the one-time $25 account fee and the closed test (12 testers, 14 days) are worth it. The release workflow then needs only an upload step.
