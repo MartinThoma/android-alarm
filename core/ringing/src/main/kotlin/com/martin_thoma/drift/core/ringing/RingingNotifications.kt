@@ -45,8 +45,13 @@ class RingingNotifications
                 .setContentIntent(screenIntent)
                 .setForegroundServiceBehavior(Notification.FOREGROUND_SERVICE_IMMEDIATE)
                 .addAction(serviceAction(R.string.core_ringing_snooze, RingingService.ACTION_SNOOZE))
-                .addAction(serviceAction(R.string.core_ringing_dismiss, RingingService.ACTION_DISMISS))
-                .build()
+                .apply {
+                    // Shaking and sums happen on the ringing screen only; a Dismiss here would skip them.
+                    // While the alarm loads (`null`, a few milliseconds) its challenge is not known yet.
+                    if (alarm != null && !alarm.challenge.wakesUp) {
+                        addAction(serviceAction(R.string.core_ringing_dismiss, RingingService.ACTION_DISMISS))
+                    }
+                }.build()
         }
 
         /** The foreground notification while a timer rings: "+1 min" and Stop. */
@@ -71,7 +76,7 @@ class RingingNotifications
 
         fun update(notification: Notification) = manager.notify(RingingService.NOTIFICATION_ID, notification)
 
-        /** Counts down to the end of the snooze, with an action to dismiss the alarm early. */
+        /** Counts down to the end of the snooze, with an action to dismiss the alarm early (not past a wake-up challenge). */
         fun showSnoozed(
             alarm: Alarm,
             until: Instant,
@@ -97,8 +102,12 @@ class RingingNotifications
                     .setUsesChronometer(true)
                     .setChronometerCountDown(true)
                     .setContentIntent(openApp())
-                    .addAction(Notification.Action.Builder(null, context.getString(R.string.core_ringing_dismiss), dismiss).build())
-                    .build()
+                    .apply {
+                        // Snooze, then Dismiss from the lock screen, would also skip the challenge.
+                        if (!alarm.challenge.wakesUp) {
+                            addAction(Notification.Action.Builder(null, context.getString(R.string.core_ringing_dismiss), dismiss).build())
+                        }
+                    }.build()
             manager.notify(snoozedTag(alarm.id), 0, notification)
         }
 

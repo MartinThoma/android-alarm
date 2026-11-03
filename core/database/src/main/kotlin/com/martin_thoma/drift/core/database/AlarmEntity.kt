@@ -23,4 +23,6 @@ data class AlarmEntity(
     val brightnessPercent: Int? = null,
     /** A [com.martin_thoma.drift.core.model.Blink] name. Added in version 4. */
     @ColumnInfo(defaultValue = "OFF") val blink: String = "OFF",
+    /** A [com.martin_thoma.drift.core.model.Challenge] name. Added in version 5. */
+    @ColumnInfo(defaultValue = "SLIDE") val challenge: String = "SLIDE",
 )

@@ -55,4 +55,13 @@
     <string name="feature_alarm_sound_show_ringtones">عرض نغمات الرنين (%1$d)</string>
     <string name="feature_alarm_sound_phone_unknown">صوت الهاتف</string>
     <string name="feature_alarm_switch">منبّه الساعة %1$s</string>
+    <string name="feature_alarm_challenge">الإيقاف عبر</string>
+    <string name="feature_alarm_challenge_slide">السحب</string>
+    <string name="feature_alarm_challenge_shake">الهز</string>
+    <string name="feature_alarm_challenge_math">الحساب</string>
+    <string name="feature_alarm_challenge_slide_hint">اسحب المقبض حتى النهاية.</string>
+    <string name="feature_alarm_challenge_shake_hint">هزّ الهاتف حتى يمتلئ الشريط.</string>
+    <string name="feature_alarm_challenge_math_hint">حُلّ ثلاث مسائل حسابية قصيرة.</string>
+    <string name="feature_alarm_challenge_hold">الضغط المطول</string>
+    <string name="feature_alarm_challenge_hold_hint">اضغط مطولًا على الدائرة لمدة ثلاث ثوانٍ.</string>
 </resources>

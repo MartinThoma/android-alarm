@@ -26,6 +26,8 @@ data class Alarm(
     val brightnessPercent: Int? = null,
     /** Whether, and how fast, the ringing screen pulses with light. */
     val blink: Blink = Blink.OFF,
+    /** What it takes to dismiss the alarm while it rings. */
+    val challenge: Challenge = Challenge.SLIDE,
 ) {
     init {
         require(time.second == 0 && time.nano == 0) { "Alarms are set to the minute: $time" }

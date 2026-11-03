@@ -9,4 +9,13 @@
     <string name="feature_ringing_times_up">انتهى الوقت</string>
     <string name="feature_ringing_add_minute">+1 د</string>
     <string name="feature_ringing_stop">إيقاف</string>
+    <string name="feature_ringing_shake_to_dismiss">هزّ الهاتف للإيقاف</string>
+    <string name="feature_ringing_solve_to_dismiss">احسب للإيقاف</string>
+    <string name="feature_ringing_sum_progress">المسألة %1$d من %2$d</string>
+    <string name="feature_ringing_wrong_answer">ليس تمامًا. حاول مرة أخرى.</string>
+    <string name="feature_ringing_answer">الإجابة</string>
+    <string name="feature_ringing_delete_digit">حذف الرقم</string>
+    <string name="feature_ringing_check_answer">تحقق من الإجابة</string>
+    <string name="feature_ringing_back">رجوع</string>
+    <string name="feature_ringing_hold_to_dismiss">اضغط مطولًا للإيقاف</string>
 </resources>

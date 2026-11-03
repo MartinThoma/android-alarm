@@ -15,6 +15,7 @@ import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import com.martin_thoma.drift.core.data.AlarmRepository
@@ -113,6 +114,9 @@ class AccessibilityTest {
         for (node in nodes) {
             val name = node.name()
             if (name.isEmpty()) problems += "$screen: a control without a name at ${node.boundsInRoot}"
+            // Partly scrolled out of view, its touch area is cut off too; it is measured once scrolled in.
+            val cutOff = node.boundsInRoot.height < node.size.height - 1 || node.boundsInRoot.width < node.size.width - 1
+            if (cutOff) continue
             val width = maxOf(node.size.width.toFloat(), node.touchBoundsInRoot.width)
             val height = maxOf(node.size.height.toFloat(), node.touchBoundsInRoot.height)
             // Material 3's slider is 44 dp tall and Compose does not widen it; it spans the whole width,
@@ -145,6 +149,9 @@ class AccessibilityTest {
             compose.onNode(hasText("Mon–Fri · Work") and hasClickAction()).performClick()
             await("Edit alarm")
             check("alarm editor")
+            compose.onNodeWithText("Sums").performScrollTo()
+            compose.waitForIdle()
+            check("alarm editor, scrolled down")
 
             compose.onNode(hasText("Sound") and hasClickAction()).performClick()
             await("Alarm sound")

@@ -1,5 +1,6 @@
 package com.martin_thoma.drift.feature.ringing
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animate
@@ -38,7 +39,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -75,6 +78,7 @@ import com.martin_thoma.drift.core.designsystem.rememberTimeFormatter
 import com.martin_thoma.drift.core.designsystem.tideVariantColor
 import com.martin_thoma.drift.core.model.Alarm
 import com.martin_thoma.drift.core.model.Blink
+import com.martin_thoma.drift.core.model.Challenge
 import com.martin_thoma.drift.core.ringing.RingingStatus
 import java.time.LocalTime
 import java.time.ZonedDateTime
@@ -120,7 +124,26 @@ private fun AlarmRinging(
 ) {
     val timeFormatter = rememberTimeFormatter()
     val dateFormatter = rememberDateFormatter("EEEEdMMMM")
+    // The sums for this ring come from the moment it began (to the millisecond), so every ring has
+    // its own and a rotation keeps them; how many are done stays while the sums are closed.
+    val seed = status.since.toEpochMilli()
+    var solved by rememberSaveable(status.since) { mutableIntStateOf(0) }
+    var solving by rememberSaveable(status.since) { mutableStateOf(false) }
+    // Back closes the sums; otherwise back does nothing on this screen (see RingingActivity).
+    BackHandler(enabled = solving) { solving = false }
     if (status.alarm.blink != Blink.OFF) LightPulse(status.alarm.blink)
+    if (solving) {
+        SumsPanel(
+            seed = seed,
+            solved = solved,
+            onCorrect = {
+                solved++
+                if (solved == MathProblem.COUNT) onDismiss()
+            },
+            onBack = { solving = false },
+        )
+        return
+    }
     RingingLayout(
         headline = {
             TideAware { underwater ->
@@ -128,9 +151,10 @@ private fun AlarmRinging(
             }
             BigText(timeFormatter.format(now))
             Label(status.alarm.label.ifEmpty { stringResource(R.string.feature_ringing_alarm) })
+            if (status.alarm.challenge == Challenge.HOLD) HoldToDismiss(onDismiss, Modifier.padding(top = 40.dp))
         },
         upper = { modifier -> SnoozeButton(minutes = status.alarm.snoozeMinutes, onClick = onSnooze, modifier = modifier) },
-        lower = { SlideToDismiss(onDismiss = onDismiss) },
+        lower = { DismissControl(status.alarm.challenge, onDismiss = onDismiss, onSolve = { solving = true }) },
     )
 }
 
@@ -282,7 +306,7 @@ private fun SnoozeButton(
 }
 
 @Composable
-private fun SlideToDismiss(onDismiss: () -> Unit) {
+internal fun SlideToDismiss(onDismiss: () -> Unit) {
     val density = LocalDensity.current
     val thumbSize = 56.dp
     val inset = 4.dp

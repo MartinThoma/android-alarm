@@ -12,6 +12,7 @@ import androidx.test.core.app.ApplicationProvider
 import com.github.takahirom.roborazzi.captureRoboImage
 import com.martin_thoma.drift.core.data.AlarmRepository
 import com.martin_thoma.drift.core.model.Alarm
+import com.martin_thoma.drift.core.model.Challenge
 import com.martin_thoma.drift.core.ringing.RingingState
 import com.martin_thoma.drift.core.ringing.RingingStatus
 import com.martin_thoma.drift.feature.ringing.RingingActivity
@@ -180,6 +181,33 @@ class ScreenshotTest {
             awaitText("Slide to dismiss")
             awaitText("Monday, November 2")
             compose.onRoot().captureRoboImage("../docs/screenshots/ringing-night.png")
+        }
+    }
+
+    @Test
+    fun ringingWithSums() {
+        time.now = ZonedDateTime.parse("2026-11-02T06:30:00+01:00[Europe/Berlin]")
+        val alarm = Alarm(id = 1, time = LocalTime.of(6, 30), repeatDays = weekdays, label = "Work", challenge = Challenge.MATH)
+        ringingState.update(RingingStatus.Ringing(alarm, time.now.toInstant()))
+
+        ActivityScenario.launch(RingingActivity::class.java).use {
+            awaitText("Solve to dismiss")
+            compose.onRoot().captureRoboImage("../docs/screenshots/ringing-sums-closed.png")
+            compose.onNode(hasText("Solve to dismiss") and hasClickAction()).performClick()
+            awaitText("Sum 1 of 3")
+            compose.onRoot().captureRoboImage("../docs/screenshots/ringing-sums.png")
+        }
+    }
+
+    @Test
+    fun ringingWithHold() {
+        time.now = ZonedDateTime.parse("2026-11-02T06:30:00+01:00[Europe/Berlin]")
+        val alarm = Alarm(id = 1, time = LocalTime.of(6, 30), repeatDays = weekdays, label = "Work", challenge = Challenge.HOLD)
+        ringingState.update(RingingStatus.Ringing(alarm, time.now.toInstant()))
+
+        ActivityScenario.launch(RingingActivity::class.java).use {
+            awaitText("Hold to dismiss")
+            compose.onRoot().captureRoboImage("../docs/screenshots/ringing-hold.png")
         }
     }
 

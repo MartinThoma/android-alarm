@@ -32,6 +32,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonColors
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Slider
@@ -66,6 +67,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavKey
+import com.martin_thoma.drift.core.designsystem.FittedText
 import com.martin_thoma.drift.core.designsystem.GlassPane
 import com.martin_thoma.drift.core.designsystem.LocalTideColors
 import com.martin_thoma.drift.core.designsystem.TideAware
@@ -76,6 +78,7 @@ import com.martin_thoma.drift.core.designsystem.keepOnOpenWater
 import com.martin_thoma.drift.core.designsystem.rememberTimeFormatter
 import com.martin_thoma.drift.core.model.Alarm
 import com.martin_thoma.drift.core.model.Blink
+import com.martin_thoma.drift.core.model.Challenge
 import com.martin_thoma.drift.core.ringing.AlarmSounds
 import kotlinx.serialization.Serializable
 import java.text.NumberFormat
@@ -116,6 +119,7 @@ fun AlarmEditorScreen(
         onBrightness = viewModel::setBrightness,
         onBlink = viewModel::setBlink,
         onSnoozeMinutes = viewModel::setSnoozeMinutes,
+        onChallenge = viewModel::setChallenge,
         modifier = modifier,
     )
 }
@@ -136,6 +140,7 @@ internal fun AlarmEditorContent(
     onBrightness: (Int?) -> Unit,
     onBlink: (Blink) -> Unit,
     onSnoozeMinutes: (Int) -> Unit,
+    onChallenge: (Challenge) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val colors = LocalTideColors.current
@@ -220,6 +225,8 @@ internal fun AlarmEditorContent(
                             BlinkRow(alarm.blink, onBlink)
                             PaneDivider()
                             SnoozeRow(alarm.snoozeMinutes, onSnoozeMinutes)
+                            PaneDivider()
+                            ChallengeRow(alarm.challenge, onChallenge)
                         }
                     }
                 }
@@ -416,7 +423,6 @@ private fun BlinkRow(
     blink: Blink,
     onBlink: (Blink) -> Unit,
 ) {
-    val colors = LocalTideColors.current
     Column(Modifier.padding(horizontal = 20.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(stringResource(R.string.feature_alarm_blink), style = MaterialTheme.typography.bodyLarge)
         val options =
@@ -432,19 +438,69 @@ private fun BlinkRow(
                     selected = blink == option,
                     onClick = { onBlink(option) },
                     shape = SegmentedButtonDefaults.itemShape(index, options.size),
-                    colors =
-                        SegmentedButtonDefaults.colors(
-                            activeContainerColor = colors.accent,
-                            activeContentColor = colors.onAccent,
-                            inactiveContainerColor = Color.Transparent,
-                            inactiveContentColor = colors.onGlass,
-                            activeBorderColor = colors.accent,
-                            inactiveBorderColor = colors.onGlassVariant.copy(alpha = 0.5f),
-                        ),
-                    label = { Text(stringResource(label), maxLines = 1) },
+                    colors = glassSegmentedButtonColors(),
+                    // German labels are long; they shrink to fit rather than lose letters.
+                    label = { FittedText(stringResource(label)) },
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun glassSegmentedButtonColors(): SegmentedButtonColors {
+    val colors = LocalTideColors.current
+    return SegmentedButtonDefaults.colors(
+        activeContainerColor = colors.accent,
+        activeContentColor = colors.onAccent,
+        inactiveContainerColor = Color.Transparent,
+        inactiveContentColor = colors.onGlass,
+        activeBorderColor = colors.accent,
+        inactiveBorderColor = colors.onGlassVariant.copy(alpha = 0.5f),
+    )
+}
+
+/** What it takes to dismiss the ringing alarm: slide, hold, shake or sums, with a line on what that means. */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ChallengeRow(
+    challenge: Challenge,
+    onChallenge: (Challenge) -> Unit,
+) {
+    val colors = LocalTideColors.current
+    Column(Modifier.padding(horizontal = 20.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text(stringResource(R.string.feature_alarm_challenge), style = MaterialTheme.typography.bodyLarge)
+        val options =
+            listOf(
+                Challenge.SLIDE to R.string.feature_alarm_challenge_slide,
+                Challenge.HOLD to R.string.feature_alarm_challenge_hold,
+                Challenge.SHAKE to R.string.feature_alarm_challenge_shake,
+                Challenge.MATH to R.string.feature_alarm_challenge_math,
+            )
+        SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
+            options.forEachIndexed { index, (option, label) ->
+                SegmentedButton(
+                    selected = challenge == option,
+                    onClick = { onChallenge(option) },
+                    shape = SegmentedButtonDefaults.itemShape(index, options.size),
+                    colors = glassSegmentedButtonColors(),
+                    // German labels are long; they shrink to fit rather than lose letters.
+                    label = { FittedText(stringResource(label)) },
+                )
+            }
+        }
+        Text(
+            stringResource(
+                when (challenge) {
+                    Challenge.SLIDE -> R.string.feature_alarm_challenge_slide_hint
+                    Challenge.HOLD -> R.string.feature_alarm_challenge_hold_hint
+                    Challenge.SHAKE -> R.string.feature_alarm_challenge_shake_hint
+                    Challenge.MATH -> R.string.feature_alarm_challenge_math_hint
+                },
+            ),
+            style = MaterialTheme.typography.bodyMedium,
+            color = colors.onGlassVariant,
+        )
     }
 }
 

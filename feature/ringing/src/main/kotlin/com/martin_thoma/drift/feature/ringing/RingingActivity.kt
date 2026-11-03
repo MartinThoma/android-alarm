@@ -38,7 +38,7 @@ class RingingActivity : ComponentActivity() {
         enableEdgeToEdge(statusBarStyle = SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT))
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        // Only snooze and the dismiss slider end the alarm; back must not silence it by accident.
+        // Only snooze and the dismiss challenge end the alarm; back must not silence it by accident.
         onBackPressedDispatcher.addCallback(this) {}
         // The alarm's own screen brightness, only for this window; the phone's returns when it closes.
         lifecycleScope.launch {

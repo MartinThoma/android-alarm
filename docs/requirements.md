@@ -61,7 +61,7 @@ Priority: **M** = must (v1), **S** = should (v1 if feasible), **C** = could (lat
 | AL-18 | Alarms survive reboot, app update, time change and time-zone change; alarms ring before the first unlock after a reboot. | M |
 | AL-19 | Undo after deleting an alarm (snackbar). | M |
 | AL-20 | Duplicate an alarm. | C |
-| AL-21 | Wake-up challenges (math, shake) to dismiss. | C |
+| AL-21 | Wake-up challenges (math, shake) to dismiss. Per alarm: slide (default), hold a big circle for three seconds, shake, or three short sums (answers 0 to 99). Snooze stays one tap; for shake and sums the notifications offer no Dismiss. | C (done 2026-11-03) |
 | AL-22 | Sleep-friendly extras: bedtime reminder, sunrise screen brightening. | C |
 | AL-23 | Home-screen widget showing the next alarm; app shortcut "New alarm". | C |
 | AL-24 | Handle `AlarmClock.ACTION_SET_ALARM` / `ACTION_SET_TIMER` intents so assistants and other apps can create alarms and timers. | S |
@@ -296,7 +296,7 @@ Rules: feature modules depend only on `core` modules, never on each other; `:cor
 4. **Timely features you miss most:** which ones matter to you? E.g. the smart-rise/gradual wake-up, gesture controls, themes, sync, the stopwatch look? This helps prioritise without copying.
 5. **Design direction:** do you prefer Material You (wallpaper colours), our own curated palettes, or both? Any apps whose look you like today?
 6. **Timer:** do you need multiple parallel timers, and per-timer sounds, or is one timer enough for v1?
-7. **Dismiss challenges** (math, shake) wanted, or never?
+7. **Dismiss challenges** (math, shake) wanted, or never? *Answered: wanted, per alarm, slide stays the default (2026-11-03).*
 8. **Language(s):** English only, or also German / others from the start?
 9. **World clock or widgets:** wanted at all, or keep the app strictly three parts?
 10. **App name:** any ideas? (Must not resemble "Timely".) *Answered: Tide; application ID `com.martin_thoma.tide`.*

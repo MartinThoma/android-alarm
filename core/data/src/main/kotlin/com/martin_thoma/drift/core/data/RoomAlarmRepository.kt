@@ -4,6 +4,7 @@ import com.martin_thoma.drift.core.database.AlarmDao
 import com.martin_thoma.drift.core.database.AlarmEntity
 import com.martin_thoma.drift.core.model.Alarm
 import com.martin_thoma.drift.core.model.Blink
+import com.martin_thoma.drift.core.model.Challenge
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.time.DayOfWeek
@@ -60,6 +61,8 @@ internal fun AlarmEntity.toModel() =
         brightnessPercent = brightnessPercent,
         // An unknown name (from a later version) means no blinking rather than a crash.
         blink = Blink.entries.find { it.name == blink } ?: Blink.OFF,
+        // Likewise: an unknown challenge falls back to the slider, which always works.
+        challenge = Challenge.entries.find { it.name == challenge } ?: Challenge.SLIDE,
     )
 
 internal fun Alarm.toEntity() =
@@ -77,6 +80,7 @@ internal fun Alarm.toEntity() =
         snoozedUntil = snoozedUntil?.toEpochMilli(),
         brightnessPercent = brightnessPercent,
         blink = blink.name,
+        challenge = challenge.name,
     )
 
 private fun DayOfWeek.bit() = 1 shl (value - 1)

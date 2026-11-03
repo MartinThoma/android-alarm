@@ -55,4 +55,13 @@
     <string name="feature_alarm_sound_show_ringtones">Показать рингтоны (%1$d)</string>
     <string name="feature_alarm_sound_phone_unknown">Звук телефона</string>
     <string name="feature_alarm_switch">Будильник на %1$s</string>
+    <string name="feature_alarm_challenge">Выключение</string>
+    <string name="feature_alarm_challenge_slide">Провести</string>
+    <string name="feature_alarm_challenge_shake">Встряхнуть</string>
+    <string name="feature_alarm_challenge_math">Примеры</string>
+    <string name="feature_alarm_challenge_slide_hint">Проведите ползунок до конца.</string>
+    <string name="feature_alarm_challenge_shake_hint">Встряхивайте телефон, пока полоса не заполнится.</string>
+    <string name="feature_alarm_challenge_math_hint">Решите три коротких примера.</string>
+    <string name="feature_alarm_challenge_hold">Удержать</string>
+    <string name="feature_alarm_challenge_hold_hint">Удерживайте круг три секунды.</string>
 </resources>

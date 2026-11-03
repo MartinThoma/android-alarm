@@ -9,4 +9,13 @@
     <string name="feature_ringing_times_up">Waktu habis</string>
     <string name="feature_ringing_add_minute">+1 mnt</string>
     <string name="feature_ringing_stop">Hentikan</string>
+    <string name="feature_ringing_shake_to_dismiss">Guncang untuk mematikan</string>
+    <string name="feature_ringing_solve_to_dismiss">Hitung untuk mematikan</string>
+    <string name="feature_ringing_sum_progress">Soal %1$d dari %2$d</string>
+    <string name="feature_ringing_wrong_answer">Belum tepat. Coba lagi.</string>
+    <string name="feature_ringing_answer">Jawaban</string>
+    <string name="feature_ringing_delete_digit">Hapus angka</string>
+    <string name="feature_ringing_check_answer">Periksa jawaban</string>
+    <string name="feature_ringing_back">Kembali</string>
+    <string name="feature_ringing_hold_to_dismiss">Tahan untuk mematikan</string>
 </resources>

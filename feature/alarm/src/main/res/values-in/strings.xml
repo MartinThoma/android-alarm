@@ -55,4 +55,13 @@
     <string name="feature_alarm_sound_show_ringtones">Tampilkan nada dering (%1$d)</string>
     <string name="feature_alarm_sound_phone_unknown">Suara ponsel</string>
     <string name="feature_alarm_switch">Alarm pukul %1$s</string>
+    <string name="feature_alarm_challenge">Matikan dengan</string>
+    <string name="feature_alarm_challenge_slide">Geser</string>
+    <string name="feature_alarm_challenge_shake">Guncang</string>
+    <string name="feature_alarm_challenge_math">Hitung</string>
+    <string name="feature_alarm_challenge_slide_hint">Geser tombol sampai ujung.</string>
+    <string name="feature_alarm_challenge_shake_hint">Guncang ponsel sampai bilah penuh.</string>
+    <string name="feature_alarm_challenge_math_hint">Selesaikan tiga soal hitung singkat.</string>
+    <string name="feature_alarm_challenge_hold">Tahan</string>
+    <string name="feature_alarm_challenge_hold_hint">Tekan dan tahan lingkaran selama tiga detik.</string>
 </resources>

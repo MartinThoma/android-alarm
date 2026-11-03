@@ -9,4 +9,13 @@
     <string name="feature_ringing_times_up">Se acabó el tiempo</string>
     <string name="feature_ringing_add_minute">+1 min</string>
     <string name="feature_ringing_stop">Detener</string>
+    <string name="feature_ringing_shake_to_dismiss">Agita para detener</string>
+    <string name="feature_ringing_solve_to_dismiss">Calcula para detener</string>
+    <string name="feature_ringing_sum_progress">Cuenta %1$d de %2$d</string>
+    <string name="feature_ringing_wrong_answer">Casi. Inténtalo de nuevo.</string>
+    <string name="feature_ringing_answer">Respuesta</string>
+    <string name="feature_ringing_delete_digit">Borrar cifra</string>
+    <string name="feature_ringing_check_answer">Comprobar respuesta</string>
+    <string name="feature_ringing_back">Atrás</string>
+    <string name="feature_ringing_hold_to_dismiss">Mantén pulsado para detener</string>
 </resources>

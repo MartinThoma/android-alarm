@@ -55,4 +55,13 @@
     <string name="feature_alarm_sound_show_ringtones">Mostrar tonos de llamada (%1$d)</string>
     <string name="feature_alarm_sound_phone_unknown">Sonido del teléfono</string>
     <string name="feature_alarm_switch">Alarma a las %1$s</string>
+    <string name="feature_alarm_challenge">Para detener</string>
+    <string name="feature_alarm_challenge_slide">Deslizar</string>
+    <string name="feature_alarm_challenge_shake">Agitar</string>
+    <string name="feature_alarm_challenge_math">Calcular</string>
+    <string name="feature_alarm_challenge_slide_hint">Desliza el control hasta el final.</string>
+    <string name="feature_alarm_challenge_shake_hint">Agita el teléfono hasta llenar la barra.</string>
+    <string name="feature_alarm_challenge_math_hint">Resuelve tres cuentas cortas.</string>
+    <string name="feature_alarm_challenge_hold">Mantener</string>
+    <string name="feature_alarm_challenge_hold_hint">Mantén pulsado el círculo durante tres segundos.</string>
 </resources>

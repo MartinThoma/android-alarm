@@ -55,4 +55,13 @@
     <string name="feature_alarm_sound_show_ringtones">显示来电铃声（%1$d）</string>
     <string name="feature_alarm_sound_phone_unknown">手机声音</string>
     <string name="feature_alarm_switch">%1$s 的闹钟</string>
+    <string name="feature_alarm_challenge">关闭方式</string>
+    <string name="feature_alarm_challenge_slide">滑动</string>
+    <string name="feature_alarm_challenge_shake">摇晃</string>
+    <string name="feature_alarm_challenge_math">算术</string>
+    <string name="feature_alarm_challenge_slide_hint">将滑块滑到底。</string>
+    <string name="feature_alarm_challenge_shake_hint">摇晃手机，直到进度条填满。</string>
+    <string name="feature_alarm_challenge_math_hint">答对三道简单的算术题。</string>
+    <string name="feature_alarm_challenge_hold">按住</string>
+    <string name="feature_alarm_challenge_hold_hint">按住圆圈三秒钟。</string>
 </resources>

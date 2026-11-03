@@ -30,6 +30,8 @@ Things decided but not yet done. Requirements live in [requirements.md](requirem
 - [ ] Phone sounds: the S25 lists no alarm tones at all, only 81 ringtones (Samsung's clock uses those), so they are folded behind one button. Still to check: a chosen tone rings after a reboot before unlocking.
 - [x] "No sound" per alarm, with a warning when it also does not vibrate; per-alarm screen brightness and a soft light pulse (off, slow, medium, fast; at most twice a second, WCAG 2.3.1) on the ringing screen (2026-10-31).
 - [ ] A slowly brightening screen before the alarm rings (sunrise), as a further light option.
+- [x] Dismiss challenges per alarm: slide (default), hold, shake, or three short sums with answers from 0 to 99 (AL-21, 2026-11-03).
+- [ ] Shake challenge on the S25: is 2 g (`ShakeCounter.THRESHOLD_G`) firm enough but not too hard, and are 15 shakes the right amount?
 - [x] Listened to the bundled sounds on the phone (Martin, 2026-10-31): Canon in D, Für Elise and the alarm clock sound good; crickets and rain are fine.
 - [x] Redid the sea (waves that rise, break, fizz and draw back) and the thunderstorm (a rumble a phone's speaker can play, a close strike); Martin: both better (2026-10-31). Rain and crickets keep their first random numbers: the crickets with other numbers sounded noticeably worse.
 

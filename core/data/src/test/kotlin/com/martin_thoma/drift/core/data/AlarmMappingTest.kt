@@ -2,6 +2,7 @@ package com.martin_thoma.drift.core.data
 
 import com.martin_thoma.drift.core.model.Alarm
 import com.martin_thoma.drift.core.model.Blink
+import com.martin_thoma.drift.core.model.Challenge
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.time.DayOfWeek
@@ -34,5 +35,19 @@ class AlarmMappingTest {
     fun `light settings survive a round trip`() {
         val alarm = Alarm(id = 4, time = LocalTime.of(6, 30), soundUri = "drift:sound/none", brightnessPercent = 80, blink = Blink.SLOW)
         assertEquals(alarm, alarm.toEntity().toModel())
+    }
+
+    @Test
+    fun `every challenge survives a round trip`() {
+        for (challenge in Challenge.entries) {
+            val alarm = Alarm(id = 5, time = LocalTime.of(6, 30), challenge = challenge)
+            assertEquals(alarm, alarm.toEntity().toModel())
+        }
+    }
+
+    @Test
+    fun `an unknown challenge falls back to the slider`() {
+        val entity = Alarm(id = 6, time = LocalTime.of(6, 30)).toEntity().copy(challenge = "JUGGLE")
+        assertEquals(Challenge.SLIDE, entity.toModel().challenge)
     }
 }

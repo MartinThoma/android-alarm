@@ -9,4 +9,13 @@
     <string name="feature_ringing_times_up">Tempo esgotado</string>
     <string name="feature_ringing_add_minute">+1 min</string>
     <string name="feature_ringing_stop">Parar</string>
+    <string name="feature_ringing_shake_to_dismiss">Agite para parar</string>
+    <string name="feature_ringing_solve_to_dismiss">Calcule para parar</string>
+    <string name="feature_ringing_sum_progress">Conta %1$d de %2$d</string>
+    <string name="feature_ringing_wrong_answer">Quase. Tente de novo.</string>
+    <string name="feature_ringing_answer">Resposta</string>
+    <string name="feature_ringing_delete_digit">Apagar algarismo</string>
+    <string name="feature_ringing_check_answer">Verificar resposta</string>
+    <string name="feature_ringing_back">Voltar</string>
+    <string name="feature_ringing_hold_to_dismiss">Segure para parar</string>
 </resources>

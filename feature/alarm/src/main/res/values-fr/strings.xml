@@ -55,4 +55,13 @@
     <string name="feature_alarm_sound_show_ringtones">Afficher les sonneries d’appel (%1$d)</string>
     <string name="feature_alarm_sound_phone_unknown">Son du téléphone</string>
     <string name="feature_alarm_switch">Alarme à %1$s</string>
+    <string name="feature_alarm_challenge">Pour arrêter</string>
+    <string name="feature_alarm_challenge_slide">Glisser</string>
+    <string name="feature_alarm_challenge_shake">Secouer</string>
+    <string name="feature_alarm_challenge_math">Calculer</string>
+    <string name="feature_alarm_challenge_slide_hint">Faire glisser la poignée jusqu’au bout.</string>
+    <string name="feature_alarm_challenge_shake_hint">Secouer le téléphone jusqu’à ce que la barre soit pleine.</string>
+    <string name="feature_alarm_challenge_math_hint">Résoudre trois petits calculs.</string>
+    <string name="feature_alarm_challenge_hold">Maintenir</string>
+    <string name="feature_alarm_challenge_hold_hint">Maintenir le cercle appuyé pendant trois secondes.</string>
 </resources>

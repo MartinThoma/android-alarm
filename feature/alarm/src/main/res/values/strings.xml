@@ -57,4 +57,13 @@
     <string name="feature_alarm_sound_show_ringtones">Show ringtones (%1$d)</string>
     <string name="feature_alarm_sound_phone_unknown">Phone sound</string>
     <string name="feature_alarm_switch">Alarm at %1$s</string>
+    <string name="feature_alarm_challenge">Turn off by</string>
+    <string name="feature_alarm_challenge_slide">Slide</string>
+    <string name="feature_alarm_challenge_shake">Shake</string>
+    <string name="feature_alarm_challenge_math">Sums</string>
+    <string name="feature_alarm_challenge_slide_hint">Slide the handle to the end.</string>
+    <string name="feature_alarm_challenge_shake_hint">Shake the phone until the bar is full.</string>
+    <string name="feature_alarm_challenge_math_hint">Solve three short sums.</string>
+    <string name="feature_alarm_challenge_hold">Hold</string>
+    <string name="feature_alarm_challenge_hold_hint">Press and hold the circle for three seconds.</string>
 </resources>

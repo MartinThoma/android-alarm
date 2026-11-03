@@ -55,4 +55,13 @@
     <string name="feature_alarm_sound_show_ringtones">Klingeltöne zeigen (%1$d)</string>
     <string name="feature_alarm_sound_phone_unknown">Telefonton</string>
     <string name="feature_alarm_switch">Wecker um %1$s</string>
+    <string name="feature_alarm_challenge">Ausschalten durch</string>
+    <string name="feature_alarm_challenge_slide">Schieben</string>
+    <string name="feature_alarm_challenge_shake">Schütteln</string>
+    <string name="feature_alarm_challenge_math">Rechnen</string>
+    <string name="feature_alarm_challenge_slide_hint">Den Regler bis ans Ende schieben.</string>
+    <string name="feature_alarm_challenge_shake_hint">Das Handy schütteln, bis der Balken voll ist.</string>
+    <string name="feature_alarm_challenge_math_hint">Drei kurze Rechenaufgaben lösen.</string>
+    <string name="feature_alarm_challenge_hold">Halten</string>
+    <string name="feature_alarm_challenge_hold_hint">Den Kreis drei Sekunden lang gedrückt halten.</string>
 </resources>
