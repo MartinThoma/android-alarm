@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_settings_back">Назад</string>
+    <string name="feature_settings_health_title">Проверка</string>
+    <string name="feature_settings_health_all_good">Будильники могут звонить и показываться.</string>
+    <string name="feature_settings_status_ok">В порядке</string>
+    <string name="feature_settings_status_problem">Требует внимания</string>
+    <string name="feature_settings_status_tip">Совет</string>
+    <string name="feature_settings_notifications">Уведомления</string>
+    <string name="feature_settings_notifications_on">Звонящий будильник показывается с кнопками «Отложить» и «Выключить».</string>
+    <string name="feature_settings_notifications_off">Выключены. Звонящий будильник не может показаться, и вы, возможно, не сможете его выключить.</string>
+    <string name="feature_settings_ringing_turned_down">Уведомления «%1$s» приглушены. Звонящий будильник может не показаться.</string>
+    <string name="feature_settings_full_screen">Будильник на весь экран</string>
+    <string name="feature_settings_full_screen_on">На заблокированном экране звонящий будильник занимает весь экран.</string>
+    <string name="feature_settings_full_screen_off">Выключено. Звонящий будильник показывается только уведомлением, даже на заблокированном экране.</string>
+    <string name="feature_settings_exact_alarms">Точные будильники</string>
+    <string name="feature_settings_exact_alarms_on">Будильники звонят минута в минуту.</string>
+    <string name="feature_settings_exact_alarms_off">Выключено. Будильники нельзя завести.</string>
+    <string name="feature_settings_battery">Расход батареи</string>
+    <string name="feature_settings_battery_unrestricted">Без ограничений. Телефон не сдерживает Drift.</string>
+    <string name="feature_settings_battery_optimised">Оптимизация. Будильники всё равно звонят, но «Без ограничений» надёжнее на телефонах, которые усыпляют приложения.</string>
+    <string name="feature_settings_battery_restricted">Ограничено. Телефон может не дать будильникам зазвонить. В сведениях о приложении нажмите «Батарея», затем «Без ограничений».</string>
+    <string name="feature_settings_battery_samsung">На телефонах Samsung проверьте также Настройки › Батарея › Ограничения в фоновом режиме: Drift не должен быть в списках «Приложения в режиме сна» и «Приложения в режиме глубокого сна».</string>
+    <string name="feature_settings_turn_on">Включить</string>
+    <string name="feature_settings_stop_optimising">Не оптимизировать</string>
+    <string name="feature_settings_open_app_info">Сведения о приложении</string>
+    <string name="feature_settings_notice_title">Будильники могут работать неправильно</string>
+    <string name="feature_settings_notice_open">Открыть проверку</string>
+    <string name="feature_settings_link">Проверить, могут ли звонить будильники</string>
+    <plurals name="feature_settings_health_problems">
+        <item quantity="one">%d настройка требует внимания.</item>
+        <item quantity="few">%d настройки требуют внимания.</item>
+        <item quantity="many">%d настроек требуют внимания.</item>
+        <item quantity="other">%d настройки требуют внимания.</item>
+    </plurals>
+</resources>

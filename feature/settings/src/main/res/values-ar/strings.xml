@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_settings_back">رجوع</string>
+    <string name="feature_settings_health_title">فحص الحالة</string>
+    <string name="feature_settings_health_all_good">يمكن للمنبهات أن ترن وتظهر.</string>
+    <string name="feature_settings_status_ok">سليم</string>
+    <string name="feature_settings_status_problem">يحتاج إلى انتباه</string>
+    <string name="feature_settings_status_tip">نصيحة</string>
+    <string name="feature_settings_notifications">الإشعارات</string>
+    <string name="feature_settings_notifications_on">يظهر المنبه عندما يرن، مع زرَّي الغفوة والإيقاف.</string>
+    <string name="feature_settings_notifications_off">متوقفة. لا يمكن للمنبه أن يظهر عندما يرن، وقد لا تتمكن من إيقافه.</string>
+    <string name="feature_settings_ringing_turned_down">إشعارات «%1$s» مخفَّضة. قد لا يظهر المنبه عندما يرن.</string>
+    <string name="feature_settings_full_screen">منبهات بملء الشاشة</string>
+    <string name="feature_settings_full_screen_on">على شاشة القفل، يملأ المنبه الشاشة عندما يرن.</string>
+    <string name="feature_settings_full_screen_off">متوقفة. لا يظهر المنبه عندما يرن إلا كإشعار، حتى على شاشة القفل.</string>
+    <string name="feature_settings_exact_alarms">منبهات دقيقة</string>
+    <string name="feature_settings_exact_alarms_on">ترن المنبهات في الدقيقة المحددة.</string>
+    <string name="feature_settings_exact_alarms_off">متوقفة. لا يمكن ضبط المنبهات.</string>
+    <string name="feature_settings_battery">استخدام البطارية</string>
+    <string name="feature_settings_battery_unrestricted">غير مقيَّد. لا يعيق الهاتف تطبيق Drift.</string>
+    <string name="feature_settings_battery_optimised">محسَّن. ما زالت المنبهات ترن، لكن «غير مقيَّد» أكثر أمانًا على الهواتف التي تُنيم التطبيقات.</string>
+    <string name="feature_settings_battery_restricted">مقيَّد. قد يمنع الهاتف المنبهات من الرنين. في معلومات التطبيق، انقر على البطارية ثم على غير مقيَّد.</string>
+    <string name="feature_settings_battery_samsung">على هواتف Samsung، تحقق أيضًا من الإعدادات › البطارية › حدود الاستخدام في الخلفية: يجب ألا يكون Drift ضمن التطبيقات النائمة أو التطبيقات في سبات عميق.</string>
+    <string name="feature_settings_turn_on">تشغيل</string>
+    <string name="feature_settings_stop_optimising">إيقاف التحسين</string>
+    <string name="feature_settings_open_app_info">فتح معلومات التطبيق</string>
+    <string name="feature_settings_notice_title">قد لا تعمل المنبهات كما ينبغي</string>
+    <string name="feature_settings_notice_open">فتح فحص الحالة</string>
+    <string name="feature_settings_link">التحقق من أن المنبهات يمكنها الرنين</string>
+    <plurals name="feature_settings_health_problems">
+        <item quantity="zero">لا توجد إعدادات تحتاج إلى انتباهك.</item>
+        <item quantity="one">إعداد واحد يحتاج إلى انتباهك.</item>
+        <item quantity="two">إعدادان يحتاجان إلى انتباهك.</item>
+        <item quantity="few">%d إعدادات تحتاج إلى انتباهك.</item>
+        <item quantity="many">%d إعدادًا يحتاج إلى انتباهك.</item>
+        <item quantity="other">%d إعداد يحتاج إلى انتباهك.</item>
+    </plurals>
+</resources>

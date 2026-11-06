@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_settings_back">返回</string>
+    <string name="feature_settings_health_title">状态检查</string>
+    <string name="feature_settings_health_all_good">闹钟可以正常响铃并显示。</string>
+    <string name="feature_settings_status_ok">正常</string>
+    <string name="feature_settings_status_problem">需要处理</string>
+    <string name="feature_settings_status_tip">提示</string>
+    <string name="feature_settings_notifications">通知</string>
+    <string name="feature_settings_notifications_on">闹钟响铃时会显示，并提供“稍后提醒”和“关闭”。</string>
+    <string name="feature_settings_notifications_off">已关闭。闹钟响铃时无法显示，您可能无法关掉它。</string>
+    <string name="feature_settings_ringing_turned_down">“%1$s”通知的级别被调低了。闹钟响铃时可能不会显示。</string>
+    <string name="feature_settings_full_screen">全屏闹钟</string>
+    <string name="feature_settings_full_screen_on">在锁定屏幕上，响铃的闹钟会占满屏幕。</string>
+    <string name="feature_settings_full_screen_off">已关闭。响铃的闹钟只以通知显示，锁定屏幕上也是如此。</string>
+    <string name="feature_settings_exact_alarms">精确闹钟</string>
+    <string name="feature_settings_exact_alarms_on">闹钟准时到分钟响铃。</string>
+    <string name="feature_settings_exact_alarms_off">已关闭。无法设置闹钟。</string>
+    <string name="feature_settings_battery">电池用量</string>
+    <string name="feature_settings_battery_unrestricted">不受限制。手机不会限制 Drift。</string>
+    <string name="feature_settings_battery_optimised">已优化。闹钟仍会响铃，但在会让应用休眠的手机上，“不受限制”更可靠。</string>
+    <string name="feature_settings_battery_restricted">受限制。手机可能会阻止闹钟响铃。请在应用信息中点按“电池”，然后选择“不受限制”。</string>
+    <string name="feature_settings_battery_samsung">在三星手机上，还请检查 设置 › 电池 › 后台使用限制：Drift 不能出现在“休眠应用程序”或“深度休眠应用程序”中。</string>
+    <string name="feature_settings_turn_on">开启</string>
+    <string name="feature_settings_stop_optimising">停止优化</string>
+    <string name="feature_settings_open_app_info">打开应用信息</string>
+    <string name="feature_settings_notice_title">闹钟可能无法正常工作</string>
+    <string name="feature_settings_notice_open">打开状态检查</string>
+    <string name="feature_settings_link">检查闹钟能否响铃</string>
+    <plurals name="feature_settings_health_problems">
+        <item quantity="other">有 %d 项设置需要处理。</item>
+    </plurals>
+</resources>

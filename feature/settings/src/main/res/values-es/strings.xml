@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_settings_back">Atrás</string>
+    <string name="feature_settings_health_title">Comprobación</string>
+    <string name="feature_settings_health_all_good">Las alarmas pueden sonar y mostrarse.</string>
+    <string name="feature_settings_status_ok">Correcto</string>
+    <string name="feature_settings_status_problem">Requiere atención</string>
+    <string name="feature_settings_status_tip">Consejo</string>
+    <string name="feature_settings_notifications">Notificaciones</string>
+    <string name="feature_settings_notifications_on">Una alarma que suena se muestra, con Posponer y Descartar.</string>
+    <string name="feature_settings_notifications_off">Desactivadas. Una alarma que suena no puede mostrarse y quizá no puedas detenerla.</string>
+    <string name="feature_settings_ringing_turned_down">Las notificaciones «%1$s» están reducidas. Puede que una alarma que suena no se muestre.</string>
+    <string name="feature_settings_full_screen">Alarmas a pantalla completa</string>
+    <string name="feature_settings_full_screen_on">En la pantalla de bloqueo, una alarma que suena ocupa toda la pantalla.</string>
+    <string name="feature_settings_full_screen_off">Desactivadas. Una alarma que suena solo se muestra como notificación, también en la pantalla de bloqueo.</string>
+    <string name="feature_settings_exact_alarms">Alarmas exactas</string>
+    <string name="feature_settings_exact_alarms_on">Las alarmas suenan al minuto.</string>
+    <string name="feature_settings_exact_alarms_off">Desactivadas. No se pueden poner alarmas.</string>
+    <string name="feature_settings_battery">Uso de batería</string>
+    <string name="feature_settings_battery_unrestricted">Sin restricciones. El teléfono no frena a Drift.</string>
+    <string name="feature_settings_battery_optimised">Optimizado. Las alarmas suenan igual, pero «Sin restricciones» es más seguro en teléfonos que ponen apps en suspensión.</string>
+    <string name="feature_settings_battery_restricted">Restringido. El teléfono puede impedir que suenen las alarmas. En Información de la app, toca Batería y luego Sin restricciones.</string>
+    <string name="feature_settings_battery_samsung">En teléfonos Samsung, revisa también Ajustes › Batería › Límites de uso en segundo plano: Drift no debe estar en Aplicaciones inactivas ni en Aplicaciones en suspensión profunda.</string>
+    <string name="feature_settings_turn_on">Activar</string>
+    <string name="feature_settings_stop_optimising">Dejar de optimizar</string>
+    <string name="feature_settings_open_app_info">Abrir Información de la app</string>
+    <string name="feature_settings_notice_title">Puede que las alarmas no funcionen bien</string>
+    <string name="feature_settings_notice_open">Abrir la comprobación</string>
+    <string name="feature_settings_link">Comprobar que las alarmas pueden sonar</string>
+    <plurals name="feature_settings_health_problems">
+        <item quantity="one">%d ajuste requiere tu atención.</item>
+        <item quantity="many">%d ajustes requieren tu atención.</item>
+        <item quantity="other">%d ajustes requieren tu atención.</item>
+    </plurals>
+</resources>

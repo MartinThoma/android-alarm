@@ -53,6 +53,7 @@ dependencies {
     implementation(project(":core:scheduling"))
     implementation(project(":feature:alarm"))
     implementation(project(":feature:ringing"))
+    implementation(project(":feature:settings"))
     implementation(project(":feature:stopwatch"))
     implementation(project(":feature:timer"))
 

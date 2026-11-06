@@ -105,7 +105,7 @@ Priority: **M** = must (v1), **S** = should (v1 if feasible), **C** = could (lat
 | GN-01 | Bottom navigation between Alarm, Stopwatch and Timer; app remembers last tab. | M |
 | GN-02 | Settings: theme (system/light/dark), colour style, default snooze, default sound and volume, auto-silence, button behaviour, week start day. | M |
 | GN-03 | Onboarding that explains and requests the permissions the app needs, one at a time, with a reason for each. | M |
-| GN-04 | Health check screen that shows the state of every reliability-critical setting (notifications, exact alarms, full-screen, battery) with one-tap fixes. | M |
+| GN-04 | Health check screen that shows the state of every reliability-critical setting (notifications, exact alarms, full-screen, battery) with one-tap fixes. A notice on the alarm list while one of them can stop alarms; an optimised battery is only a tip. | M (done 2026-11-06) |
 | GN-05 | Backup/restore of alarms and settings to a local file (JSON). | S |
 | GN-06 | World clock. | C (not requested) |
 

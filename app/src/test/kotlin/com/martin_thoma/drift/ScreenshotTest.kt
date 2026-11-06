@@ -5,6 +5,7 @@ import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.v2.createEmptyComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ActivityScenario
@@ -53,6 +54,8 @@ class ScreenshotTest {
     @Inject lateinit var time: FakeTimeSource
 
     @Inject lateinit var ringingState: RingingState
+
+    @Inject lateinit var phone: FakePhoneSettings
 
     private val weekdays = DayOfWeek.entries.take(5).toSet()
 
@@ -117,6 +120,24 @@ class ScreenshotTest {
         ActivityScenario.launch(MainActivity::class.java).use {
             awaitText("Work · in 8 h 30 min")
             compose.onRoot().captureRoboImage("../docs/screenshots/alarms-midtide.png")
+        }
+    }
+
+    @Test
+    fun healthCheck() {
+        phone.notificationsEnabled = false
+        phone.batteryOptimised = true
+        phone.samsung = true
+        saveSampleAlarms()
+        time.now = ZonedDateTime.parse("2026-11-01T23:18:00+01:00[Europe/Berlin]")
+
+        ActivityScenario.launch(MainActivity::class.java).use {
+            awaitText("Alarms may not work as they should")
+            awaitText("Mon–Fri · Work")
+            compose.onRoot().captureRoboImage("../docs/screenshots/alarms-health-notice.png")
+            compose.onNodeWithText("Alarms may not work as they should").performClick()
+            awaitText("1 setting needs your attention.")
+            compose.onRoot().captureRoboImage("../docs/screenshots/health-check.png")
         }
     }
 

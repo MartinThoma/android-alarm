@@ -1,6 +1,7 @@
 package com.martin_thoma.drift.navigation
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
@@ -10,8 +11,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
@@ -24,6 +27,10 @@ import com.martin_thoma.drift.feature.alarm.AlarmRoute
 import com.martin_thoma.drift.feature.alarm.AlarmScreen
 import com.martin_thoma.drift.feature.alarm.AlarmSoundRoute
 import com.martin_thoma.drift.feature.alarm.AlarmSoundScreen
+import com.martin_thoma.drift.feature.settings.HealthCheckLink
+import com.martin_thoma.drift.feature.settings.HealthCheckRoute
+import com.martin_thoma.drift.feature.settings.HealthCheckScreen
+import com.martin_thoma.drift.feature.settings.HealthNotice
 import com.martin_thoma.drift.feature.stopwatch.StopwatchRoute
 import com.martin_thoma.drift.feature.stopwatch.StopwatchScreen
 import com.martin_thoma.drift.feature.timer.NewTimerRoute
@@ -82,7 +89,14 @@ fun DriftApp(
                 ),
             entryProvider =
                 entryProvider {
-                    entry<AlarmRoute> { AlarmScreen(onOpenAlarm = { backStack.add(AlarmEditorRoute(it)) }) }
+                    entry<AlarmRoute> {
+                        AlarmScreen(
+                            onOpenAlarm = { backStack.add(AlarmEditorRoute(it)) },
+                            notice = { HealthNotice(onOpen = { backStack.add(HealthCheckRoute) }, Modifier.padding(bottom = 16.dp)) },
+                            footer = { HealthCheckLink(onOpen = { backStack.add(HealthCheckRoute) }, Modifier.padding(top = 8.dp)) },
+                        )
+                    }
+                    entry<HealthCheckRoute> { HealthCheckScreen(onBack = { backStack.removeLastOrNull() }) }
                     entry<AlarmEditorRoute> { key ->
                         AlarmEditorScreen(
                             alarmId = key.alarmId,

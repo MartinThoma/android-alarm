@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_settings_back">Zurück</string>
+    <string name="feature_settings_health_title">Zustandsprüfung</string>
+    <string name="feature_settings_health_all_good">Wecker können klingeln und sich zeigen.</string>
+    <string name="feature_settings_status_ok">In Ordnung</string>
+    <string name="feature_settings_status_problem">Braucht Aufmerksamkeit</string>
+    <string name="feature_settings_status_tip">Tipp</string>
+    <string name="feature_settings_notifications">Benachrichtigungen</string>
+    <string name="feature_settings_notifications_on">Ein klingelnder Wecker zeigt sich, mit Schlummern und Beenden.</string>
+    <string name="feature_settings_notifications_off">Aus. Ein klingelnder Wecker kann sich nicht zeigen, und du kannst ihn vielleicht nicht ausschalten.</string>
+    <string name="feature_settings_ringing_turned_down">Die Benachrichtigungen „%1$s“ sind heruntergestuft. Ein klingelnder Wecker zeigt sich vielleicht nicht.</string>
+    <string name="feature_settings_full_screen">Wecker im Vollbild</string>
+    <string name="feature_settings_full_screen_on">Auf dem Sperrbildschirm füllt ein klingelnder Wecker den Bildschirm.</string>
+    <string name="feature_settings_full_screen_off">Aus. Ein klingelnder Wecker zeigt sich nur als Benachrichtigung, auch auf dem Sperrbildschirm.</string>
+    <string name="feature_settings_exact_alarms">Genaue Wecker</string>
+    <string name="feature_settings_exact_alarms_on">Wecker klingeln auf die Minute.</string>
+    <string name="feature_settings_exact_alarms_off">Aus. Wecker lassen sich nicht stellen.</string>
+    <string name="feature_settings_battery">Akkunutzung</string>
+    <string name="feature_settings_battery_unrestricted">Nicht eingeschränkt. Das Handy bremst Drift nicht.</string>
+    <string name="feature_settings_battery_optimised">Optimiert. Wecker klingeln trotzdem, aber „Nicht eingeschränkt“ ist sicherer auf Handys, die Apps schlafen legen.</string>
+    <string name="feature_settings_battery_restricted">Eingeschränkt. Das Handy kann Wecker am Klingeln hindern. Tippe in den App-Infos auf Akku, dann auf „Nicht eingeschränkt“.</string>
+    <string name="feature_settings_battery_samsung">Auf Samsung-Handys prüfe auch Einstellungen › Akku › Einschränkungen der Hintergrundnutzung: Drift darf nicht unter „Apps im Standby“ oder „Apps im Tiefschlaf“ stehen.</string>
+    <string name="feature_settings_turn_on">Einschalten</string>
+    <string name="feature_settings_stop_optimising">Nicht mehr optimieren</string>
+    <string name="feature_settings_open_app_info">App-Infos öffnen</string>
+    <string name="feature_settings_notice_title">Wecker funktionieren vielleicht nicht richtig</string>
+    <string name="feature_settings_notice_open">Zustandsprüfung öffnen</string>
+    <string name="feature_settings_link">Prüfen, ob Wecker klingeln können</string>
+    <plurals name="feature_settings_health_problems">
+        <item quantity="one">%d Einstellung braucht deine Aufmerksamkeit.</item>
+        <item quantity="other">%d Einstellungen brauchen deine Aufmerksamkeit.</item>
+    </plurals>
+</resources>

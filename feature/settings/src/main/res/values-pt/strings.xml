@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_settings_back">Voltar</string>
+    <string name="feature_settings_health_title">Verificação</string>
+    <string name="feature_settings_health_all_good">Os alarmes podem tocar e aparecer.</string>
+    <string name="feature_settings_status_ok">OK</string>
+    <string name="feature_settings_status_problem">Precisa de atenção</string>
+    <string name="feature_settings_status_tip">Dica</string>
+    <string name="feature_settings_notifications">Notificações</string>
+    <string name="feature_settings_notifications_on">Um alarme tocando aparece, com Soneca e Dispensar.</string>
+    <string name="feature_settings_notifications_off">Desativadas. Um alarme tocando não pode aparecer, e talvez você não consiga pará-lo.</string>
+    <string name="feature_settings_ringing_turned_down">As notificações “%1$s” estão reduzidas. Um alarme tocando pode não aparecer.</string>
+    <string name="feature_settings_full_screen">Alarmes em tela cheia</string>
+    <string name="feature_settings_full_screen_on">Na tela de bloqueio, um alarme tocando ocupa a tela inteira.</string>
+    <string name="feature_settings_full_screen_off">Desativados. Um alarme tocando só aparece como notificação, também na tela de bloqueio.</string>
+    <string name="feature_settings_exact_alarms">Alarmes exatos</string>
+    <string name="feature_settings_exact_alarms_on">Os alarmes tocam no minuto certo.</string>
+    <string name="feature_settings_exact_alarms_off">Desativados. Não é possível definir alarmes.</string>
+    <string name="feature_settings_battery">Uso da bateria</string>
+    <string name="feature_settings_battery_unrestricted">Sem restrições. O telefone não segura o Drift.</string>
+    <string name="feature_settings_battery_optimised">Otimizado. Os alarmes tocam mesmo assim, mas “Sem restrições” é mais seguro em telefones que colocam apps para dormir.</string>
+    <string name="feature_settings_battery_restricted">Restrito. O telefone pode impedir que os alarmes toquem. Em Informações do app, toque em Bateria e depois em Sem restrições.</string>
+    <string name="feature_settings_battery_samsung">Em telefones Samsung, verifique também Configurações › Bateria › Limites de uso em segundo plano: o Drift não pode estar em Apps em suspensão nem em Apps em suspensão profunda.</string>
+    <string name="feature_settings_turn_on">Ativar</string>
+    <string name="feature_settings_stop_optimising">Parar de otimizar</string>
+    <string name="feature_settings_open_app_info">Abrir Informações do app</string>
+    <string name="feature_settings_notice_title">Os alarmes podem não funcionar como deveriam</string>
+    <string name="feature_settings_notice_open">Abrir a verificação</string>
+    <string name="feature_settings_link">Verificar se os alarmes podem tocar</string>
+    <plurals name="feature_settings_health_problems">
+        <item quantity="one">%d configuração precisa da sua atenção.</item>
+        <item quantity="many">%d configurações precisam da sua atenção.</item>
+        <item quantity="other">%d configurações precisam da sua atenção.</item>
+    </plurals>
+</resources>

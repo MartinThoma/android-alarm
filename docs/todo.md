@@ -6,7 +6,8 @@ Things decided but not yet done. Requirements live in [requirements.md](requirem
 
 - [ ] Martin tests the app locally on the S25 (debug build, `./gradlew installDebug`).
 - [ ] Test ringing on the S25: locked screen, Do Not Disturb, before the first unlock after a reboot, the per-alarm volume and its restore, snooze, auto-silence after 10 minutes.
-- [ ] Health check (step 4): notifications, full-screen intent permission, exact alarms, battery optimisation.
+- [x] Health check (step 4): notifications and the ringing channel, full-screen intents, exact alarms, battery use, with a Samsung hint; a notice on the alarm list while something can stop alarms (GN-04, 2026-11-06).
+- [ ] Health check on the S25: does each fix open the right screen in One UI, and are the Samsung menu names in the hint right in English and German?
 - [ ] Martin creates the release signing key and stores it in GitHub's encrypted secrets, with a safe offline backup. Losing it means no existing install can be updated.
 - [ ] Release workflow: a `v*` tag builds a signed APK and app bundle and publishes a GitHub Release with the changelog. `versionCode` and `versionName` stay literal in `app/build.gradle.kts` (bumped in a commit before the tag): F-Droid reads them with a regex and never runs Gradle.
 - [x] Store metadata in `fastlane/metadata/android/` (en-US and de-DE; read by F-Droid, IzzyOnDroid and Google Play), the icon rendered by `StoreIconTest`, screenshots copied by `scripts/update_store_listing.sh` (2026-11-01).

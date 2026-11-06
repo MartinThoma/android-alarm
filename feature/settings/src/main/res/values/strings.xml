@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_settings_back">Back</string>
+    <string name="feature_settings_health_title">Health check</string>
+    <string name="feature_settings_health_all_good">Alarms can ring and show themselves.</string>
+    <string name="feature_settings_status_ok">OK</string>
+    <string name="feature_settings_status_problem">Needs attention</string>
+    <string name="feature_settings_status_tip">Tip</string>
+    <string name="feature_settings_notifications">Notifications</string>
+    <string name="feature_settings_notifications_on">A ringing alarm shows itself, with Snooze and Dismiss.</string>
+    <string name="feature_settings_notifications_off">Off. A ringing alarm cannot show itself, so you may not be able to stop it.</string>
+    <string name="feature_settings_ringing_turned_down">The “%1$s” notifications are turned down. A ringing alarm may not show itself.</string>
+    <string name="feature_settings_full_screen">Full-screen alarms</string>
+    <string name="feature_settings_full_screen_on">On the lock screen, a ringing alarm fills the screen.</string>
+    <string name="feature_settings_full_screen_off">Off. A ringing alarm only shows as a notification, also on the lock screen.</string>
+    <string name="feature_settings_exact_alarms">Exact alarms</string>
+    <string name="feature_settings_exact_alarms_on">Alarms ring to the minute.</string>
+    <string name="feature_settings_exact_alarms_off">Off. Alarms cannot be set.</string>
+    <string name="feature_settings_battery">Battery use</string>
+    <string name="feature_settings_battery_unrestricted">Unrestricted. The phone does not hold Drift back.</string>
+    <string name="feature_settings_battery_optimised">Optimised. Alarms still ring, but unrestricted is safer on phones that put apps to sleep.</string>
+    <string name="feature_settings_battery_restricted">Restricted. The phone may stop alarms from ringing. In App info, tap Battery, then Unrestricted.</string>
+    <string name="feature_settings_battery_samsung">On Samsung phones, also check Settings › Battery › Background usage limits: Drift must not be under Sleeping apps or Deep sleeping apps.</string>
+    <string name="feature_settings_turn_on">Turn on</string>
+    <string name="feature_settings_stop_optimising">Stop optimising</string>
+    <string name="feature_settings_open_app_info">Open App info</string>
+    <string name="feature_settings_notice_title">Alarms may not work as they should</string>
+    <string name="feature_settings_notice_open">Open the health check</string>
+    <string name="feature_settings_link">Check that alarms can ring</string>
+    <plurals name="feature_settings_health_problems">
+        <item quantity="one">%d setting needs your attention.</item>
+        <item quantity="other">%d settings need your attention.</item>
+    </plurals>
+</resources>

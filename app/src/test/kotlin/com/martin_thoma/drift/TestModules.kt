@@ -12,6 +12,8 @@ import com.martin_thoma.drift.core.ringing.PhoneSoundSource
 import com.martin_thoma.drift.core.ringing.PhoneSoundsModule
 import com.martin_thoma.drift.core.scheduling.ApplicationScope
 import com.martin_thoma.drift.core.scheduling.SchedulingModule
+import com.martin_thoma.drift.feature.settings.PhoneSettings
+import com.martin_thoma.drift.feature.settings.PhoneSettingsModule
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -78,4 +80,26 @@ object FakePhoneSoundsModule {
 
     @Provides
     fun source(): PhoneSoundSource = PhoneSoundSource { sounds }
+}
+
+/** A phone that allows everything, until a test says otherwise. Robolectric cannot answer some of these. */
+class FakePhoneSettings : PhoneSettings {
+    override var notificationsEnabled = true
+    override var ringingChannelImportance: Int? = null
+    override var fullScreenAllowed = true
+    override var exactAlarmsAllowed = true
+    override var backgroundRestricted = false
+    override var batteryOptimised = false
+    override var samsung = false
+}
+
+@Module
+@TestInstallIn(components = [SingletonComponent::class], replaces = [PhoneSettingsModule::class])
+object FakePhoneSettingsModule {
+    @Provides
+    @Singleton
+    fun fake(): FakePhoneSettings = FakePhoneSettings()
+
+    @Provides
+    fun phoneSettings(fake: FakePhoneSettings): PhoneSettings = fake
 }

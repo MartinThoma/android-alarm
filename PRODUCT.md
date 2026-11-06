@@ -31,7 +31,7 @@ The screen is a beach seen from above, and the tide is a clock: the water rises 
 - Android 15+ (minSdk 35), Kotlin and Jetpack Compose, Material 3 underneath a custom theme.
 - No `INTERNET` permission, no analytics, no Google Play Services. GPL-3.0. APK under about 10 MB.
 - Reliability first: an alarm that does not ring is a failed product, whatever it looks like.
-- Built today: alarm list (add, toggle, swipe to delete with undo), scheduling, ringing screen with snooze and slide to dismiss. Stopwatch and timer are placeholders; alarm editor, sound picker, settings and health check are still to come.
+- Built today: alarm list (add, toggle, swipe to delete with undo), alarm editor, sound picker, scheduling, ringing screen with snooze and dismiss challenges, stopwatch, timers, and the health check. Settings and onboarding are still to come.
 - Full requirements: [docs/requirements.md](docs/requirements.md).
 
 ## Brand Commitments

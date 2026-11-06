@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_settings_back">Kembali</string>
+    <string name="feature_settings_health_title">Pemeriksaan</string>
+    <string name="feature_settings_health_all_good">Alarm dapat berbunyi dan tampil.</string>
+    <string name="feature_settings_status_ok">OK</string>
+    <string name="feature_settings_status_problem">Perlu perhatian</string>
+    <string name="feature_settings_status_tip">Tips</string>
+    <string name="feature_settings_notifications">Notifikasi</string>
+    <string name="feature_settings_notifications_on">Alarm yang berbunyi tampil, dengan Tunda dan Tutup.</string>
+    <string name="feature_settings_notifications_off">Nonaktif. Alarm yang berbunyi tidak dapat tampil, jadi Anda mungkin tidak bisa mematikannya.</string>
+    <string name="feature_settings_ringing_turned_down">Notifikasi “%1$s” dikecilkan. Alarm yang berbunyi mungkin tidak tampil.</string>
+    <string name="feature_settings_full_screen">Alarm layar penuh</string>
+    <string name="feature_settings_full_screen_on">Di layar kunci, alarm yang berbunyi memenuhi layar.</string>
+    <string name="feature_settings_full_screen_off">Nonaktif. Alarm yang berbunyi hanya tampil sebagai notifikasi, juga di layar kunci.</string>
+    <string name="feature_settings_exact_alarms">Alarm tepat waktu</string>
+    <string name="feature_settings_exact_alarms_on">Alarm berbunyi tepat pada menitnya.</string>
+    <string name="feature_settings_exact_alarms_off">Nonaktif. Alarm tidak dapat disetel.</string>
+    <string name="feature_settings_battery">Penggunaan baterai</string>
+    <string name="feature_settings_battery_unrestricted">Tidak dibatasi. Ponsel tidak menahan Drift.</string>
+    <string name="feature_settings_battery_optimised">Dioptimalkan. Alarm tetap berbunyi, tetapi “Tidak dibatasi” lebih aman di ponsel yang menidurkan aplikasi.</string>
+    <string name="feature_settings_battery_restricted">Dibatasi. Ponsel bisa mencegah alarm berbunyi. Di Info aplikasi, ketuk Baterai, lalu Tidak dibatasi.</string>
+    <string name="feature_settings_battery_samsung">Di ponsel Samsung, periksa juga Pengaturan › Baterai › Batas penggunaan latar belakang: Drift tidak boleh ada di Aplikasi tidur atau Aplikasi tidur nyenyak.</string>
+    <string name="feature_settings_turn_on">Aktifkan</string>
+    <string name="feature_settings_stop_optimising">Berhenti mengoptimalkan</string>
+    <string name="feature_settings_open_app_info">Buka Info aplikasi</string>
+    <string name="feature_settings_notice_title">Alarm mungkin tidak berfungsi semestinya</string>
+    <string name="feature_settings_notice_open">Buka pemeriksaan</string>
+    <string name="feature_settings_link">Periksa apakah alarm dapat berbunyi</string>
+    <plurals name="feature_settings_health_problems">
+        <item quantity="other">%d setelan perlu perhatian Anda.</item>
+    </plurals>
+</resources>

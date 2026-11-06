@@ -124,6 +124,8 @@ data object AlarmRoute : NavKey
 fun AlarmScreen(
     onOpenAlarm: (alarmId: Long) -> Unit,
     modifier: Modifier = Modifier,
+    notice: @Composable () -> Unit = {},
+    footer: @Composable () -> Unit = {},
 ) {
     val viewModel: AlarmListViewModel = hiltViewModel()
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -135,6 +137,8 @@ fun AlarmScreen(
         onDelete = viewModel::delete,
         onRestore = viewModel::restore,
         modifier = modifier,
+        notice = notice,
+        footer = footer,
     )
 }
 
@@ -147,6 +151,9 @@ internal fun AlarmListContent(
     onDelete: (Alarm) -> Unit,
     onRestore: (Alarm) -> Unit,
     modifier: Modifier = Modifier,
+    // Between the hero and the alarms, e.g. a setting that keeps alarms from ringing; after them, a quiet link.
+    notice: @Composable () -> Unit = {},
+    footer: @Composable () -> Unit = {},
 ) {
     val is24Hour = DateFormat.is24HourFormat(LocalContext.current)
     val locale = LocalConfiguration.current.locales[0]
@@ -157,7 +164,7 @@ internal fun AlarmListContent(
     val deletedMessage = stringResource(R.string.feature_alarm_deleted)
     val resources = LocalResources.current
     val context = LocalContext.current
-    // Without notifications, a ringing alarm cannot show its screen (requirements 6.4). The health check follows in step 4.
+    // Without notifications, a ringing alarm cannot show its screen (requirements 6.4); the health check shows it, too.
     val notificationPermission = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) {}
     val undoLabel = stringResource(R.string.feature_alarm_undo)
 
@@ -192,6 +199,7 @@ internal fun AlarmListContent(
                     NextAlarm(state, timeFormatter, Modifier.padding(horizontal = 8.dp))
                     Spacer(Modifier.height(32.dp))
                 }
+                item(key = "notice") { notice() }
                 // One sheet of glass for all alarms, readable wherever the tide is; empty, it shows where
                 // alarms will be. It stays one list item either way: a separate item for the empty sheet
                 // made the list keep the last deleted row's swipe state, and "Undo" deleted the alarm again.
@@ -241,6 +249,7 @@ internal fun AlarmListContent(
                         }
                     }
                 }
+                item(key = "footer") { footer() }
             }
         }
     }

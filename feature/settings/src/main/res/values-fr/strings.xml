@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_settings_back">Retour</string>
+    <string name="feature_settings_health_title">Vérification</string>
+    <string name="feature_settings_health_all_good">Les alarmes peuvent sonner et s’afficher.</string>
+    <string name="feature_settings_status_ok">OK</string>
+    <string name="feature_settings_status_problem">À corriger</string>
+    <string name="feature_settings_status_tip">Conseil</string>
+    <string name="feature_settings_notifications">Notifications</string>
+    <string name="feature_settings_notifications_on">Une alarme qui sonne s’affiche, avec Répéter et Arrêter.</string>
+    <string name="feature_settings_notifications_off">Désactivées. Une alarme qui sonne ne peut pas s’afficher, et vous ne pourrez peut-être pas l’arrêter.</string>
+    <string name="feature_settings_ringing_turned_down">Les notifications « %1$s » sont réduites. Une alarme qui sonne risque de ne pas s’afficher.</string>
+    <string name="feature_settings_full_screen">Alarmes en plein écran</string>
+    <string name="feature_settings_full_screen_on">Sur l’écran de verrouillage, une alarme qui sonne remplit l’écran.</string>
+    <string name="feature_settings_full_screen_off">Désactivées. Une alarme qui sonne ne s’affiche qu’en notification, même sur l’écran de verrouillage.</string>
+    <string name="feature_settings_exact_alarms">Alarmes exactes</string>
+    <string name="feature_settings_exact_alarms_on">Les alarmes sonnent à la minute près.</string>
+    <string name="feature_settings_exact_alarms_off">Désactivées. Impossible de régler des alarmes.</string>
+    <string name="feature_settings_battery">Utilisation de la batterie</string>
+    <string name="feature_settings_battery_unrestricted">Non restreinte. Le téléphone ne freine pas Drift.</string>
+    <string name="feature_settings_battery_optimised">Optimisée. Les alarmes sonnent quand même, mais « Non restreinte » est plus sûr sur les téléphones qui mettent les applis en veille.</string>
+    <string name="feature_settings_battery_restricted">Restreinte. Le téléphone peut empêcher les alarmes de sonner. Dans Infos sur l’appli, touchez Batterie, puis Non restreinte.</string>
+    <string name="feature_settings_battery_samsung">Sur les téléphones Samsung, vérifiez aussi Paramètres › Batterie › Limites d’utilisation en arrière-plan : Drift ne doit pas figurer parmi les applis en veille ou en veille prolongée.</string>
+    <string name="feature_settings_turn_on">Activer</string>
+    <string name="feature_settings_stop_optimising">Ne plus optimiser</string>
+    <string name="feature_settings_open_app_info">Ouvrir Infos sur l’appli</string>
+    <string name="feature_settings_notice_title">Les alarmes risquent de ne pas fonctionner correctement</string>
+    <string name="feature_settings_notice_open">Ouvrir la vérification</string>
+    <string name="feature_settings_link">Vérifier que les alarmes peuvent sonner</string>
+    <plurals name="feature_settings_health_problems">
+        <item quantity="one">%d réglage demande votre attention.</item>
+        <item quantity="many">%d réglages demandent votre attention.</item>
+        <item quantity="other">%d réglages demandent votre attention.</item>
+    </plurals>
+</resources>
