@@ -1,10 +1,12 @@
 package com.martin_thoma.drift
 
+import android.app.Application
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.media.AudioManager
 import android.os.Looper
+import androidx.compose.ui.test.junit4.v2.createEmptyComposeRule
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import com.martin_thoma.drift.core.data.AlarmRepository
@@ -19,6 +21,7 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -41,8 +44,12 @@ import javax.inject.Inject
 @RunWith(RobolectricTestRunner::class)
 @Config(application = HiltTestApplication::class, sdk = [36])
 class RingingTest {
-    @get:Rule
+    @get:Rule(order = 0)
     val hilt = HiltAndroidRule(this)
+
+    // Lets Compose settle in the activity tests; without it, each one took about ten minutes.
+    @get:Rule(order = 1)
+    val compose = createEmptyComposeRule()
 
     @Inject lateinit var repository: AlarmRepository
 
@@ -139,5 +146,62 @@ class RingingTest {
             shadowOf(Looper.getMainLooper()).idle()
             scenario.onActivity { assertEquals(0.3f, it.window.attributes.screenBrightness, 0.001f) }
         }
+    }
+
+    /** The activities started since the last call, by class name. */
+    private fun startedActivities(): List<String> {
+        val shadow = shadowOf(context as Application)
+        return generateSequence { shadow.nextStartedActivity }.mapNotNull { it.component?.className }.toList()
+    }
+
+    @Test
+    fun `opening the app while an alarm rings shows the ringing screen`() {
+        ringingState.update(RingingStatus.Ringing(Alarm(id = 1, time = LocalTime.of(6, 30)), Instant.EPOCH))
+
+        ActivityScenario.launch(MainActivity::class.java).use {
+            shadowOf(Looper.getMainLooper()).idle()
+            assertTrue(RingingActivity::class.java.name in startedActivities())
+        }
+    }
+
+    @Test
+    fun `a ring starting while the app is open shows the ringing screen`() {
+        ActivityScenario.launch(MainActivity::class.java).use {
+            shadowOf(Looper.getMainLooper()).idle()
+            assertFalse(RingingActivity::class.java.name in startedActivities())
+
+            ringingState.update(RingingStatus.Starting)
+            shadowOf(Looper.getMainLooper()).idle()
+            assertTrue(RingingActivity::class.java.name in startedActivities())
+
+            // Once is enough: the alarm loading does not open the screen a second time.
+            ringingState.update(RingingStatus.Ringing(Alarm(id = 1, time = LocalTime.of(6, 30)), Instant.EPOCH))
+            shadowOf(Looper.getMainLooper()).idle()
+            assertFalse(RingingActivity::class.java.name in startedActivities())
+        }
+    }
+
+    @Test
+    fun `a ringing notification swiped away comes back until the alarm stops`() {
+        val (service, _) = ring(Alarm(time = LocalTime.of(6, 30), label = "Work"))
+        val notifications = context.getSystemService(NotificationManager::class.java)
+
+        fun swipeAway() {
+            val notification = notifications.activeNotifications.single { it.id == 1 }.notification
+            notifications.cancel(1)
+            notification.deleteIntent.send()
+            shadowOf(Looper.getMainLooper()).idle()
+        }
+
+        swipeAway()
+        val again = notifications.activeNotifications.single { it.id == 1 }.notification
+        assertEquals("Work", again.extras.getString("android.title"))
+
+        // Swiped away just as the alarm stops: it stays gone.
+        val last = notifications.activeNotifications.single { it.id == 1 }.notification
+        command(service, Intent(RingingService.ACTION_DISMISS))
+        last.deleteIntent.send()
+        shadowOf(Looper.getMainLooper()).idle()
+        assertTrue(notifications.activeNotifications.none { it.id == 1 })
     }
 }

@@ -145,6 +145,7 @@ This is the part that makes or breaks an alarm app.
 - Foreground service type: **`systemExempted`** (allowed for apps holding an exact-alarm permission) or `mediaPlayback`. Note that Android 15 forbids starting some types (including `mediaPlayback`) from `BOOT_COMPLETED`, which does not affect us because boot only reschedules.
 - **`USE_FULL_SCREEN_INTENT`**: since Android 14, this is only auto-granted to calling and alarm apps on Play, and the user can revoke it. Check `NotificationManager.canUseFullScreenIntent()` and guide the user to the setting if it is off. If it is off, the alarm still rings, via a heads-up notification.
 - Ringing activity uses `setShowWhenLocked(true)` and `setTurnScreenOn(true)`.
+- Whatever rings is always reachable: opening the app while an alarm or timer rings shows the ringing screen, also when a ring starts while the app is open. Since Android 14 the user can swipe a foreground service's notification away; a ringing one is posted again at once.
 - Audio: `AudioAttributes.USAGE_ALARM`, so it plays on the alarm stream and passes Do Not Disturb when alarms are allowed. Request audio focus with `AUDIOFOCUS_GAIN_TRANSIENT`.
 
 ### 6.4 Notifications

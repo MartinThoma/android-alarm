@@ -44,6 +44,7 @@ class RingingNotifications
                 .setFullScreenIntent(screenIntent, true)
                 .setContentIntent(screenIntent)
                 .setForegroundServiceBehavior(Notification.FOREGROUND_SERVICE_IMMEDIATE)
+                .setDeleteIntent(showAgain())
                 .addAction(serviceAction(R.string.core_ringing_snooze, RingingService.ACTION_SNOOZE))
                 .apply {
                     // Shaking and sums happen on the ringing screen only; a Dismiss here would skip them.
@@ -69,12 +70,29 @@ class RingingNotifications
                 .setFullScreenIntent(screenIntent, true)
                 .setContentIntent(screenIntent)
                 .setForegroundServiceBehavior(Notification.FOREGROUND_SERVICE_IMMEDIATE)
+                .setDeleteIntent(showAgain())
                 .addAction(serviceAction(R.string.core_ringing_add_minute, RingingService.ACTION_ADD_MINUTE))
                 .addAction(serviceAction(R.string.core_ringing_stop, RingingService.ACTION_DISMISS))
                 .build()
         }
 
         fun update(notification: Notification) = manager.notify(RingingService.NOTIFICATION_ID, notification)
+
+        /** Posts the ringing notification for [status] again, after the user swiped it away. */
+        fun showAgain(status: RingingStatus) {
+            when (status) {
+                is RingingStatus.Ringing -> {
+                    update(ringing(status.alarm, status.since))
+                }
+
+                is RingingStatus.TimerRinging -> {
+                    update(timerRinging(status.timer))
+                }
+
+                // Starting: the service posts the loaded alarm's notification in a moment. Idle: nothing rings.
+                RingingStatus.Starting, RingingStatus.Idle -> {}
+            }
+        }
 
         /** Counts down to the end of the snooze, with an action to dismiss the alarm early (not past a wake-up challenge). */
         fun showSnoozed(
@@ -142,6 +160,10 @@ class RingingNotifications
             val intent = PendingIntent.getService(context, 0, RingingService.intent(context, action), IMMUTABLE_UPDATE)
             return Notification.Action.Builder(null, context.getString(title), intent).build()
         }
+
+        /** Since Android 14 a foreground service's notification can be swiped away; a ringing one comes back. */
+        private fun showAgain(): PendingIntent =
+            PendingIntent.getBroadcast(context, 0, Intent(context, RingingDismissedReceiver::class.java), IMMUTABLE_UPDATE)
 
         private fun openApp(): PendingIntent {
             val launch = checkNotNull(context.packageManager.getLaunchIntentForPackage(context.packageName))
