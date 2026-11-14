@@ -16,7 +16,7 @@ room = "2.8.5"
 junit4 = "4.13.2"
 androidxTestCore = "1.7.0"
 robolectric = "4.17"
-roborazzi = "1.77.0"
+roborazzi = "1.78.0"
 spotless = "8.10.4"
 ktlint = "1.8.0"
 
